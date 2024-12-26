@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AvaloniaProject">
+    <option name="projectPerEditor">
+      <map>
+        <entry key="Tulahack.Desktop/App.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.Desktop/Auth/AuthView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.Desktop/AuthView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/Layout/Badge.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/Layout/EnumSelector.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/Layout/Form.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/Layout/Skeleton.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/Layout/Timeline.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Controls/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Locale/en-us.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Locale/ru-ru.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Resources/Geometries.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Styles/Geometries.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Styles/HyperlinkStyle.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Styles/Skeleton.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Styles/ThemeStyles.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Styles/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/Badge.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/DataGridResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/DefaultColors.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/Skeleton.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/ThemeResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/Timeline.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Dark/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/DataGridResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/DefaultColors.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Geometries.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/Badge.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/DataGridResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/DefaultColors.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/Skeleton.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/ThemeResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/Timeline.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Light/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/Badge.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/DataGridResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/DefaultColors.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/Skeleton.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/ThemeResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/Timeline.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/Shared/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/ThemeResources.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/Themes/ThemeStyles.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Components/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.ToastNotifications/Themes/Generic.xaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Validation/Themes/FluentTheme.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI.Validation/Themes/SimpleTheme.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/App.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Assets/Icons.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/DashboardTile.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/DashboardTileV2.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/Templates/CompanyCard.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/Templates/CountdownTile.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/Templates/DashboardTile.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/Templates/TaskCard.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Components/_index.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Styles/Button.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Styles/TrayContainer.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/AppView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/AppViewWindow.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/ContentView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/MainWindow.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/NavigationView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestEventPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestEventSchedulePageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestEventScheduleView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestEventView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestSchedulePageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestScheduleView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestTaskPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestTaskView.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestTaskboardPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/ContestTaskboardView.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Contestant/TeamPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/DashboardView.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Expert/AssessmentPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Expert/RatingPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/ExpertsPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/HackathonOverviewPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/ParticipatorsPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/RatingPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/RatingPageViewModel.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/ScoreboardPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Moderator/TeamsPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/ProfilePage.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Public/ApplicationFormPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Public/ApplicationFormView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Public/DashboardView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Public/ProfilePageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Public/SettingsView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/SettingsView.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Superuser/HackathonOverviewPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Superuser/HackathonSettingsPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/Superuser/ModeratorsPageView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.UI/Views/Pages/TeamPageView.axaml" value="Tulahack.UI/Tulahack.UI.csproj" />
+        <entry key="Tulahack.UI/Views/TitleView.axaml" value="Tulahack.Desktop/Tulahack.Desktop.csproj" />
+        <entry key="Tulahack.Web/App.axaml" value="Tulahack.Web/Tulahack.Web.csproj" />
+      </map>
+    </option>
+  </component>
+</project>

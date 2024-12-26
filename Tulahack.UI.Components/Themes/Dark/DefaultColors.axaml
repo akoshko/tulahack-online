@@ -1,0 +1,25 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+	<Color x:Key="WindowBgColor">#FFFFFFFF</Color>
+	<Color x:Key="SectionBgColor">#D4D4D4</Color>
+	<Color x:Key="SectionBorderColor">#979797</Color>
+	<Color x:Key="PrimaryForegroundColor">#FF000000</Color>
+	<Color x:Key="SecondaryForegroundColor">#282828</Color>
+	
+	<SolidColorBrush x:Key="TulahackGray6" Color="{StaticResource TulahackGray6Color}" />
+	<SolidColorBrush x:Key="TulahackRed6" Color="{StaticResource TulahackRed6Color}" />
+	<SolidColorBrush x:Key="TulahackBlue6" Color="{StaticResource TulahackBlue6Color}" />
+	<SolidColorBrush x:Key="TulahackGreen6" Color="{StaticResource TulahackGreen6Color}" />
+	<SolidColorBrush x:Key="TulahackOrange6" Color="{StaticResource TulahackOrange6Color}" />
+	<SolidColorBrush x:Key="TulahackGray9" Color="{StaticResource TulahackGray9Color}" />
+	<SolidColorBrush x:Key="TulahackGray3" Color="{StaticResource TulahackGray3Color}" />
+
+	<Color x:Key="TulahackGray6Color">#A7ABB0</Color>
+	<Color x:Key="TulahackBlue6Color">#7FC1FF</Color>
+	<Color x:Key="TulahackRed6Color">#FD9983</Color>
+	<Color x:Key="TulahackGreen6Color">#7FD184</Color>
+	<Color x:Key="TulahackOrange6Color">#FFC772</Color>
+	<Color x:Key="TulahackGray9Color">#F9F9F9</Color>
+	<Color x:Key="TulahackGray3Color">#555B61</Color>
+
+</ResourceDictionary>

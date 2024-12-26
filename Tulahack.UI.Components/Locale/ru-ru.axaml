@@ -1,0 +1,21 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- Add Resources Here -->
+    <x:String x:Key="STRING_MENU_BRING_TO_FRONT">На передний план</x:String>
+    <x:String x:Key="STRING_MENU_BRING_FORWARD">На задний план</x:String>
+    <x:String x:Key="STRING_MENU_SEND_BACKWARD">Вперед</x:String>
+    <x:String x:Key="STRING_MENU_SEND_TO_BACK">Назад</x:String>
+    <x:String x:Key="STRING_MENU_DIALOG_OK">Ок</x:String>
+    <x:String x:Key="STRING_MENU_DIALOG_CANCEL">Отмена</x:String>
+    <x:String x:Key="STRING_MENU_DIALOG_YES">Да</x:String>
+    <x:String x:Key="STRING_MENU_DIALOG_NO">Нет</x:String>
+    <x:String x:Key="STRING_MENU_DIALOG_CLOSE">Закрыть</x:String>
+    <x:String x:Key="STRING_PAGINATION_JUMP_TO">Перейти на страницу</x:String>
+    <x:String x:Key="STRING_PAGINATION_PAGE"> </x:String>
+    <x:String x:Key="STRING_THEME_TOGGLE_DARK">Темная</x:String>
+    <x:String x:Key="STRING_THEME_TOGGLE_LIGHT">Светлая</x:String>
+    <x:String x:Key="STRING_THEME_TOGGLE_SYSTEM">Системная</x:String>
+    <x:String x:Key="STRING_DATE_TIME_CONFIRM">Подтвердить</x:String>
+    <x:String x:Key="STRING_DATE_TIME_START_TIME">Дата начала</x:String>
+    <x:String x:Key="STRING_DATE_TIME_END_TIME">Дата окончания</x:String>
+</ResourceDictionary>

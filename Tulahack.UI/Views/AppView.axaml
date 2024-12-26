@@ -1,0 +1,58 @@
+<UserControl x:Class="Tulahack.UI.Views.AppView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels"
+             xmlns:views="clr-namespace:Tulahack.UI.Views"
+             xmlns:controls="clr-namespace:Tulahack.UI.ToastNotifications.Controls;assembly=Tulahack.UI.ToastNotifications"
+             x:DataType="viewModels:AppViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="768" d:DesignWidth="1166"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <viewModels:AppViewModel />
+    </Design.DataContext>
+
+    <SplitView IsPaneOpen="{Binding IsPaneOpen}"
+               CompactPaneLength="45"
+               DisplayMode="CompactInline"
+               OpenPaneLength="300">
+        <SplitView.Pane>
+            <StackPanel Orientation="Vertical"
+                        Spacing="5"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Top">
+                <Button HorizontalAlignment="Left"
+                        Width="32"
+                        Height="32"
+                        Margin="7 10"
+                        Command="{Binding TriggerPaneCommand}">
+                    <PathIcon Height="11" Data="{StaticResource LineHorizontal3Regular}" />
+                </Button>
+                <views:NavigationView
+                    DataContext="{Binding NavigationViewModel}" />
+            </StackPanel>
+
+        </SplitView.Pane>
+
+        <SplitView.Content>
+                <Grid
+                    RowDefinitions="60, *">
+                    <controls:NotificationMessageContainer Manager="{Binding Manager}" Grid.Row="0" Grid.RowSpan="2" ZIndex="100"/>
+                    <views:TitleView ZIndex="90"
+                                     Grid.Row="0"
+                                     DataContext="{Binding TitleViewModel}" />
+                    <views:ContentView ZIndex="90"
+                                       Grid.Row="1"
+                                       DataContext="{Binding ContentViewModel}" />
+                </Grid>
+        </SplitView.Content>
+    </SplitView>
+</UserControl>

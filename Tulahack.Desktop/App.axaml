@@ -1,0 +1,22 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="Tulahack.Desktop.App"
+             xmlns:utils="clr-namespace:Tulahack.UI.Utils;assembly=Tulahack.UI"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <utils:ViewLocator/>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
+
+        <StyleInclude Source="avares://Tulahack.UI.Components/Index.axaml" />
+        <StyleInclude Source="avares://Tulahack.UI.ToastNotifications/Themes/Generic.xaml" />
+        
+        <StyleInclude Source="avares://Tulahack.UI/Assets/Icons.axaml" />
+        <StyleInclude Source="avares://Tulahack.UI/Components/_index.axaml" />
+    </Application.Styles>
+</Application>

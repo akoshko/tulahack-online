@@ -1,0 +1,56 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:components="clr-namespace:Tulahack.UI.Components"
+                    xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia">
+
+    <Design.PreviewWith>
+        <Border Padding="40" Height="600" Width="600">
+            <components:CompanyCard
+                ThumbnailUrl="https://cdn.you.name.it.com/events/welcome.png"
+                CardTitle="Card title"
+                CardContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type components:CompanyCard}" TargetType="{x:Type components:CompanyCard}">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type components:CompanyCard}">
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="Gray"
+                    Background="Transparent"
+                    CornerRadius="4"
+                    ClipToBounds="True"
+                    MaxHeight="360"
+                    MaxWidth="340">
+                    <Grid
+                        RowDefinitions="Auto, Auto, Auto"
+                        HorizontalAlignment="Stretch">
+                        <Image
+                            Margin="-1"
+                            asyncImageLoader:ImageLoader.Source="{TemplateBinding ThumbnailUrl}" />
+
+                        <TextBlock
+                            Grid.Row="1"
+                            HorizontalAlignment="Center"
+                            Margin="0 4"
+                            TextWrapping="Wrap"
+                            FontSize="22"
+
+                            Text="{TemplateBinding CardTitle}" />
+                        <TextBlock
+                            Grid.Row="2"
+
+                            Margin="8 0 8 8"
+
+                            TextAlignment="Justify"
+                            TextWrapping="WrapWithOverflow"
+                            FontSize="14"
+
+                            Text="{TemplateBinding CardContent}" />
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

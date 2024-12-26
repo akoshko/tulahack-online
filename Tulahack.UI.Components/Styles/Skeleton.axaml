@@ -1,0 +1,35 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="https://tulahack.online/tulahack">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <controls:Skeleton
+                Margin="0,0,200,0"
+                VerticalAlignment="Top"
+                CornerRadius="2"
+                IsActive="True"
+                IsLoading="True">
+                <SelectableTextBlock Margin="0,2" Text="Test skeleton selectable text" />
+            </controls:Skeleton>
+        </Border>
+    </Design.PreviewWith>
+
+    <!-- Add Styles Here -->
+    <Style Selector="controls|Skeleton[IsActive=True][IsLoading=True] /template/ controls|PureRectangle#PART_ActiveBorder">
+        <Style.Animations>
+            <Animation
+                FillMode="None"
+                IterationCount="Infinite"
+                Easing="CubicEaseInOut"
+                PlaybackDirection="Alternate"
+                Duration="0:0:1.4">
+                <KeyFrame Cue="0%">
+                    <Setter Property="Background" Value="{DynamicResource SkeletonStartAnimationBackground}" />
+                </KeyFrame>
+                <KeyFrame Cue="100%">
+                    <Setter Property="Background" Value="{DynamicResource SkeletonEndAnimationBackground}" />
+                </KeyFrame>
+            </Animation>
+        </Style.Animations>
+    </Style>
+</Styles>

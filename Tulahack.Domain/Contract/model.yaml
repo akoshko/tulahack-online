@@ -1,0 +1,330 @@
+openapi: 3.0.1
+info:
+  title: Tulahack API Model base
+  version: v1
+paths: {}
+
+components:
+  schemas:
+    
+    ContestApplication:
+      type: object
+      additionalProperties: false
+      required: [ userId, status ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+        creationDate:
+          type: string
+          format: date-time
+        justification:
+          type: string
+          nullable: true
+        status:
+          $ref: "#/components/schemas/ContestApplicationStatus"
+            
+    Team:
+      type: object
+      additionalProperties: false
+      required: [ name, formOfParticipation ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        section:
+          description: "поток, 1, 2, 3"
+          type: integer
+        contestCases:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestCase"
+        contestants:
+          type: array
+          items:
+            $ref: "#/components/schemas/Contestant"
+        formOfParticipation:
+          $ref: "#/components/schemas/FormOfParticipation"
+        repositoryLink:
+          type: string
+        additionalRepositoryLink:
+          type: string
+          nullable: true
+        presentationLink:
+          type: string
+        videoLink:
+          type: string
+        openUniversityProjectLink:
+          type: string
+        additionalInfo:
+          type: string
+          description: "Дополнительные материалы, urls api и прочее"
+        teaser:
+          type: string
+          description: "Описание проекта текстом"
+    
+    Skill:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        skillName:
+          type: string
+          
+    AcceptanceCriteria:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        criteria:
+          type: string
+    
+    ContestCase:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        description:
+          type: string
+        company:
+          $ref: '#/components/schemas/Company'
+        acceptanceCriteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptanceCriteria'
+    
+    Company:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        experts:
+          type: array
+          items:
+            $ref: '#/components/schemas/Expert'
+    
+    PersonBase:
+      type: object
+      additionalProperties: false
+      required: [ firstname, lastname, email, photoUrl ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstname:
+          type: string
+          nullable: false
+        middlename:
+          type: string
+          nullable: false
+        lastname:
+          type: string
+          nullable: false
+        telegramAccount:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        about:
+          type: string
+        photoUrl:
+          type: string
+        blocked:
+          type: boolean
+        role:
+          allOf:
+            - $ref: "#/components/schemas/ContestRole"
+    
+    Contestant:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBase"
+      properties:
+        team:
+          $ref: "#/components/schemas/Team"
+        age:
+          type: integer
+        certificateNeeded:
+          type: boolean
+        contestantNumber:
+          type: integer
+        companyName:
+          type: string
+          nullable: true
+        jobTitle:
+          type: string
+          nullable: true
+        attendingFirstTime:
+          type: boolean
+        applicationConfirmationStatus:
+          type: boolean
+        applicationSubmissionDate:
+          type: string
+          format: date-time
+        region:
+          type: string
+          nullable: false
+        city:
+          type: string
+        university:
+          type: string
+        universityDepartment:
+          type: string
+        universityAttendanceFormat:
+          type: string
+          description: "форма обучения: очнаяб заочная, вечерняя"
+        scholarship:
+          type: string
+          description: "форма образования: бюджет, коммерция"
+        applicationNumber:
+          type: string
+          format: guid
+        attendanceType:
+          type: string
+          description: "очное или онлайн участие"
+        educationType:
+          type: string
+          description: "Школьник, студент, специалист"
+        githubUrl:
+          type: string
+          nullable: true
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+          
+    Expert:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBase"
+      properties:
+        company:
+          $ref: "#/components/schemas/Company"
+        workPosition:
+          type: string
+        confirmed:
+          type: boolean
+        badge:
+          type: boolean
+        photoUrl:
+          type: string
+        additionalContactPerson:
+          type: string
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/Skill'
+        pickedTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/Team'
+      
+    Moderator:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBase"       
+          
+    Superuser:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBase"       
+          
+    StorageFile:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: guid
+        filename:
+          type: string
+        filepath:
+          type: string
+        owner:
+          type: string
+          format: guid
+        creationDate:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          format: int32
+        purpose:
+          $ref: "#/components/schemas/FilePurposeType"    
+          
+    Province:
+      type: object
+      additionalProperties: false
+      properties: 
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    
+    ContestRole:
+      type: string
+      enum:
+        - Visitor
+        - Contestant
+        - Expert
+        - Moderator
+        - Superuser    
+
+    ContestApplicationStatus:
+      type: string
+      enum:
+        - Unknown
+        - Created
+        - Accepted
+        - Pending
+        - Declined
+        - ChangesRequested
+        - ClarificationRequested
+
+    FilePurposeType:
+      type: string
+      enum:
+        - Unknown
+        - Default
+        - SolutionApplication
+        - SolutionPresentation
+        - SolutionVideo
+        - SolutionTeaser
+        - SolutionExtras
+        - TaskPresentation
+        - TaskExtras
+        - FinalLeaderboard
+        - FinalDiploma
+        - FinalTeamDiploma
+
+    FormOfParticipation:
+      description: "Форма участия: In person or online, очно или онлайн"
+      type: string
+      enum:
+        - Unknown
+        - InPerson
+        - Online

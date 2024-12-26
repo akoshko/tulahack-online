@@ -1,0 +1,210 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.Pages.Public.ApplicationFormView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Public"
+             xmlns:form="clr-namespace:Tulahack.UI.Components.Controls.CodeBehind.Form;assembly=Tulahack.UI.Components"
+             xmlns:th="https://tulahack.online/tulahack"
+             xmlns:converters="clr-namespace:Tulahack.UI.Converters"
+             xmlns:models="clr-namespace:Tulahack.UI.Models"
+             xmlns:public="clr-namespace:Tulahack.UI.Views.Pages.Public"
+             x:DataType="viewModels:ApplicationFormViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <viewModels:ApplicationFormViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <converters:TeamCheckStatusConverter x:Key="TeamCheckStatusConverter" />
+        <converters:TeamCheckResultToColorConverter x:Key="TeamCheckResultToColorConverter" />
+        <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
+        
+        <public:ApplicationFormConsentConverter x:Key="ApplicationFormConsentConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <StackPanel>
+            <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Заполните форму участника хакатона"
+                           VerticalAlignment="Center">
+                </TextBlock>
+            </Grid>
+            <form:Form
+                DataContext="{Binding ContestsApplication}"
+                LabelAlignment="Left"
+                LabelPosition="Left"
+                LabelWidth="*">
+                <form:FormGroup Header="Информация об участнике">
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Имя"
+                        Text="{Binding ParticipatorName}" />
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Фамилия"
+                        Text="{Binding ParticipatorSurname}" />
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="False"
+                        form:FormItem.Label="Отчество"
+                        Text="{Binding ParticipatorMiddleName}" />
+                    <NumericUpDown
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Возраст"
+                        Text="{Binding ParticipatorAge}"
+                        Minimum="14" Maximum="100" Increment="1" />
+                    <TextBox
+                        InnerLeftContent="@"
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Telegram"
+                        Text="{Binding ParticipatorTelegram}" />
+                    <MaskedTextBox 
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Номер телефона"
+                        Text="{Binding ParticipatorPhone}" />
+                </form:FormGroup>
+
+                <form:FormGroup Header="Команда">
+                    <StackPanel HorizontalAlignment="Left" Spacing="8">
+                        <RadioButton
+                            IsChecked="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            GroupName="CreateOrJoinTeam"
+                            Content="Создать команду" />
+                        <RadioButton
+                            IsChecked="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}"
+                            GroupName="CreateOrJoinTeam"
+                            Content="У меня уже есть команда" />
+                    </StackPanel>
+                </form:FormGroup>
+                <form:FormGroup x:Name="CreateNewTeamSection"
+                                Header="Создать новую команду"
+                                IsVisible="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Название команды"
+                        Text="{Binding TeamName}" />
+                    <NumericUpDown
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Количество участников"
+                        Value="{Binding ParticipatorsCount}"
+                        Minimum="1" Maximum="5" Increment="1" />
+                    <th:EnumSelector
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Форма участия"
+                        DisplayDescription="True"
+                        EnumType="models:FormOfParticipationSelector"
+                        Value="{Binding FormOfParticipation, Converter={StaticResource EnumToDtoConverter}}" />
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="False"
+                        form:FormItem.Label="О команде"
+                        Watermark="Дополнительные сведения, комментарии, важная информация об участниках и прочее"
+                        Text="{Binding AboutTeam}" />
+                </form:FormGroup>
+                <form:FormGroup x:Name="JoinExistingTeamSection"
+                                Header="Присоединиться к существующей команде"
+                                IsVisible="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}">
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="ID команды"
+                        Text="{Binding ExistingTeamId}" />
+                    <form:FormItem NoLabel="True">
+                        <StackPanel Orientation="Horizontal">
+                            <Button
+                                HorizontalAlignment="Left" Content="Присоединиться"
+                                Command="{Binding 
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).CheckTeam, 
+                                            RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=Null}" />
+                            <StackPanel x:Name="TeamCheckInProgress" Orientation="Horizontal"
+                                        IsVisible="{Binding 
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress, 
+                                            RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=False}">
+                                <ProgressBar IsIndeterminate="True" Width="32"></ProgressBar>
+                            </StackPanel>
+                            <StackPanel x:Name="TeamCheckResult"
+                                        Orientation="Horizontal"
+                                        Margin="18 0 0 0"
+                                        Spacing="6"
+                                        IsVisible="{Binding 
+                                            Path=!((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress, 
+                                            RelativeSource={RelativeSource AncestorType=UserControl}}">
+                                <PathIcon
+                                    Width="16" Height="16"
+                                    VerticalAlignment="Center"
+                                    Data="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResultIcon, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl},
+                                        Converter={x:Static converters:TypeConverters.IconConverter}}"
+                                    Foreground="{Binding 
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResult, 
+                                            RelativeSource={RelativeSource AncestorType=UserControl},
+                                            Converter={StaticResource TeamCheckResultToColorConverter}}" />
+                                <TextBlock
+                                    VerticalAlignment="Center"
+                                    Text="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).ExistingTeam, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl},
+                                        Converter={StaticResource TeamCheckStatusConverter}}" />
+                            </StackPanel>
+                        </StackPanel>
+                    </form:FormItem>
+                </form:FormGroup>
+                <form:FormGroup Header="Образование и опыт">
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Место работы или учебы"
+                        Text="{Binding ParticipatorAllocation}" />
+                    <TextBox
+                        Width="300"
+                        form:FormItem.IsRequired="True"
+                        form:FormItem.Label="Город"
+                        Text="{Binding ParticipatorCity}" />
+                </form:FormGroup>
+                <CheckBox Content="Я даю свое согласие на обработку моих персональных данных"
+                          x:Name="ConsentCheckBox"
+                          form:FormItem.NoLabel="True" 
+                          IsChecked="{Binding IsConsentChecked}">
+                </CheckBox>
+                <form:FormItem NoLabel="True">
+                    <Button
+                        HorizontalAlignment="Left"
+                        Content="Отправить заявку"
+                        Command="{Binding 
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).SubmitApplication, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}" >
+                        <Button.IsEnabled>
+                            <Binding Path="IsConsentChecked"/>
+                        </Button.IsEnabled>
+                    </Button>
+                </form:FormItem>
+            </form:Form>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

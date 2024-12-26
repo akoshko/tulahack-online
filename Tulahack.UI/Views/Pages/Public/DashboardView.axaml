@@ -1,0 +1,114 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.Pages.Public.DashboardView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:public="clr-namespace:Tulahack.UI.ViewModels.Pages.Public"
+             xmlns:components="clr-namespace:Tulahack.UI.Components"
+             xmlns:converters="clr-namespace:Tulahack.UI.Converters"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:th="https://tulahack.online/tulahack"
+             x:DataType="public:DashboardViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="768" d:DesignWidth="1366"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <public:DashboardViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <converters:IntToStringConverter x:Key="IntToStringConverter" />
+            <th:TimelineIconTemplateSelector x:Key="IconSelector" >
+                <SolidColorBrush x:Key="Default" Color="{DynamicResource TulahackGray6Color}"></SolidColorBrush>
+                <SolidColorBrush x:Key="Ongoing" Color="{DynamicResource TulahackBlue6Color}"></SolidColorBrush>
+                <SolidColorBrush x:Key="Success" Color="{DynamicResource TulahackGreen6Color}"></SolidColorBrush>
+                <SolidColorBrush x:Key="Warning" Color="{DynamicResource TulahackOrange6Color}"></SolidColorBrush>
+                <SolidColorBrush x:Key="Error" Color="{DynamicResource TulahackRed6Color}"></SolidColorBrush>
+            </th:TimelineIconTemplateSelector>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <Grid
+            ColumnDefinitions="*"
+            RowDefinitions="Auto, *">
+            <ScrollViewer
+                Grid.Row="0"
+                Grid.Column="0"
+                Margin=" 0 0 0 8"
+                HorizontalScrollBarVisibility="Auto"
+                VerticalScrollBarVisibility="Disabled">
+                <StackPanel
+                    Spacing="16"
+                    Orientation="Horizontal"
+                    HorizontalAlignment="Stretch">
+                    <components:CountdownTile
+                        CornerRadius="8"
+                        MaxWidth="280"
+                        MaxHeight="195"
+                        MinHeight="195"
+                        Interval="1000"
+                        Deadline="{Binding DashboardDto.Timeline.HackathonEnd}" />
+                    <components:DashboardTile
+                        TileHeader="Всего участников:"
+                        TileContent="{Binding DashboardDto.ParticipatorsCount, Converter={StaticResource IntToStringConverter}}" />
+                    <components:DashboardTile
+                        TileHeader="Всего задач:"
+                        TileContent="{Binding DashboardDto.CasesCount, Converter={StaticResource IntToStringConverter}}" />
+                    <components:DashboardTile
+                        TileHeader="Всего экспертов:"
+                        TileContent="{Binding DashboardDto.ExpertsCount, Converter={StaticResource IntToStringConverter}}" />
+                    <components:DashboardTile
+                        TileHeader="Компаний участвует:"
+                        TileContent="{Binding DashboardDto.CompaniesCount, Converter={StaticResource IntToStringConverter}}" />
+                </StackPanel>
+            </ScrollViewer>
+            <Grid
+                Margin="0 16 0 0"
+                Grid.Row="1"
+                ColumnDefinitions="*, *">
+                <StackPanel Grid.Column="0"
+                            Margin="0 0 8 0"
+                            Orientation="Vertical"
+                            VerticalAlignment="Stretch"
+                            Spacing="12">
+                    <SelectableTextBlock
+                        Text="{Binding DashboardDto.TopicTitle}"
+                        TextWrapping="Wrap"
+                        FontSize="22" />
+                    <Image asyncImageLoader:ImageLoader.Source="{Binding DashboardDto.TopicThumbnailUrl}" />
+                    <SelectableTextBlock
+                        Text="{Binding DashboardDto.Topic}"
+                        TextWrapping="Wrap"
+                        LineSpacing="3" />
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Margin="8 0 8 0"
+                            Orientation="Vertical"
+                            VerticalAlignment="Stretch"
+                            Spacing="12">
+                    <TextBlock
+                        Text="Таймлайн конкурса"
+                        FontSize="22" />
+                    <th:Timeline
+                        Mode="Left"
+                        HorizontalAlignment="Left"
+                        ContentMemberBinding="{ReflectionBinding Description}"
+                        HeaderMemberBinding="{ReflectionBinding Header}"
+                        IconMemberBinding="{ReflectionBinding ItemType}"
+                        IconTemplate="{StaticResource IconSelector}"
+                        ItemsSource="{Binding TimelineSource}"
+                        TimeMemberBinding="{ReflectionBinding Time}" >
+                    </th:Timeline>
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </ScrollViewer>
+</UserControl>

@@ -1,0 +1,42 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:components="clr-namespace:Tulahack.UI.Components">
+
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <components:DashboardTile
+                TileHeader="Users count"
+                TileContent="1234" />
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type components:DashboardTile}" TargetType="{x:Type components:DashboardTile}">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type components:DashboardTile}">
+                <Grid
+                    RowDefinitions="Auto, Auto, *"
+                    HorizontalAlignment="Center"
+                    Margin="24">
+                    <TextBlock
+                        HorizontalAlignment="Center"
+                        Margin="0 0 0 18"
+
+                        TextAlignment="Center"
+                        TextWrapping="NoWrap"
+                        FontSize="18"
+
+                        Text="{TemplateBinding TileHeader}" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Text="{TemplateBinding TileContent}"
+
+                        HorizontalAlignment="Center"
+
+                        TextAlignment="Center"
+                        FontWeight="Bold"
+                        FontSize="88" />
+                </Grid>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

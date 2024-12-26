@@ -1,0 +1,10 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  Add Resources Here  -->
+    <ResourceDictionary.MergedDictionaries>
+        <MergeResourceInclude Source="Layout/Skeleton.axaml" />
+        <MergeResourceInclude Source="Layout/Timeline.axaml" />
+        <MergeResourceInclude Source="Layout/Badge.axaml" />
+        <MergeResourceInclude Source="Layout/Form.axaml" />
+        <MergeResourceInclude Source="Layout/EnumSelector.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

@@ -1,0 +1,186 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.Pages.Public.ProfilePageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:th="https://tulahack.online/tulahack"
+             xmlns:dtos="clr-namespace:Tulahack.Dtos;assembly=Tulahack.Domain"
+             xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
+             xmlns:roleToBoolConverters="clr-namespace:Tulahack.UI.Converters.RoleToBoolConverters"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Public"
+             xmlns:converters="clr-namespace:Tulahack.UI.Converters"
+             xmlns:accountTypeConverters="clr-namespace:Tulahack.UI.Converters.AccountTypeConverters"
+             xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Collections"
+             x:DataType="viewModels:ProfilePageViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <viewModels:ProfilePageViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <roleToBoolConverters:ShowForVisitorConverter x:Key="ShowForVisitor" />
+        <roleToBoolConverters:ShowForContestantConverter x:Key="ShowForContestant" />
+        <roleToBoolConverters:ShowForExpertConverter x:Key="ShowForExpert" />
+        <roleToBoolConverters:ShowForModeratorConverter x:Key="ShowForModerator" />
+        <roleToBoolConverters:ShowForSuperuserConverter x:Key="ShowForSuperuser" />
+
+        <accountTypeConverters:BaseToContestantConverter x:Key="BaseToContestant" />
+        <accountTypeConverters:BaseToExpertConverter x:Key="BaseToExpert" />
+        <accountTypeConverters:BaseToModeratorConverter x:Key="BaseToModerator" />
+
+        <converters:CountEnumerableConverter x:Key="CountEnumerable" />
+        <converters:FilterCasesByCompanyIdConverter x:Key="FilterCasesByCompanyId" />
+        <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
+        
+        <generic:List x:Key="FallbackTeamDtoArray" x:TypeArguments="dtos:TeamDto"/>
+        <generic:List x:Key="FallbackContestCaseDtoArray" x:TypeArguments="dtos:ContestCaseDto"/>
+    </UserControl.Resources>
+
+
+    <ScrollViewer>
+        <Grid ColumnDefinitions="1*, 2*">
+            <StackPanel Grid.Column="0" HorizontalAlignment="Center">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center" Spacing="12">
+                    <Border CornerRadius="6" ClipToBounds="True">
+                        <Image asyncImageLoader:ImageLoader.Source="https://cdn.you.name.it.com/avatar/hacker.png"
+                               MaxWidth="200" MaxHeight="200" HorizontalAlignment="Center" />
+                    </Border>
+                    <TextBlock HorizontalAlignment="Center" FontSize="18" FontWeight="Bold">Tulahack Hacker</TextBlock>
+                    <TextBlock HorizontalAlignment="Center">Full stack JS developer</TextBlock>
+                    <TextBlock HorizontalAlignment="Center">Tula State University</TextBlock>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Grid.Column="1" HorizontalAlignment="Left" Spacing="16" Margin="0 16 0 0">
+                <th:Form
+                    x:Name="ProfileForm"
+                    DataContext="{Binding Account}"
+                    LabelAlignment="Left"
+                    LabelPosition="Left"
+                    LabelWidth="*">
+                    <th:FormGroup Header="Профиль">
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Имя"
+                            Text="{Binding Firstname}" />
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Фамилия"
+                            Text="{Binding Lastname}" />
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="False"
+                            th:FormItem.Label="Отчество"
+                            Text="{Binding Middlename}" />
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Роль"
+                            Text="{Binding Role}" />
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Telegram"
+                            Text="{Binding TelegramAccount}" />
+                        <SelectableTextBlock
+                            Width="300"
+                            VerticalAlignment="Center"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Номер телефона"
+                            Text="{Binding PhoneNumber}" />
+                    </th:FormGroup>
+
+                    <th:FormGroup Header="Команда"
+                                  x:Name="TeamFormGroup"
+                                  IsVisible="{
+                                    Binding Role,
+                                    Converter={StaticResource ShowForContestant}}">
+                        <TextBlock
+                            Width="300"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Название"
+                            Text="{Binding 
+                                        Path=((dtos:ContestantDto)DataContext).Team.Name,
+                                        FallbackValue='Не указано',
+                                        ElementName=TeamFormGroup}" />
+                        <TextBlock
+                            Width="300"
+                            th:FormItem.IsRequired="True"
+                            th:FormItem.Label="Количество участников"
+                            Text="{Binding 
+                                        Path=((dtos:ContestantDto)DataContext).Team.Contestants, 
+                                        FallbackValue='Не указано',
+                                        Converter={StaticResource CountEnumerable},
+                                        ElementName=TeamFormGroup}" />
+                        <TextBlock
+                            Width="300"
+                            th:FormItem.IsRequired="False"
+                            th:FormItem.Label="Форма участия"
+                            Text="{Binding 
+                                        Path=((dtos:ContestantDto)DataContext).Team.FormOfParticipation, 
+                                        FallbackValue='Не указано',
+                                        ElementName=TeamFormGroup}" />
+                    </th:FormGroup>
+
+                    <th:FormGroup x:Name="ExpertFormGroup"
+                                  Header="Назначенные команды"
+                                  IsVisible="{
+                                    Binding Role,
+                                    Converter={StaticResource ShowForExpert}}">
+                        <ItemsRepeater
+                            x:Name="PickedTeamsRepeater"
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            ItemsSource="{Binding
+                                        Path=(dtos:ExpertDto).PickedTeams,
+                                        FallbackValue={StaticResource FallbackTeamDtoArray},
+                                        ElementName=ExpertFormGroup}">
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate>
+                                    <th:FormItem NoLabel="True">
+                                        <StackPanel Orientation="Horizontal" Spacing="8">
+                                            <SelectableTextBlock
+                                                Width="300"
+                                                th:FormItem.IsRequired="False"
+                                                th:FormItem.NoLabel="True"
+                                                Text="{Binding
+                                                        Path=Name,
+                                                        FallbackValue='Не указано'}" />
+                                            <SelectableTextBlock
+                                                Width="300"
+                                                th:FormItem.IsRequired="False"
+                                                th:FormItem.NoLabel="True"
+                                                Text="{Binding
+                                                        Path=ContestCases,
+                                                        FallbackValue={StaticResource FallbackContestCaseDtoArray},
+                                                        Converter={StaticResource FilterCasesByCompanyId},
+                                                        ConverterParameter={Binding
+                                                                            Path=(dtos:ExpertDto).Company.Id,
+                                                                            FallbackValue='Не указано',
+                                                                            ElementName=ExpertFormGroup}}" />
+                                        </StackPanel>
+                                    </th:FormItem>
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </th:FormGroup>
+                </th:Form>
+            </StackPanel>
+        </Grid>
+
+    </ScrollViewer>
+
+</UserControl>

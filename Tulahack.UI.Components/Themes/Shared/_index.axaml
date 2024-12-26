@@ -1,0 +1,11 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--  Add Resources Here  -->
+    <ResourceDictionary.MergedDictionaries>
+        <MergeResourceInclude Source="DataGridResources.axaml" />
+        <MergeResourceInclude Source="DefaultColors.axaml" />
+        <MergeResourceInclude Source="ThemeResources.axaml" />
+        <MergeResourceInclude Source="Skeleton.axaml" />
+        <MergeResourceInclude Source="Timeline.axaml" />
+        <MergeResourceInclude Source="Badge.axaml" />
+    </ResourceDictionary.MergedDictionaries>
+</ResourceDictionary>

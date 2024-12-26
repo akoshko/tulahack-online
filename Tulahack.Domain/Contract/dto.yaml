@@ -1,0 +1,580 @@
+openapi: 3.0.1
+info:
+  title: Tulahack UI DTOs
+  version: v1
+paths: {}
+
+components:
+  schemas:
+    
+    DashboardDto:
+      type: object
+      additionalProperties: false
+      properties:
+        participatorsCount:
+          type: integer
+        expertsCount:
+          type: integer
+        companiesCount:
+          type: integer
+        casesCount:
+          type: integer
+        teamsCount:
+          type: integer
+        topicTitle:
+          type: string
+        topic:
+          type: string
+        topicThumbnailUrl:
+          type: string
+        upcomingEventId:
+          type: string
+          format: uuid
+        eventThumbnailUrl:
+          type: string
+        timeline:
+          $ref: "#/components/schemas/ContestTimelineDto"
+          
+    ContestTimelineDto:
+      type: object
+      additionalProperties: false
+      properties:
+        items:
+          type: array
+          items:
+            $ref: "#/components/schemas/TimelineItemDto"
+        hackathonStart:
+          type: string
+          format: date-time
+        hackathonEnd:
+          type: string
+          format: date-time
+        codingBeginning:
+          type: string
+          format: date-time
+        codingDeadline:
+          type: string
+          format: date-time
+          
+    TimelineItemDto:
+      type: object
+      additionalProperties: false
+      properties:
+        itemType:
+          $ref: "#/components/schemas/TimelineItemTypeDto"
+        start:
+          type: string
+          format: date-time
+        end:
+          type: string
+          format: date-time
+        label:
+          type: string
+        deadline:
+          nullable: true
+          type: string
+          format: date-time     
+        url:
+          nullable: true
+          type: string  
+        message:
+          nullable: true
+          type: string
+        extra:
+          nullable: true
+          type: string
+    
+    ContestApplicationDto:
+      type: object
+      additionalProperties: false
+      required: [ joinExistingTeam, formOfParticipation ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        participatorName:
+          type: string
+        participatorSurname:
+          type: string
+        participatorMiddleName:
+          type: string
+        participatorAge:
+          type: string
+        participatorTelegram:
+          type: string
+        participatorPhone:
+          type: string
+        participatorAllocation:
+          type: string
+        participatorCity:
+          type: string
+        teamName:
+          type: string
+        existingTeamId:
+          type: string
+          format: guid
+          nullable: true
+        participatorsCount:
+          type: integer
+          default: 1
+        teamLeaderId:
+          type: string
+          format: guid
+        section:
+          type: integer
+        formOfParticipation:
+          $ref: "#/components/schemas/FormOfParticipationTypeDto"
+        joinExistingTeam:
+          type: boolean
+        aboutTeam:
+          type: string
+        approvalStatus:
+          $ref: "#/components/schemas/ApprovalStatusDto"
+        statusJustification:
+          type: string
+          nullable: true
+        isConsentChecked:
+          type: boolean
+    
+    TeamDto:
+      type: object
+      additionalProperties: false
+      required: [ name, repositoryLink, videoLink, openUniversityProjectLink ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        section:
+          description: "поток, 1, 2, 3"
+          type: integer
+        contestCases:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestCaseDto"
+        contestants:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestantDto"
+        teamSize:
+          type: integer
+        repositoryLink:
+          type: string
+        formOfParticipation:
+          $ref: "#/components/schemas/FormOfParticipationTypeDto"
+        additionalRepositoryLink:
+          type: string
+          nullable: true
+        presentationLink:
+          type: string
+        videoLink:
+          type: string
+        openUniversityProjectLink:
+          type: string
+        additionalInfo:
+          type: string
+          description: "Дополнительные материалы, urls api и прочее"
+        teaser:
+          type: string
+          description: "Описание проекта текстом"
+    
+    SkillDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        skillName:
+          type: string
+        color:
+          type: string
+          nullable: true
+    
+    AcceptanceCriteriaDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        criteria:
+          type: string
+        color:
+          type: string
+          nullable: true
+    
+    ContestCaseDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        number:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        complexity:
+          $ref: "#/components/schemas/ContestCaseComplexityDto"
+        techStack:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDto'
+        company:
+          $ref: '#/components/schemas/CompanyDto'
+        acceptanceCriteria:
+          type: array
+          items:
+            $ref: '#/components/schemas/AcceptanceCriteriaDto'
+    
+    CompanyDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        description:
+          type: string
+        experts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExpertDto'
+    
+    PersonBaseDto:
+      type: object
+      additionalProperties: false
+      required: [ photoUrl ]
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstname:
+          type: string
+          nullable: false
+        middlename:
+          type: string
+          nullable: false
+        lastname:
+          type: string
+          nullable: false
+        telegramAccount:
+          type: string
+          nullable: true
+        phoneNumber:
+          type: string
+        email:
+          type: string
+        about:
+          type: string
+        photoUrl:
+          type: string
+        blocked:
+          type: boolean
+        role:
+          allOf:
+            - $ref: "#/components/schemas/ContestRoleDto"
+    
+    ContestantDto:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBaseDto"
+      properties:
+        team:
+          $ref: "#/components/schemas/TeamDto"
+        age:
+          type: integer
+        certificateNeeded:
+          type: boolean
+        contestantNumber:
+          type: integer
+        companyName:
+          type: string
+          nullable: true
+        jobTitle:
+          type: string
+          nullable: true
+        attendingFirstTime:
+          type: boolean
+        applicationConfirmationStatus:
+          type: boolean
+        applicationSubmissionDate:
+          type: string
+          format: date-time
+        region:
+          type: string
+          nullable: false
+        city:
+          type: string
+        university:
+          type: string
+        universityDepartment:
+          type: string
+        universityAttendanceFormat:
+          type: string
+          description: "форма обучения: очнаяб заочная, вечерняя"
+        scholarship:
+          type: string
+          description: "форма образования: бюджет, коммерция"
+        applicationNumber:
+          type: string
+          format: guid
+        attendanceType:
+          type: string
+          description: "очное или онлайн участие"
+        educationType:
+          type: string
+          description: "Школьник, студент, специалист"
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDto'
+    
+    ExpertDto:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBaseDto"
+      properties:
+        company:
+          $ref: "#/components/schemas/CompanyDto"
+        workPosition:
+          type: string
+        confirmed:
+          type: boolean
+        badge:
+          type: boolean
+        photoUrl:
+          type: string
+        additionalContactPerson:
+          type: string
+        skills:
+          type: array
+          items:
+            $ref: '#/components/schemas/SkillDto'
+        pickedTeams:
+          type: array
+          items:
+            $ref: '#/components/schemas/TeamDto'
+    
+    ModeratorDto:
+      type: object
+      additionalProperties: false
+      allOf:
+        - $ref: "#/components/schemas/PersonBaseDto"
+    
+    ProvinceDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+          
+    StorageFileDto:
+      type: object
+      additionalProperties: false
+      properties:
+        id:
+          type: string
+          format: guid
+        filename:
+          type: string
+        filepath:
+          type: string
+        owner:
+          type: string
+          format: guid
+        creationDate:
+          type: string
+          format: date-time
+        revision:
+          type: integer
+          format: int32
+        purpose:
+          $ref: "#/components/schemas/StorageFilePurposeTypeDto"
+    
+    InAppNotification:
+      type: object
+      additionalProperties: false
+      required: [ title, creationDate, message, type ]
+      description: "Уведомление в верхней части приложения"
+      properties:
+        id:
+          type: string
+          format: guid
+        icon:
+          type: string
+          description: "Ключ иконки, по этому ключу выставляется картинка в левой части уведомления"
+          default: "CursorHoverRegular"
+        title:
+          type: string
+          description: "Заголовок уведомления"
+        creationDate:
+          type: string
+          format: date-time
+          description: "Дата создания уведомления, устанавливается на бекенде"
+        message:
+          type: string
+          description: "Текст уведомления"
+        extra:
+          type: string
+          description: "Дополнительная информация, текст второго блока уведомления"
+        type:
+          description: "Тип события, которое произошло и создало уведомление. Это может быть как автоматическая рассылка, так и событие в системе"
+          allOf:
+            - $ref: "#/components/schemas/EventTypeDto"
+    
+    UserPreferencesDto:
+      type: object
+      additionalProperties: false
+      description: "Пользовательские настройки: настройки клиента, темы приложения, уведомлений и прочее"
+      properties:
+        id:
+          type: string
+          format: guid
+        selectedTheme:
+          $ref: "#/components/schemas/UserPreferredThemeDto"
+    
+    HackathonEventDto:
+      type: object
+      additionalProperties: false
+      description: "Событие хакатона: чекпоинты, дедлайны, выступления и мероприятия хакатона"
+      properties:
+        id:
+          type: string
+          format: guid
+        eventTitle:
+          type: string
+        content:
+          type: string
+        eventThumbnailUrl:
+          type: string
+        timelineItem:
+          $ref: "#/components/schemas/TimelineItemDto"
+    
+    HackathonSettingsDto:
+      type: object
+      additionalProperties: false
+      description: "Настройки хакатона"
+      properties:
+        id:
+          type: string
+          format: guid
+        currentTopicId:
+          type: string
+          format: guid
+        timeline:
+          $ref: "#/components/schemas/ContestTimelineDto"
+        events:
+          $ref: "#/components/schemas/HackathonEventDto"
+        moderators:
+          type: array
+          items:
+            $ref: "#/components/schemas/ModeratorDto"
+        companies:
+          type: array
+          items:
+            $ref: "#/components/schemas/CompanyDto"
+        cases:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestCaseDto"
+        applications:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestApplicationDto"
+        teams:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContestApplicationDto"
+    
+    ContestRoleDto:
+      type: string
+      enum:
+        - Visitor
+        - Contestant
+        - Expert
+        - Moderator
+        - Superuser
+    
+    UserPreferredThemeDto:
+      type: string
+      enum:
+        - Default
+        - Light
+        - Dark
+          
+    EventTypeDto:
+      type: string
+      enum:
+        - Unknown
+        - Todo
+        - Urgent
+        - Doing
+        - Processing
+          
+    FormOfParticipationTypeDto:
+      description: "In person or online, очно или онлайн"
+      type: string
+      enum:
+        - Unknown
+        - InPerson
+        - Online
+          
+    TimelineItemTypeDto:
+      description: "Timeline point type: checkpoint, hackathon offline meetup, deadline, online event or whatever else"
+      type: string
+      enum:
+        - Unknown
+        - Checkpoint
+        - Deadline
+        - Event
+        - Meetup     
+        
+    ContestCaseComplexityDto:
+      description: "Contest case complexity, describes how hard it is to complete the task"
+      type: string
+      enum:
+        - Unknown
+        - Beginner
+        - Easy
+        - Normal
+        - Hard
+        - Insane
+      
+    StorageFilePurposeTypeDto:
+      type: string
+      enum:
+        - Unknown
+        - Default
+        - SolutionApplication
+        - SolutionPresentation
+        - SolutionVideo
+        - SolutionTeaser
+        - SolutionExtras
+        - TaskPresentation
+        - TaskExtras
+        - FinalLeaderboard
+        - FinalDiploma
+        - FinalTeamDiploma
+      
+    ApprovalStatusDto:
+      type: string
+      enum:
+        - Unknown
+        - Created
+        - Accepted
+        - Pending
+        - Declined
+        - ChangesRequested
+        - ClarificationRequested

@@ -1,0 +1,76 @@
+﻿:root {
+    --sat: env(safe-area-inset-top);
+    --sar: env(safe-area-inset-right);
+    --sab: env(safe-area-inset-bottom);
+    --sal: env(safe-area-inset-left);
+}
+
+/* HTML styles for the splash screen */
+
+.title {
+    color: white;
+    font-size: 2.5rem;
+    display: block;
+}
+
+.highlight {
+    color: white;
+    font-size: 1.5rem;
+    display: block;
+}
+
+.icon {
+    width: 35%;
+    opacity: 0.1;
+    position: absolute;
+    background-repeat: no-repeat;
+    right: 0px;
+    bottom: 0px;
+    margin-right: 5%;
+    margin-bottom: 5%;
+    z-index: 5000;
+    background-position: right bottom;
+    pointer-events: none;
+}
+
+#avalonia-splash a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.center {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#avalonia-splash {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    color: whitesmoke;
+    background: #D73930;
+    font-family: 'Nunito', sans-serif;
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    justify-content: center;
+    align-items: center;
+}
+
+.splash-close {
+    animation: fadeout 0.25s linear forwards;
+}
+
+@keyframes fadeout {
+    0% {
+        opacity: 100%;
+    }
+
+    100% {
+        opacity: 0;
+        visibility: collapse;
+    }
+}

@@ -1,0 +1,22 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.Pages.Superuser.HackathonSettingsPageView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:superuser="clr-namespace:Tulahack.UI.ViewModels.Pages.Superuser"
+             x:DataType="superuser:HackathonSettingsPageViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <superuser:HackathonSettingsPageViewModel />
+    </Design.DataContext>
+    
+    <TextBlock>HackathonSettingsPageView</TextBlock>
+</UserControl>

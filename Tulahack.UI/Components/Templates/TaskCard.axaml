@@ -1,0 +1,96 @@
+﻿<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:components="clr-namespace:Tulahack.UI.Components"
+                    xmlns:th="https://tulahack.online/tulahack">
+
+    <Design.PreviewWith>
+        <Border Padding="40" Height="400" Width="600">
+            <components:CompanyCard
+                ThumbnailUrl="https://cdn.you.name.it.com/events/welcome.png"
+                CardTitle="Task #1"
+                CardContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
+        </Border>
+    </Design.PreviewWith>
+
+    <ControlTheme x:Key="{x:Type components:CompanyCard}" TargetType="{x:Type components:CompanyCard}">
+        <Setter Property="Template">
+            <ControlTemplate TargetType="{x:Type components:CompanyCard}">
+                <Border
+                    BorderThickness="1"
+                    BorderBrush="Gray"
+                    Background="Transparent"
+                    CornerRadius="4"
+                    ClipToBounds="True"
+                    MinHeight="180"
+                    MaxHeight="180"
+                    MaxWidth="340">
+                    <Grid
+                        RowDefinitions="Auto, *, Auto"
+                        HorizontalAlignment="Stretch">
+                        <TextBlock
+                            Grid.Row="0"
+                            HorizontalAlignment="Left"
+                            Margin="8 12 12 4"
+                            TextWrapping="Wrap"
+                            FontSize="22"
+
+                            Text="{TemplateBinding CardTitle}" />
+                        <TextBlock
+                            Grid.Row="1"
+
+                            Margin="8 0 8 4"
+
+                            TextAlignment="Justify"
+                            TextWrapping="Wrap"
+                            FontSize="14"
+
+                            Text="{TemplateBinding CardContent}" />
+
+                        <WrapPanel 
+                            Grid.Row="2" 
+                            Orientation="Horizontal" 
+                            VerticalAlignment="Top" 
+                            Margin="0 0 0 8">
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="React"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="CornflowerBlue"
+                                      Background="CornflowerBlue"
+                                      BadgeFontSize="14" />
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="TypeScript"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="Orange"
+                                      Background="Orange"
+                                      BadgeFontSize="14" />
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="Tailwind"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="DarkGreen"
+                                      Background="DarkGreen"
+                                      BadgeFontSize="14" />
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="React"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="CornflowerBlue"
+                                      Background="CornflowerBlue"
+                                      BadgeFontSize="14" />
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="TypeScript"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="Orange"
+                                      Background="Orange"
+                                      BadgeFontSize="14" />
+                            <th:Badge HorizontalAlignment="Center"
+                                      Header="Tailwind"
+                                      Margin="8 0 0 8"
+                                      BorderBrush="DarkGreen"
+                                      Background="DarkGreen"
+                                      BadgeFontSize="14" />
+                        </WrapPanel>
+                    </Grid>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+</ResourceDictionary>

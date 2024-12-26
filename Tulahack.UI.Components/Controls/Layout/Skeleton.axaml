@@ -1,0 +1,94 @@
+﻿<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="https://tulahack.online/tulahack">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="64" Margin="0 0 0 32">
+                    <ToggleSwitch Name="Loading" Content="Loading" />
+                    <ToggleSwitch Name="Active" Content="Active" />
+                </StackPanel>
+                <Grid
+                    MinWidth="400"
+                    HorizontalAlignment="Left"
+                    ColumnDefinitions="auto,*">
+                    <controls:Skeleton
+                        Width="100"
+                        Height="100"
+                        VerticalAlignment="Center"
+                        CornerRadius="2"
+                        IsActive="{Binding #Active.IsChecked}"
+                        IsLoading="{Binding #Loading.IsChecked}">
+                        <Image RenderOptions.BitmapInterpolationMode="HighQuality"
+                               Source="../../Assets/avalonia-logo.ico" />
+                    </controls:Skeleton>
+                    <UniformGrid
+                        Grid.Column="1"
+                        Margin="5,0"
+                        Columns="1"
+                        Rows="3">
+                        <controls:Skeleton
+                            Margin="0,0,200,0"
+                            VerticalAlignment="Top"
+                            CornerRadius="2"
+                            IsActive="{Binding #Active.IsChecked}"
+                            IsLoading="{Binding #Loading.IsChecked}">
+                            <SelectableTextBlock Margin="0,2" Text="Some" />
+                        </controls:Skeleton>
+                        <controls:Skeleton
+                            Margin="0,0,100,0"
+                            VerticalAlignment="Center"
+                            CornerRadius="2"
+                            IsActive="{Binding #Active.IsChecked}"
+                            IsLoading="{Binding #Loading.IsChecked}">
+                            <SelectableTextBlock Margin="0,2" Text="Default" />
+                        </controls:Skeleton>
+                        <controls:Skeleton
+                            VerticalAlignment="Bottom"
+                            CornerRadius="2"
+                            IsActive="{Binding #Active.IsChecked}"
+                            IsLoading="{Binding #Loading.IsChecked}">
+                            <SelectableTextBlock Margin="0,2" Text="Text" />
+                        </controls:Skeleton>
+                    </UniformGrid>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </Design.PreviewWith>
+    <ControlTheme x:Key="{x:Type controls:Skeleton}" TargetType="controls:Skeleton">
+        <Setter Property="Background" Value="Transparent" />
+        <Setter Property="Template">
+            <ControlTemplate TargetType="controls:Skeleton">
+                <Border
+                    Background="{TemplateBinding Background}"
+                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderThickness="{TemplateBinding BorderThickness}"
+                    ClipToBounds="{TemplateBinding ClipToBounds}"
+                    CornerRadius="{TemplateBinding CornerRadius}">
+                    <Panel>
+                        <ContentPresenter
+                            x:Name="PART_ContentPresenter"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}"
+                            ContentTemplate="{TemplateBinding ContentTemplate}" />
+                        <controls:PureRectangle
+                            x:Name="PART_LoadingBorder"
+                            Classes.Active="{Binding Path= IsActive, RelativeSource={RelativeSource TemplatedParent}}"
+                            IsHitTestVisible="{TemplateBinding IsLoading}"
+                            Background="{DynamicResource SkeletonDefaultBackground}"
+                            IsVisible="{TemplateBinding IsLoading}">
+                        </controls:PureRectangle>
+                        <controls:PureRectangle
+                            x:Name="PART_ActiveBorder"
+                            IsHitTestVisible="{TemplateBinding IsLoading}"
+                            IsVisible="{TemplateBinding IsLoading}">
+                        </controls:PureRectangle>
+                    </Panel>
+                </Border>
+            </ControlTemplate>
+        </Setter>
+    </ControlTheme>
+    <!--  Add Styles Here  -->
+</ResourceDictionary>

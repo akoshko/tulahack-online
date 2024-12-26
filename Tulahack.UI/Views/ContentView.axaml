@@ -1,0 +1,99 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.ContentView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels"
+             xmlns:utils="clr-namespace:Tulahack.UI.Utils"
+             xmlns:public="clr-namespace:Tulahack.UI.Views.Pages.Public"
+             xmlns:contestant="clr-namespace:Tulahack.UI.Views.Pages.Contestant"
+             xmlns:expert="clr-namespace:Tulahack.UI.Views.Pages.Expert"
+             xmlns:moderator="clr-namespace:Tulahack.UI.Views.Pages.Moderator"
+             xmlns:superuser="clr-namespace:Tulahack.UI.Views.Pages.Superuser"
+             x:DataType="viewModels:ContentViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <viewModels:ContentViewModel />
+    </Design.DataContext>
+
+    <TransitioningContentControl
+        Margin="32"
+        Content="{Binding CurrentPageContext} ">
+        <ContentControl.ContentTemplate>
+            <utils:ContentViewSelector>
+                <!-- Public pages -->
+                <DataTemplate x:Key="Dashboard" DataType="viewModels:PageContextModel">
+                    <public:DashboardView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Settings" DataType="viewModels:PageContextModel">
+                    <public:SettingsView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Profile" DataType="viewModels:PageContextModel">
+                    <public:ProfilePageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                
+                <!-- Contestant pages -->
+                <DataTemplate x:Key="Team" DataType="viewModels:PageContextModel">
+                    <contestant:TeamPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="ContestTask" DataType="viewModels:PageContextModel">
+                    <contestant:ContestTaskPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="ContestTaskboard" DataType="viewModels:PageContextModel">
+                    <contestant:ContestTaskboardPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="ContestSchedule" DataType="viewModels:PageContextModel">
+                    <contestant:ContestSchedulePageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="ContestEvent" DataType="viewModels:PageContextModel">
+                    <contestant:ContestEventPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="ContestEventSchedule" DataType="viewModels:PageContextModel">
+                    <contestant:ContestEventSchedulePageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                
+                <!-- Expert pages -->
+                <DataTemplate x:Key="Assessment" DataType="viewModels:PageContextModel">
+                    <expert:AssessmentPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Rating" DataType="viewModels:PageContextModel">
+                    <expert:RatingPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                
+                <!-- Moderator pages -->
+                <DataTemplate x:Key="Scoreboard" DataType="viewModels:PageContextModel">
+                    <moderator:ScoreboardPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Participators" DataType="viewModels:PageContextModel">
+                    <moderator:ParticipatorsPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Teams" DataType="viewModels:PageContextModel">
+                    <moderator:TeamsPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="Experts" DataType="viewModels:PageContextModel">
+                    <moderator:ExpertsPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                
+                <!-- Superuser pages -->
+                <DataTemplate x:Key="Moderators" DataType="viewModels:PageContextModel">
+                    <superuser:ModeratorsPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="HackathonOverview" DataType="viewModels:PageContextModel">
+                    <superuser:HackathonOverviewPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+                <DataTemplate x:Key="HackathonSettings" DataType="viewModels:PageContextModel">
+                    <superuser:HackathonSettingsPageView DataContext="{Binding Context}" />
+                </DataTemplate>
+            </utils:ContentViewSelector>
+        </ContentControl.ContentTemplate>
+    </TransitioningContentControl>
+
+</UserControl>

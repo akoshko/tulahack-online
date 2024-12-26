@@ -1,0 +1,37 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="280" d:DesignHeight="210"
+             CornerRadius="8"
+             MaxWidth="280"
+             MaxHeight="210"
+             x:Class="Tulahack.UI.Components.CountdownTile"
+             Name="CountdownControl"
+             Background="DeepSkyBlue">
+
+    <Grid
+        RowDefinitions="Auto, Auto, *"
+        HorizontalAlignment="Center"
+        Margin="24">
+        <TextBlock
+            HorizontalAlignment="Center"
+            Margin="0 0 0 18"
+
+            TextAlignment="Center"
+            TextWrapping="NoWrap"
+            FontSize="16"
+
+            Text="До конца хакатона осталось:" />
+        <TextBlock
+            Grid.Row="2"
+            Name="TimerTextBlock"
+
+            HorizontalAlignment="Center"
+
+            TextAlignment="Center"
+            FontWeight="Bold"
+            FontSize="22" />
+    </Grid>
+
+</UserControl>

@@ -1,0 +1,23 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <Nullable>enable</Nullable>
+        <PackageVersion>2.0.3</PackageVersion>
+        <Authors>Vsevolod Pilipenko, Artyom Koshko</Authors>
+        <Description>A small validation library for WPF and Avalonia that uses a fluent interface and allows display messages near controls in GUI with MVVM</Description>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/Karnah/ReactiveValidation</RepositoryUrl>
+        <PackageTags>WPF, Avalonia, Reactive, Fluent validation</PackageTags>
+        <TargetFrameworks>net8.0; net8.0-browser</TargetFrameworks>
+        <PackageProjectUrl>https://github.com/Karnah/ReactiveValidation</PackageProjectUrl>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <AvaloniaResource Include="Themes\**\*.axaml"/>
+    </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
+    </ItemGroup>
+    
+</Project>

@@ -1,0 +1,1 @@
+namespace Tulahack.Domain.Extensions;

@@ -1,0 +1,64 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.6"/>
+        <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.2" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.6.2"/>
+        <PackageReference Include="Swashbuckle.AspNetCore.Newtonsoft" Version="6.6.2" />
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="8.0.6" />
+        
+        <PackageReference Include="Keycloak.AuthServices.Authentication" Version="2.5.2"/>
+        <PackageReference Include="Keycloak.AuthServices.Authorization" Version="2.5.2"/>
+        <PackageReference Include="Keycloak.AuthServices.Sdk" Version="2.5.2"/>
+        
+        <PackageReference Include="AutoFixture" Version="4.18.1" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+        
+        <PackageReference Include="AutoMapper" Version="13.0.1" />
+        <PackageReference Include="Automapper.Collection.EntityFrameworkCore" Version="10.0.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+      <Content Update="appsettings.Development.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="appsettings.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="config\keycloak.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <Content Update="Static\skills.json">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Tulahack.Domain\Tulahack.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Contract\swagger.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="appData\storage\database\" />
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="Migrations\20240804160945_Migration-08_04_2024_19_09_32.cs" />
+      <Compile Remove="Migrations\20240804160945_Migration-08_04_2024_19_09_32.Designer.cs" />
+    </ItemGroup>
+
+</Project>

@@ -1,0 +1,59 @@
+﻿<UserControl x:Class="Tulahack.UI.Views.Pages.Public.SettingsView"
+             xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Public"
+             xmlns:th="https://tulahack.online/tulahack"
+             xmlns:models="clr-namespace:Tulahack.UI.Models"
+             xmlns:converters="clr-namespace:Tulahack.UI.Converters"
+             x:DataType="viewModels:SettingsViewModel"
+             x:CompileBindings="True"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="800"
+             XYFocus.NavigationModes="Enabled"
+             XYFocus.LeftNavigationStrategy="Projection"
+             XYFocus.RightNavigationStrategy="Projection"
+             XYFocus.DownNavigationStrategy="Projection"
+             XYFocus.UpNavigationStrategy="Projection">
+
+    <Design.DataContext>
+        <viewModels:SettingsViewModel />
+    </Design.DataContext>
+
+    <UserControl.Resources>
+        <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <StackPanel>
+            <Grid RowDefinitions="Auto, Auto" ColumnDefinitions="Auto, Auto">
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Заполните форму участника хакатона"
+                           VerticalAlignment="Center">
+                </TextBlock>
+            </Grid>
+            <th:Form
+                DataContext="{Binding Preferences}"
+                LabelAlignment="Left"
+                LabelPosition="Left"
+                LabelWidth="*">
+                <th:FormGroup Header="Настройки">
+                    <th:EnumSelector
+                        Width="300"
+                        th:FormItem.Label="Цветовая тема"
+                        EnumType="models:UserPreferredThemeSelector"
+                        Value="{Binding SelectedTheme, Converter={StaticResource EnumToDtoConverter}}"
+                        DisplayDescription="True" />
+                </th:FormGroup>
+
+                <th:FormItem NoLabel="True">
+                    <Button HorizontalAlignment="Left" Content="Сохранить"
+                            Command="{Binding 
+                                        Path=((viewModels:SettingsViewModel)DataContext).SaveChanges, 
+                                        RelativeSource={RelativeSource AncestorType=UserControl}}" />
+                </th:FormItem>
+            </th:Form>
+        </StackPanel>
+    </ScrollViewer>
+
+</UserControl>
