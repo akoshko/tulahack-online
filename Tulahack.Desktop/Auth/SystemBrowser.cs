@@ -19,7 +19,7 @@ public class SystemBrowser : IBrowser
     public SystemBrowser(int? port = null, string? path = null)
     {
         _path = path;
-        
+
         if (!port.HasValue)
         {
             Port = GetRandomUnusedPort();
@@ -53,7 +53,7 @@ public class SystemBrowser : IBrowser
                 {
                     return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = "Empty response." };
                 }
-                
+
                 return new BrowserResult { Response = result, ResultType = BrowserResultType.Success };
             }
             catch (TaskCanceledException ex)
@@ -101,7 +101,10 @@ public class LoopbackHttpListener : IDisposable
     public LoopbackHttpListener(int port, string path = null)
     {
         path = path ?? String.Empty;
-        if (path.StartsWith("/")) path = path.Substring(1);
+        if (path.StartsWith("/"))
+        {
+            path = path.Substring(1);
+        }
 
         _url = $"http://127.0.0.1:{port}/{path}";
 
@@ -113,17 +116,14 @@ public class LoopbackHttpListener : IDisposable
         _host.Start();
     }
 
-    public void Dispose()
-    {
+    public void Dispose() =>
         Task.Run(async () =>
         {
             await Task.Delay(500);
             _host.Dispose();
         });
-    }
 
-    void Configure(IApplicationBuilder app)
-    {
+    void Configure(IApplicationBuilder app) =>
         app.Run(async ctx =>
         {
             if (ctx.Request.Method == "GET")
@@ -151,7 +151,6 @@ public class LoopbackHttpListener : IDisposable
                 ctx.Response.StatusCode = 405;
             }
         });
-    }
 
     private async Task SetResultAsync(string value, HttpContext ctx)
     {

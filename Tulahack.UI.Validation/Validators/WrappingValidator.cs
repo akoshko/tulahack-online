@@ -14,126 +14,138 @@ using Tulahack.UI.Validation.Validators.Contexts;
 using Tulahack.UI.Validation.Validators.PropertyValueTransformers;
 using Tulahack.UI.Validation.Validators.Throttle;
 
-namespace Tulahack.UI.Validation.Validators
+namespace Tulahack.UI.Validation.Validators;
+
+/// <summary>
+/// Wrapper for validators to add common condition and/or value transformer.
+/// </summary>
+/// <typeparam name="TObject">Type of validatable object.</typeparam>
+/// <typeparam name="TProp">Type of validatable property.</typeparam>
+internal class WrappingValidator<TObject, TProp> : IPropertyValidator<TObject>
+    where TObject : IValidatableObject
 {
+    private readonly IValidationCondition<TObject>? _condition;
+    private readonly IValueTransformer<TObject, TProp>? _valueTransformer;
+    private readonly IPropertiesThrottle? _throttle;
+
     /// <summary>
-    /// Wrapper for validators to add common condition and/or value transformer.
+    /// Create instance of <see cref="WrappingValidator{TObject,TProp}" /> class.
     /// </summary>
-    /// <typeparam name="TObject">Type of validatable object.</typeparam>
-    /// <typeparam name="TProp">Type of validatable property.</typeparam>
-    internal class WrappingValidator<TObject, TProp> : IPropertyValidator<TObject>
-        where TObject : IValidatableObject
+    /// <param name="innerValidator">Inner validator.</param>
+    /// <param name="condition">Condition the using inner validator.</param>
+    /// <param name="valueTransformer">Property value transformer.</param>
+    /// <param name="throttle">The properties throttle.</param>
+    public WrappingValidator(
+        IPropertyValidator<TObject> innerValidator,
+        IValidationCondition<TObject>? condition = null,
+        IValueTransformer<TObject, TProp>? valueTransformer = null,
+        IPropertiesThrottle? throttle = null)
     {
-        private readonly IValidationCondition<TObject>? _condition;
-        private readonly IValueTransformer<TObject, TProp>? _valueTransformer;
-        private readonly IPropertiesThrottle? _throttle;
+        _condition = condition;
+        _valueTransformer = valueTransformer;
+        _throttle = throttle;
 
-        /// <summary>
-        /// Create instance of <see cref="WrappingValidator{TObject,TProp}" /> class.
-        /// </summary>
-        /// <param name="innerValidator">Inner validator.</param>
-        /// <param name="condition">Condition the using inner validator.</param>
-        /// <param name="valueTransformer">Property value transformer.</param>
-        /// <param name="throttle">The properties throttle.</param>
-        public WrappingValidator(
-            IPropertyValidator<TObject> innerValidator,
-            IValidationCondition<TObject>? condition = null,
-            IValueTransformer<TObject, TProp>? valueTransformer = null,
-            IPropertiesThrottle? throttle = null)
+        InnerValidator = innerValidator;
+        RelatedProperties = GetUnionRelatedProperties(innerValidator.RelatedProperties, condition?.RelatedProperties);
+    }
+
+
+    /// <summary>
+    /// Wrapped validator.
+    /// </summary>
+    public IPropertyValidator<TObject> InnerValidator { get; }
+
+    /// <inheritdoc />
+    /// <remarks>
+    /// Sync validator becomes async when there are throttles.
+    /// </remarks>
+    public bool IsAsync => InnerValidator.IsAsync || _throttle != null;
+
+    /// <inheritdoc />
+    public IReadOnlyList<string> RelatedProperties { get; }
+
+
+    /// <inheritdoc />
+    public IReadOnlyList<ValidationMessage> ValidateProperty(ValidationContextFactory<TObject> contextFactory)
+    {
+        if (IsAsync)
         {
-            _condition = condition;
-            _valueTransformer = valueTransformer;
-            _throttle = throttle;
-
-            InnerValidator = innerValidator;
-            RelatedProperties = GetUnionRelatedProperties(innerValidator.RelatedProperties, condition?.RelatedProperties);
+            throw new NotSupportedException();
         }
 
-
-        /// <summary>
-        /// Wrapped validator.
-        /// </summary>
-        public IPropertyValidator<TObject> InnerValidator { get; }
-
-        /// <inheritdoc />
-        /// <remarks>
-        /// Sync validator becomes async when there are throttles.
-        /// </remarks>
-        public bool IsAsync => InnerValidator.IsAsync || _throttle != null;
-
-        /// <inheritdoc />
-        public IReadOnlyList<string> RelatedProperties { get; }
-
-
-        /// <inheritdoc />
-        public IReadOnlyList<ValidationMessage> ValidateProperty(ValidationContextFactory<TObject> contextFactory)
+        if (_valueTransformer != null)
         {
-            if (IsAsync)
-                throw new NotSupportedException();
-
-            if (_valueTransformer != null)
-                contextFactory = contextFactory.GetTransformedContextFactory(_valueTransformer);
-
-            if (_condition != null)
-                contextFactory.RegisterValidationCondition(_condition);
-
-            return InnerValidator.ValidateProperty(contextFactory);
+            contextFactory = contextFactory.GetTransformedContextFactory(_valueTransformer);
         }
 
-        /// <inheritdoc />
-        public async Task<IReadOnlyList<ValidationMessage>> ValidatePropertyAsync(ValidationContextFactory<TObject> contextFactory, CancellationToken cancellationToken)
+        if (_condition != null)
         {
-            if (!IsAsync)
-                throw new NotSupportedException();
-            
-            if (_valueTransformer != null)
-                contextFactory = contextFactory.GetTransformedContextFactory(_valueTransformer);
-            
-            if (_condition != null)
-                contextFactory.RegisterValidationCondition(_condition);
-            if (_throttle != null)
-                contextFactory.RegisterPropertiesThrottle(_throttle);
-            
-            return await InnerValidator.ValidatePropertyAsync(contextFactory, cancellationToken);
+            contextFactory.RegisterValidationCondition(_condition);
         }
 
-        /// <inheritdoc />
-        public void SetStringSource(IStringSource stringSource)
+        return InnerValidator.ValidateProperty(contextFactory);
+    }
+
+    /// <inheritdoc />
+    public async Task<IReadOnlyList<ValidationMessage>> ValidatePropertyAsync(ValidationContextFactory<TObject> contextFactory, CancellationToken cancellationToken)
+    {
+        if (!IsAsync)
         {
-            throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+            throw new NotSupportedException();
         }
 
-        /// <inheritdoc />
-        public void ValidateWhen(IValidationCondition<TObject> condition)
+        if (_valueTransformer != null)
         {
-            throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+            contextFactory = contextFactory.GetTransformedContextFactory(_valueTransformer);
         }
 
-        /// <inheritdoc />
-        public void Throttle(IPropertiesThrottle propertiesThrottle)
+        if (_condition != null)
         {
-            throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+            contextFactory.RegisterValidationCondition(_condition);
         }
 
-        /// <summary>
-        /// Union related properties of inner validator and condition.
-        /// </summary>
-        /// <param name="validatorRelatedProperties">Related properties of inner validator.</param>
-        /// <param name="conditionRelatedProperties">Related properties of condition.</param>
-        private IReadOnlyList<string> GetUnionRelatedProperties(IReadOnlyList<string> validatorRelatedProperties, IReadOnlyList<LambdaExpression>? conditionRelatedProperties)
+        if (_throttle != null)
         {
-            if (conditionRelatedProperties?.Any() != true)
-                return InnerValidator.RelatedProperties;
+            contextFactory.RegisterPropertiesThrottle(_throttle);
+        }
 
-            var relatedProperties = new HashSet<string>(validatorRelatedProperties);
-            foreach (var expression in conditionRelatedProperties)
+        return await InnerValidator.ValidatePropertyAsync(contextFactory, cancellationToken);
+    }
+
+    /// <inheritdoc />
+    public void SetStringSource(IStringSource stringSource) =>
+        throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+
+    /// <inheritdoc />
+    public void ValidateWhen(IValidationCondition<TObject> condition) =>
+        throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+
+    /// <inheritdoc />
+    public void Throttle(IPropertiesThrottle propertiesThrottle) =>
+        throw new NotSupportedException($"{nameof(WrappingValidator<TObject, TProp>)} doesn't support settings");
+
+    /// <summary>
+    /// Union related properties of inner validator and condition.
+    /// </summary>
+    /// <param name="validatorRelatedProperties">Related properties of inner validator.</param>
+    /// <param name="conditionRelatedProperties">Related properties of condition.</param>
+    private IReadOnlyList<string> GetUnionRelatedProperties(IReadOnlyList<string> validatorRelatedProperties, IReadOnlyList<LambdaExpression>? conditionRelatedProperties)
+    {
+        if (conditionRelatedProperties?.Any() != true)
+        {
+            return InnerValidator.RelatedProperties;
+        }
+
+        var relatedProperties = new HashSet<string>(validatorRelatedProperties);
+        foreach (var expression in conditionRelatedProperties)
+        {
+            var propertyName = ReactiveValidationHelper.GetPropertyName(typeof(TObject), expression);
+            if (!string.IsNullOrEmpty(propertyName))
             {
-                var propertyName = ReactiveValidationHelper.GetPropertyName(typeof(TObject), expression);
-                if (!string.IsNullOrEmpty(propertyName))
-                    relatedProperties.Add(propertyName!);
+                relatedProperties.Add(propertyName!);
             }
-
-            return relatedProperties.ToList();
         }
+
+        return relatedProperties.ToList();
     }
 }

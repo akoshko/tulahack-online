@@ -23,11 +23,9 @@ public static class ThrottleExtensions
         this IRuleBuilder<TObject, TProp, TNext> ruleBuilder,
         int validatingPropertyMillisecondsDelay)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.Throttle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyMillisecondsDelay));
-    }
-    
+        where TObject : IValidatableObject =>
+        ruleBuilder.Throttle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyMillisecondsDelay));
+
     /// <summary>
     /// Property will begin validating after <paramref name="validatingPropertyMillisecondsDelay" />.
     /// If property changes value while this delay, previous value won't be validated.
@@ -39,10 +37,8 @@ public static class ThrottleExtensions
     public static IRuleBuilderOption<TObject, TProp> CommonThrottle<TObject, TProp>(
         this IRuleBuilderOption<TObject, TProp> ruleBuilder,
         int validatingPropertyMillisecondsDelay)
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.CommonThrottle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyMillisecondsDelay));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.CommonThrottle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyMillisecondsDelay));
 
     /// <summary>
     /// Property will begin validating after <paramref name="validatingPropertyDueTime" />.
@@ -57,10 +53,8 @@ public static class ThrottleExtensions
         this IRuleBuilder<TObject, TProp, TNext> ruleBuilder,
         TimeSpan validatingPropertyDueTime)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.Throttle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyDueTime));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.Throttle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyDueTime));
 
     /// <summary>
     /// Property will begin validating after <paramref name="validatingPropertyDueTime" />.
@@ -73,10 +67,8 @@ public static class ThrottleExtensions
     public static IRuleBuilderOption<TObject, TProp> CommonThrottle<TObject, TProp>(
         this IRuleBuilderOption<TObject, TProp> ruleBuilder,
         TimeSpan validatingPropertyDueTime)
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.CommonThrottle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyDueTime));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.CommonThrottle(builder => builder.AddValidatingPropertyThrottle(validatingPropertyDueTime));
 
     /// <summary>
     /// Property will begin validating after specified by builder delay.

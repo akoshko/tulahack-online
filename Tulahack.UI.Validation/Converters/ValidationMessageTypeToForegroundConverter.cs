@@ -20,8 +20,10 @@ internal class ValidationMessageTypeToForegroundConverter : IMultiValueConverter
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values.Count < 3)
+        {
             return null;
-        
+        }
+
         var validationMessageType = values[0] as ValidationMessageType?;
         var errorBrush = values[1];
         var warningBrush = values[2];

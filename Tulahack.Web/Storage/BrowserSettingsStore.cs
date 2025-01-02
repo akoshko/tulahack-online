@@ -34,7 +34,11 @@ public partial class BrowserSettingsStore<T> : IRuntimeStorageProvider<T>
         try
         {
             var t = GetItem(Identifier + key);
-            if (string.IsNullOrEmpty(t)) return default;
+            if (string.IsNullOrEmpty(t))
+            {
+                return default;
+            }
+
             var x = (T?)JsonSerializer.Deserialize(t, typeof(T), TulahackJsonContext.Default);
             return x ?? default;
         }

@@ -14,10 +14,8 @@ namespace Tulahack.Desktop;
 
 public class App : Application
 {
-    public override void Initialize()
-    {
+    public override void Initialize() =>
         AvaloniaXamlLoader.Load(this);
-    }
 
     public override void OnFrameworkInitializationCompleted()
     {
@@ -49,7 +47,9 @@ public class App : Application
         {
             var token = splashScreenViewModel.GetAccessToken();
             if (string.IsNullOrEmpty(token.AccessToken))
+            {
                 return;
+            }
 
             var services = new ServiceCollection();
             var configuration = services.AddConfiguration();

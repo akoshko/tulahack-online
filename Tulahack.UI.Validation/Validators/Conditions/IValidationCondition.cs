@@ -3,29 +3,28 @@ using System.Linq.Expressions;
 using Tulahack.UI.Validation.ValidatableObject;
 using Tulahack.UI.Validation.Validators.Contexts;
 
-namespace Tulahack.UI.Validation.Validators.Conditions
+namespace Tulahack.UI.Validation.Validators.Conditions;
+
+/// <summary>
+/// Condition of executing of validator.
+/// </summary>
+public interface IValidationCondition<TObject>
+    where TObject : IValidatableObject
 {
     /// <summary>
-    /// Condition of executing of validator.
+    /// Properties which can affect on state of validatable condition.
     /// </summary>
-    public interface IValidationCondition<TObject>
-        where TObject : IValidatableObject
-    {
-        /// <summary>
-        /// Properties which can affect on state of validatable condition.
-        /// </summary>
-        IReadOnlyList<LambdaExpression> RelatedProperties { get; }
+    IReadOnlyList<LambdaExpression> RelatedProperties { get; }
 
-        /// <summary>
-        /// Check if property validator should not execute.
-        /// </summary>
-        /// <returns>
-        /// <see langword="true" />, if validator should not be executed.
-        /// <see langword="false" /> otherwise.
-        /// </returns>
-        /// <remarks>
-        /// After first execution class should store value of execution at <see cref="ValidationContextCache" />. 
-        /// </remarks>
-        bool ShouldIgnoreValidation(ValidationContextFactory<TObject> validationContextFactory);
-    }
+    /// <summary>
+    /// Check if property validator should not execute.
+    /// </summary>
+    /// <returns>
+    /// <see langword="true" />, if validator should not be executed.
+    /// <see langword="false" /> otherwise.
+    /// </returns>
+    /// <remarks>
+    /// After first execution class should store value of execution at <see cref="ValidationContextCache" />.
+    /// </remarks>
+    bool ShouldIgnoreValidation(ValidationContextFactory<TObject> validationContextFactory);
 }

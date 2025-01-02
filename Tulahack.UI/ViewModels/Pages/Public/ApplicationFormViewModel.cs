@@ -13,8 +13,6 @@ namespace Tulahack.UI.ViewModels.Pages.Public;
 
 public partial class ApplicationFormViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
-
     [ObservableProperty] private bool _createNewTeamOption;
     [ObservableProperty] private bool _joinExistingTeamOption;
 
@@ -30,21 +28,21 @@ public partial class ApplicationFormViewModel : ViewModelBase
     private readonly INotificationsService _notificationsService;
 
     public ApplicationFormViewModel() : this(
-        new DesignTeamService(), 
-        new DesignApplicationService(), 
+        new DesignTeamService(),
+        new DesignApplicationService(),
         new NotificationsService(new NotificationMessageManager()))
     {
     }
 
     public ApplicationFormViewModel(
-        ITeamService teamService, 
+        ITeamService teamService,
         IApplicationService applicationService,
         INotificationsService notificationsService)
     {
         _teamService = teamService;
         _applicationService = applicationService;
         _notificationsService = notificationsService;
-        
+
         ContestsApplication = new ContestApplicationDto
         {
             TeamName = "",
@@ -66,9 +64,13 @@ public partial class ApplicationFormViewModel : ViewModelBase
             TeamCheckInProgress = true;
 
             if (ContestsApplication.ExistingTeamId.HasValue)
+            {
                 ExistingTeam = await _teamService.GetTeamById(ContestsApplication.ExistingTeamId.Value);
+            }
             else
+            {
                 ExistingTeam = null;
+            }
 
             TeamCheckInProgress = false;
         }
@@ -91,7 +93,7 @@ public partial class ApplicationFormViewModel : ViewModelBase
             _notificationsService.ShowWarning("Form validation failed! Check your form and try again.");
             return;
         }
-        
+
         await _applicationService.SubmitApplicationAsync(ContestsApplication);
     }
 }

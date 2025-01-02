@@ -21,10 +21,8 @@ public class PropertiesThrottleBuilder<TObject>
     /// If property changes value while this delay, previous value won't be validated.
     /// </summary>
     /// <param name="validatingPropertyMillisecondsDelay">The duration in milliseconds of the throttle period for validating property.</param>
-    public PropertiesThrottleBuilder<TObject> AddValidatingPropertyThrottle(int validatingPropertyMillisecondsDelay)
-    {
-        return AddValidatingPropertyThrottle(TimeSpan.FromMilliseconds(validatingPropertyMillisecondsDelay));
-    }
+    public PropertiesThrottleBuilder<TObject> AddValidatingPropertyThrottle(int validatingPropertyMillisecondsDelay) =>
+        AddValidatingPropertyThrottle(TimeSpan.FromMilliseconds(validatingPropertyMillisecondsDelay));
 
     /// <summary>
     /// Property will begin validating after <paramref name="validatingPropertyDueTime" />.
@@ -46,10 +44,8 @@ public class PropertiesThrottleBuilder<TObject>
     /// <typeparam name="TProp">Type of related property.</typeparam>
     /// <param name="property">Related property.</param>
     /// <param name="relatedPropertyMillisecondsDelay">The duration of the throttle period for related property.</param>
-    public PropertiesThrottleBuilder<TObject> AddRelatedPropertyThrottle<TProp>(Expression<Func<TObject, TProp>> property, int relatedPropertyMillisecondsDelay)
-    {
-        return AddRelatedPropertyThrottle(property, TimeSpan.FromMilliseconds(relatedPropertyMillisecondsDelay));
-    }
+    public PropertiesThrottleBuilder<TObject> AddRelatedPropertyThrottle<TProp>(Expression<Func<TObject, TProp>> property, int relatedPropertyMillisecondsDelay) =>
+        AddRelatedPropertyThrottle(property, TimeSpan.FromMilliseconds(relatedPropertyMillisecondsDelay));
 
     /// <summary>
     /// Property will begin validating after <paramref name="relatedPropertyDueTime" /> from changing <paramref name="property" />.
@@ -72,10 +68,8 @@ public class PropertiesThrottleBuilder<TObject>
     /// </summary>
     /// <param name="propertyName">The name of related property.</param>
     /// <param name="relatedPropertyMillisecondsDelay">The duration of the throttle period for related property.</param>
-    public PropertiesThrottleBuilder<TObject> AddRelatedPropertyThrottle(string propertyName, int relatedPropertyMillisecondsDelay)
-    {
-        return AddRelatedPropertyThrottle(propertyName, TimeSpan.FromMilliseconds(relatedPropertyMillisecondsDelay));
-    }
+    public PropertiesThrottleBuilder<TObject> AddRelatedPropertyThrottle(string propertyName, int relatedPropertyMillisecondsDelay) =>
+        AddRelatedPropertyThrottle(propertyName, TimeSpan.FromMilliseconds(relatedPropertyMillisecondsDelay));
 
     /// <summary>
     /// Property will begin validating after <paramref name="relatedPropertyDueTime" /> from changing <paramref name="propertyName" />.
@@ -86,7 +80,9 @@ public class PropertiesThrottleBuilder<TObject>
     public PropertiesThrottleBuilder<TObject> AddRelatedPropertyThrottle(string propertyName, TimeSpan relatedPropertyDueTime)
     {
         if (_relatedPropertiesDueTo.ContainsKey(propertyName))
+        {
             throw new ArgumentException($"Throttle for property {propertyName} has been already added", nameof(propertyName));
+        }
 
         _relatedPropertiesDueTo.Add(propertyName, relatedPropertyDueTime);
 
@@ -96,8 +92,6 @@ public class PropertiesThrottleBuilder<TObject>
     /// <summary>
     /// Create instance of <see cref="IPropertiesThrottle" /> with specified settings.
     /// </summary>
-    public IPropertiesThrottle Build()
-    {
-        return new PropertiesThrottle(_validatingPropertyDueTo, _relatedPropertiesDueTo);
-    }
+    public IPropertiesThrottle Build() =>
+        new PropertiesThrottle(_validatingPropertyDueTo, _relatedPropertiesDueTo);
 }

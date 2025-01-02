@@ -326,7 +326,9 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
         AvaloniaPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
         if (!(dependencyObject is NotificationMessage @this))
+        {
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
+        }
 
         @this.BadgeAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush;
 
@@ -366,7 +368,9 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
         AvaloniaPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
         if (!(dependencyObject is NotificationMessage @this))
+        {
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
+        }
 
         @this.BadgeVisibility = dependencyPropertyChangedEventArgs.NewValue != null;
     }
@@ -392,7 +396,9 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
         AvaloniaPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
         if (!(dependencyObject is NotificationMessage @this))
+        {
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
+        }
 
         @this.HeaderVisibility = dependencyPropertyChangedEventArgs.NewValue != null;
     }
@@ -418,7 +424,9 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
         AvaloniaPropertyChangedEventArgs dependencyPropertyChangedEventArgs)
     {
         if (!(dependencyObject is NotificationMessage @this))
+        {
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
+        }
 
         @this.MessageVisibility = dependencyPropertyChangedEventArgs.NewValue != null;
     }

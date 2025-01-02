@@ -38,7 +38,9 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     public void Queue(INotificationMessage message)
     {
         if (message == null || this.queuedMessages.Contains(message))
+        {
             return;
+        }
 
         this.queuedMessages.Add(message);
 
@@ -49,10 +51,8 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// Triggers the message queued event.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void TriggerMessageQueued(INotificationMessage message)
-    {
+    private void TriggerMessageQueued(INotificationMessage message) =>
         this.OnMessageQueued?.Invoke(this, new NotificationMessageManagerEventArgs(message));
-    }
 
     /// <summary>
     /// Dismisses the specified message.
@@ -62,7 +62,9 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     public void Dismiss(INotificationMessage message)
     {
         if (message == null || !this.queuedMessages.Contains(message))
+        {
             return;
+        }
 
         this.queuedMessages.Remove(message);
 
@@ -75,13 +77,17 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
             {
                 animatableMessage.AnimatableElement.DismissAnimation = true;
                 if (OperatingSystem.IsBrowser())
+                {
                     Task.Delay(500).ContinueWith(
                         context => { this.TriggerMessageDismissed(message); },
                         TaskScheduler.Current);
+                }
                 else
+                {
                     Task.Delay(500).ContinueWith(
                         context => { this.TriggerMessageDismissed(message); },
                         TaskScheduler.FromCurrentSynchronizationContext());
+                }
             }
             else
             {
@@ -98,8 +104,6 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// Triggers the message dismissed event.
     /// </summary>
     /// <param name="message">The message.</param>
-    private void TriggerMessageDismissed(INotificationMessage message)
-    {
+    private void TriggerMessageDismissed(INotificationMessage message) =>
         this.OnMessageDismissed?.Invoke(this, new NotificationMessageManagerEventArgs(message));
-    }
 }

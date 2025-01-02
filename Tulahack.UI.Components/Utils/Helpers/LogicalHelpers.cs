@@ -10,7 +10,11 @@ public static class LogicalHelpers
         ILogical? parent = logical;
         while (parent is not null)
         {
-            if (parent is T) return distance;
+            if (parent is T)
+            {
+                return distance;
+            }
+
             parent = parent.LogicalParent;
             distance++;
         }

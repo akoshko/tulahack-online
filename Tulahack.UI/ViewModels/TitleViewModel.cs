@@ -29,20 +29,14 @@ public partial class TitleViewModel : Base.ViewModelBase
     }
 
     [RelayCommand]
-    public void NavigateToProfilePage()
-    {
+    public void NavigateToProfilePage() =>
         _navigationService.Navigate<ProfilePageViewModel>();
-    }
 
     [RelayCommand]
-    public void NavigateToSettingsPage()
-    {
+    public void NavigateToSettingsPage() =>
         _navigationService.Navigate<SettingsViewModel>();
-    }
 
     [RelayCommand]
-    public void NavigateToApplicationForm()
-    {
+    public void NavigateToApplicationForm() =>
         _navigationService.Navigate<ApplicationFormViewModel>();
-    }
 }

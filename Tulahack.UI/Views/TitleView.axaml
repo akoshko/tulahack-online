@@ -4,7 +4,6 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels"
-             xmlns:converters="clr-namespace:Tulahack.UI.Converters"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
              xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:DataType="viewModels:TitleViewModel"

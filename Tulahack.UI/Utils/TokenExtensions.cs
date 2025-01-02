@@ -16,17 +16,30 @@ public static class TokenExtensions
             .ToList();
         
         if (claims.Count == 0)
+        {
             return Groups.Public;
-        
+        }
+
         // checking group membership from strongest to weakest
         if (claims.Contains(Groups.Superuser, StringComparer.InvariantCultureIgnoreCase))
+        {
             return Groups.Superuser;
+        }
+
         if (claims.Contains(Groups.Moderator, StringComparer.InvariantCultureIgnoreCase))
+        {
             return Groups.Moderator;
+        }
+
         if (claims.Contains(Groups.Expert, StringComparer.InvariantCultureIgnoreCase))
+        {
             return Groups.Expert;
+        }
+
         if (claims.Contains(Groups.Contestant, StringComparer.InvariantCultureIgnoreCase))
+        {
             return Groups.Contestant;
+        }
 
         return Groups.Public;
     }

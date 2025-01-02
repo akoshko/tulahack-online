@@ -2,7 +2,7 @@
 
 namespace Tulahack.UI.ViewModels.Pages.Expert;
 
-public class RatingPageViewModel : ViewModelBase, IPageContext
+public class RatingPageViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 }

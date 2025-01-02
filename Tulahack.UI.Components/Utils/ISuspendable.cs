@@ -1,9 +1,8 @@
-﻿namespace Tulahack.UI.Components.Utils
-{
-    public interface ISuspendable
-    {
-        void Suspend();
+﻿namespace Tulahack.UI.Components.Utils;
 
-        void Reset(bool resetItems = true);
-    }
+public interface ISuspendable
+{
+    void Suspend();
+
+    void Reset(bool resetItems = true);
 }

@@ -2,7 +2,7 @@
 
 namespace Tulahack.UI.ViewModels.Pages.Superuser;
 
-public class HackathonSettingsPageViewModel : ViewModelBase, IPageContext
+public class HackathonSettingsPageViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 }

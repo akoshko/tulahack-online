@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Tulahack.Dtos;
 using Tulahack.UI.Components.Controls.CodeBehind;
 using Tulahack.UI.Services;
@@ -24,7 +25,7 @@ public partial class ContestTaskPageViewModel : ViewModelBase
 
     private readonly ITaskboardService _taskboardService;
 
-    // AvaloniaUI Designer hack 
+    // AvaloniaUI Designer hack
     public ContestTaskPageViewModel() : this(new DesignTaskboardService())
     {
     }
@@ -34,10 +35,13 @@ public partial class ContestTaskPageViewModel : ViewModelBase
         _taskboardService = taskboardService;
     }
 
-    protected override async void OnActivated()
+    [RequiresUnreferencedCode("See comment above base class for more details.")]
+    protected async override void OnActivated()
     {
         if (NavigationArgs?.Args is null)
+        {
             return;
+        }
 
         ContestCase = NavigationArgs.Args as ContestCaseDto;
     }

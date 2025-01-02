@@ -2,7 +2,7 @@
 
 namespace Tulahack.UI.ViewModels.Pages.Contestant;
 
-public class ContestEventPageViewModel : ViewModelBase, IPageContext
+public class ContestEventPageViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 }

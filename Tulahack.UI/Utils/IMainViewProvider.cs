@@ -14,15 +14,13 @@ public interface IMainViewProvider
 
 public class MainViewProvider : IMainViewProvider
 {
-    public AppView? GetRootView()
-    {
-        return Application.Current?.ApplicationLifetime switch
+    public AppView? GetRootView() =>
+        Application.Current?.ApplicationLifetime switch
         {
             IClassicDesktopStyleApplicationLifetime desktop => desktop.MainWindow?.GetControl<AppView>("AppViewControl"),
             ISingleViewApplicationLifetime web => web.MainView as AppView,
             _ => null
         };
-    }
 
     public IStorageProvider? GetStorageProvider()
     {

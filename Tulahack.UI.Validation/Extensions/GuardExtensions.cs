@@ -2,29 +2,32 @@
 using System.Diagnostics.CodeAnalysis;
 using Tulahack.UI.Validation.Exceptions;
 
-namespace Tulahack.UI.Validation.Extensions
+namespace Tulahack.UI.Validation.Extensions;
+
+/// <summary>
+/// Allows check conditions and throws exceptions.
+/// </summary>
+internal static class GuardExtensions
 {
     /// <summary>
-    /// Allows check conditions and throws exceptions.
+    /// Check and throw exception if value already been assign.
     /// </summary>
-    internal static class GuardExtensions
+    public static void GuardNotCallTwice(this object? o, string message)
     {
-        /// <summary>
-        /// Check and throw exception if value already been assign.
-        /// </summary>
-        public static void GuardNotCallTwice(this object? o, string message)
+        if (o != null)
         {
-            if (o != null)
-                throw new MethodAlreadyCalledException(message);
+            throw new MethodAlreadyCalledException(message);
         }
+    }
 
-        /// <summary>
-        /// Check and throw exception if value is null.
-        /// </summary>
-        public static void GuardNotNull([NotNull]this object? o, string message)
+    /// <summary>
+    /// Check and throw exception if value is null.
+    /// </summary>
+    public static void GuardNotNull([NotNull]this object? o, string message)
+    {
+        if (o == null)
         {
-            if (o == null)
-                throw new NullReferenceException(message);
+            throw new NullReferenceException(message);
         }
     }
 }

@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<ITulahackContext, TulahackContext>(options =>
 {
     options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-    
+
     Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage", "database"));
     var datasource = Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage", "database", "tulahack.db");
     options.UseSqlite($"Data Source={datasource}");
@@ -40,16 +40,16 @@ builder.Services
         {
             o.AddPolicy("Public", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Public); });
             o.AddPolicy("Public+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.PublicPlus); });
-            
+
             o.AddPolicy("Contestant", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Contestant); });
             o.AddPolicy("Contestant+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ContestantPlus); });
-            
+
             o.AddPolicy("Expert", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Expert); });
             o.AddPolicy("Expert+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ExpertPlus); });
-            
+
             o.AddPolicy("Moderator", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Moderator); });
             o.AddPolicy("Moderator+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ModeratorPlus); });
-            
+
             o.AddPolicy("Superuser", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Superuser); });
         }
     ).AddKeycloakAuthorization(builder.Configuration);
@@ -76,11 +76,11 @@ app.UseStaticFiles(new StaticFileOptions
 {
     FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage")),
     RequestPath = "/api/storage",
-    // Uncomment to enable static files authorization 
+    // Uncomment to enable static files authorization
     // OnPrepareResponse = ctx =>
     // {
     //     if (ctx.Context.User.Identity is { IsAuthenticated: true }) return;
-    //     
+    //
     //     // respond HTTP 401 Unauthorized.
     //     ctx.Context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
     //     // flush response

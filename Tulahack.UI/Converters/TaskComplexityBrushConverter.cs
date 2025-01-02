@@ -8,9 +8,13 @@ namespace Tulahack.UI.Converters;
 
 public class TaskComplexityBrushConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is null) return Brushes.Transparent;
+        if (value is null)
+        {
+            return Brushes.Transparent;
+        }
+
         var complexity = (ContestCaseComplexityDto)value;
         return complexity switch
         {
@@ -24,6 +28,6 @@ public class TaskComplexityBrushConverter : IValueConverter
         };
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value?.ToString() ?? "Transparent";
 }

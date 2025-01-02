@@ -27,8 +27,10 @@ public class DashboardService(
         var result = await httpClient.GetAndHandleAsync<DashboardDto>("dashboard", serializerOptions, notificationsService);
 
         if (result is null)
+        {
             throw new HttpRequestException("cannot get Dashboard data api/dashboard from server, result is null");
-        
+        }
+
         return result;
     }
 }

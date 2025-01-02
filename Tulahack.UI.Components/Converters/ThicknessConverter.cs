@@ -1,5 +1,6 @@
 using System.Globalization;
 using Avalonia;
+using Avalonia.Data;
 using Avalonia.Data.Converters;
 
 namespace Tulahack.UI.Components.Converters;
@@ -28,10 +29,13 @@ public class ThicknessExcludeConverter(ThicknessPosition position) : IValueConve
     public static ThicknessExcludeConverter BottomLeft { get; } = new( ThicknessPosition.BottomLeft );
     public static ThicknessExcludeConverter BottomRight { get; } = new( ThicknessPosition.BottomRight );
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not Thickness t) return AvaloniaProperty.UnsetValue;
-        
+        if (value is not Thickness t)
+        {
+            return AvaloniaProperty.UnsetValue;
+        }
+
         var left = position.HasFlag(ThicknessPosition.Left) ?  0d: t.Left;
         var top = position.HasFlag(ThicknessPosition.Top) ? 0d : t.Top;
         var right = position.HasFlag(ThicknessPosition.Right) ? 0d : t.Right;
@@ -40,10 +44,8 @@ public class ThicknessExcludeConverter(ThicknessPosition position) : IValueConve
         return new Thickness(left, top, right, bottom);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        BindingOperations.DoNothing;
 }
 
 public class ThicknessIncludeConverter(ThicknessPosition position) : IValueConverter
@@ -57,20 +59,21 @@ public class ThicknessIncludeConverter(ThicknessPosition position) : IValueConve
     public static ThicknessIncludeConverter BottomLeft { get; } = new( ThicknessPosition.BottomLeft );
     public static ThicknessIncludeConverter BottomRight { get; } = new( ThicknessPosition.BottomRight );
 
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        if (value is not Thickness t) return AvaloniaProperty.UnsetValue;
-        
+        if (value is not Thickness t)
+        {
+            return AvaloniaProperty.UnsetValue;
+        }
+
         var left = position.HasFlag(ThicknessPosition.Left) ? t.Left : 0d;
         var top = position.HasFlag(ThicknessPosition.Top) ? t.Top : 0d;
         var right = position.HasFlag(ThicknessPosition.Right) ? t.Right : 0d;
         var bottom = position.HasFlag(ThicknessPosition.Bottom) ? t.Bottom : 0d;
-        
+
         return new Thickness(left, top, right, bottom);
     }
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
-    {
-        throw new NotImplementedException();
-    }
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) =>
+        BindingOperations.DoNothing;
 }

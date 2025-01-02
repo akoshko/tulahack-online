@@ -4,10 +4,8 @@ public class ResultDisposable(IDisposable? disposable, bool result) : IDisposabl
 {
     public bool Result { get; } = result;
 
-    public void Dispose()
-    {
+    public void Dispose() =>
         disposable?.Dispose();
-    }
 }
 
 internal class EmptyDisposable : IDisposable

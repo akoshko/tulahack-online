@@ -3,40 +3,35 @@ using Avalonia;
 using Avalonia.Collections;
 using Avalonia.Controls;
 
-namespace Tulahack.UI.Components.Behaviors.DataGridBehaviors
+namespace Tulahack.UI.Components.Behaviors.DataGridBehaviors;
+
+public static class DataGridCollectionViewBehavior
 {
-    public static class DataGridCollectionViewBehavior
+    #region ItemsSource Attached Avalonia Property
+    public static IEnumerable GetItemsSource(DataGrid obj) =>
+        obj.GetValue(ItemsSourceProperty);
+
+    public static void SetItemsSource(DataGrid obj, IEnumerable value) =>
+        obj.SetValue(ItemsSourceProperty, value);
+
+    public static readonly AttachedProperty<IEnumerable> ItemsSourceProperty =
+        AvaloniaProperty.RegisterAttached<DataGrid, DataGrid, IEnumerable>
+        (
+            "ItemsSource"
+        );
+    #endregion ItemsSource Attached Avalonia Property
+
+    static DataGridCollectionViewBehavior()
     {
-        #region ItemsSource Attached Avalonia Property
-        public static IEnumerable GetItemsSource(DataGrid obj)
-        {
-            return obj.GetValue(ItemsSourceProperty);
-        }
+        ItemsSourceProperty.Changed.Subscribe(OnItemsSourcePropertyChanged);
+    }
 
-        public static void SetItemsSource(DataGrid obj, IEnumerable value)
-        {
-            obj.SetValue(ItemsSourceProperty, value);
-        }
+    private static void OnItemsSourcePropertyChanged(AvaloniaPropertyChangedEventArgs<IEnumerable> args)
+    {
+        DataGrid dataGrid = (DataGrid) args.Sender;
 
-        public static readonly AttachedProperty<IEnumerable> ItemsSourceProperty =
-            AvaloniaProperty.RegisterAttached<DataGrid, DataGrid, IEnumerable>
-            (
-                "ItemsSource"
-            );
-        #endregion ItemsSource Attached Avalonia Property
+        IEnumerable itemsSource = args.NewValue.Value;
 
-        static DataGridCollectionViewBehavior()
-        {
-            ItemsSourceProperty.Changed.Subscribe(OnItemsSourcePropertyChanged);
-        }
-
-        private static void OnItemsSourcePropertyChanged(AvaloniaPropertyChangedEventArgs<IEnumerable> args)
-        {
-            DataGrid dataGrid = (DataGrid) args.Sender;
-
-            IEnumerable itemsSource = args.NewValue.Value;
-
-            dataGrid.ItemsSource = itemsSource == null ? null : new DataGridCollectionView(itemsSource);
-        }
+        dataGrid.ItemsSource = itemsSource == null ? null : new DataGridCollectionView(itemsSource);
     }
 }

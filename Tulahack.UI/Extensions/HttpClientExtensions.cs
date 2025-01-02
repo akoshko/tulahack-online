@@ -13,7 +13,7 @@ namespace Tulahack.UI.Extensions;
 [RequiresUnreferencedCode("T should be specified in TulahackJsonContext as [JsonSerializable(typeof(T))]")]
 public static class HttpClientExtensions
 {
-    public static async Task<T?> GetAndHandleAsync<T>(
+    public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         JsonSerializerOptions serializerOptions,
@@ -43,7 +43,7 @@ public static class HttpClientExtensions
         return null;
     }
 
-    public static async Task<T?> GetAndHandleAsync<T>(
+    public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, 
         HttpCompletionOption completionOption,
@@ -74,7 +74,7 @@ public static class HttpClientExtensions
         return null;
     }
 
-    public static async Task<T?> GetAndHandleAsync<T>(
+    public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         CancellationToken cancellationToken,
@@ -105,7 +105,7 @@ public static class HttpClientExtensions
         return null;
     }
 
-    public static async Task<T?> GetAndHandleAsync<T>(
+    public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, 
         HttpCompletionOption completionOption,
@@ -137,7 +137,7 @@ public static class HttpClientExtensions
         return null;
     }
     
-    public static async Task<T?> PostAndHandleAsync<T>(
+    public async static Task<T?> PostAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         HttpContent? content,
@@ -169,7 +169,7 @@ public static class HttpClientExtensions
         return null;
     }
     
-    public static async Task PostAsJsonAsync<T>(
+    public async static Task PostAsJsonAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         T content,
@@ -199,7 +199,7 @@ public static class HttpClientExtensions
         }
     }
     
-    public static async Task PostAndHandleAsync(
+    public async static Task PostAndHandleAsync(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         HttpContent? content,
@@ -223,7 +223,7 @@ public static class HttpClientExtensions
         }
     }
     
-    public static async Task<T?> PatchAndHandleAsync<T>(
+    public async static Task<T?> PatchAndHandleAsync<T>(
         this HttpClient client,
         [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
         HttpContent? content,

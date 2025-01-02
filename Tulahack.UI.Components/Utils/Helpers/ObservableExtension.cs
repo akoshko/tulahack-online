@@ -4,8 +4,6 @@ namespace Tulahack.UI.Components.Utils.Helpers;
 
 public static class ObservableExtension
 {
-    public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> action)
-    {
-        return observable.Subscribe(new AnonymousObserver<T>(action));
-    }
+    public static IDisposable Subscribe<T>(this IObservable<T> observable, Action<T> action) =>
+        observable.Subscribe(new AnonymousObserver<T>(action));
 }

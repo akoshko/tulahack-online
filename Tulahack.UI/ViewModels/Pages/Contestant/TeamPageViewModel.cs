@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -27,7 +28,7 @@ public partial class TeamPageViewModel : ViewModelBase
 
     [ObservableProperty] private TeamDto _team = new();
 
-    // AvaloniaUI Designer hack 
+    // AvaloniaUI Designer hack
     public TeamPageViewModel() : this(
         new DesignTeamService(),
         new MainViewProvider(),
@@ -49,7 +50,10 @@ public partial class TeamPageViewModel : ViewModelBase
     public async Task UploadTeaserCommand()
     {
         var sp = _mainViewProvider.GetStorageProvider();
-        if (sp is null) return;
+        if (sp is null)
+        {
+            return;
+        }
 
         var result = await sp.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
@@ -61,14 +65,19 @@ public partial class TeamPageViewModel : ViewModelBase
             },
             AllowMultiple = false
         });
-        
+
         if (result.Count != 0)
+        {
             await _teamService.UploadTeaser(result.First());
+        }
     }
 
-    protected override async void OnActivated()
+    [RequiresUnreferencedCode("See comment above base class for more details.")]
+    protected async override void OnActivated()
     {
         if (NavigationArgs?.Args is TeamDto dto)
+        {
             Team = dto;
+        }
     }
 }

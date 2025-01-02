@@ -1,57 +1,56 @@
 ﻿using Tulahack.UI.Components.Utils;
 
-namespace Tulahack.UI.Components.Behaviors
-{
-    public interface ISuspendableDisposable : ISuspendable, IDisposable
-    {
+namespace Tulahack.UI.Components.Behaviors;
 
+public interface ISuspendableDisposable : ISuspendable, IDisposable
+{
+
+}
+
+// used to dispose of behaviors
+public class BehaviorsDisposable<T> : ISuspendableDisposable
+{
+    List<DisposableBehaviorContainer<T>> _disposableBehaviors = new List<DisposableBehaviorContainer<T>>();
+
+
+    public T TheObjectTheBehaviorsAreAttachedTo =>
+        _disposableBehaviors.LastOrDefault().TheObjectTheBehaviorIsAttachedTo;
+
+    internal BehaviorsDisposable
+    (
+        DisposableBehaviorContainer<T> disposableBehaviorToAdd,
+        BehaviorsDisposable<T> previousBehavior = null
+    )
+    {
+        if (previousBehavior != null)
+        {
+            _disposableBehaviors.AddRange(previousBehavior._disposableBehaviors);
+        }
+
+        _disposableBehaviors.Add(disposableBehaviorToAdd);
     }
 
-    // used to dispose of behaviors
-    public class BehaviorsDisposable<T> : ISuspendableDisposable
+    public void Reset(bool resetItems = true)
     {
-        List<DisposableBehaviorContainer<T>> _disposableBehaviors = new List<DisposableBehaviorContainer<T>>();
-
-
-        public T TheObjectTheBehaviorsAreAttachedTo =>
-            _disposableBehaviors.LastOrDefault().TheObjectTheBehaviorIsAttachedTo;
-
-        internal BehaviorsDisposable
-        (
-            DisposableBehaviorContainer<T> disposableBehaviorToAdd,
-            BehaviorsDisposable<T> previousBehavior = null
-        )
+        foreach (var behaviorContainer in _disposableBehaviors)
         {
-            if (previousBehavior != null)
-            {
-                _disposableBehaviors.AddRange(previousBehavior._disposableBehaviors);
-            }
-
-            _disposableBehaviors.Add(disposableBehaviorToAdd);
+            behaviorContainer.Reset(resetItems);
         }
+    }
 
-        public void Reset(bool resetItems = true)
+    public void Suspend()
+    {
+        foreach (DisposableBehaviorContainer<T> behaviorContainer in _disposableBehaviors)
         {
-            foreach (var behaviorContainer in _disposableBehaviors)
-            {
-                behaviorContainer.Reset(resetItems);
-            }
+            behaviorContainer.Suspend();
         }
+    }
 
-        public void Suspend()
+    public void Dispose()
+    {
+        foreach (DisposableBehaviorContainer<T> behaviorContainer in _disposableBehaviors)
         {
-            foreach (DisposableBehaviorContainer<T> behaviorContainer in _disposableBehaviors)
-            {
-                behaviorContainer.Suspend();
-            }
-        }
-
-        public void Dispose()
-        {
-            foreach (DisposableBehaviorContainer<T> behaviorContainer in _disposableBehaviors)
-            {
-                behaviorContainer.Dispose();
-            }
+            behaviorContainer.Dispose();
         }
     }
 }

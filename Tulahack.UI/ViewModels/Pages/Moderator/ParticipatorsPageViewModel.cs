@@ -2,7 +2,7 @@
 
 namespace Tulahack.UI.ViewModels.Pages.Moderator;
 
-public class ParticipatorsPageViewModel : ViewModelBase, IPageContext
+public class ParticipatorsPageViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 }

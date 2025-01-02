@@ -14,12 +14,12 @@ public interface IAccountService
     Task<ContestantDto?> GetContestantDetails(Guid userId);
     Task<ExpertDto?> GetExpertDetails(Guid userId);
     Task<ModeratorDto?> GetModeratorDetails(Guid userId);
-    
+
     Task<PersonBaseDto?> UpdateAccount(PersonBaseDto dto);
     Task<ContestantDto?> UpdateContestant(ContestantDto dto);
     Task<ExpertDto?> UpdateExpert(ExpertDto dto);
     Task<ModeratorDto?> UpdateModerator(ModeratorDto dto);
-    
+
     Task<PersonBase> CreateAccount(string jwt);
     Task<PersonBaseDto?> CreateAccount(PersonBaseDto dto);
     Task<ContestantDto?> CreateContestant(ContestantDto dto);
@@ -68,12 +68,12 @@ public class AccountService : IAccountService
         var user = _tulahackContext.Accounts
             .AsTracking()
             .First(item => item.Id == Guid.Parse(token.Subject));
-        
+
         user.Role = jwt.GetRole();
         await _tulahackContext.SaveChangesAsync();
         return user;
     }
-    
+
     public async Task<PersonBase> CreateAccount(string jwt)
     {
         var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
@@ -100,7 +100,7 @@ public class AccountService : IAccountService
 
         if (account is null)
             return null;
-        
+
         return account;
     }
 
@@ -110,7 +110,7 @@ public class AccountService : IAccountService
             .Contestants
             .Include(item => item.Team)
             .FirstOrDefaultAsync(user => user.Id == userId);
-        
+
         if (account is null)
             return null;
 
@@ -118,10 +118,10 @@ public class AccountService : IAccountService
             .Contestants
             .Where(item => item.Team.Id == account.Team.Id)
             .ToListAsync();
-        
+
         var result = _mapper.Map<ContestantDto>(account);
         result.Team.Contestants = _mapper.Map<List<ContestantDto>>(team);
-        
+
         return result;
     }
 
@@ -133,7 +133,7 @@ public class AccountService : IAccountService
 
         if (account is null)
             return null;
-        
+
         return _mapper.Map<ExpertDto>(account);
     }
 
@@ -146,10 +146,10 @@ public class AccountService : IAccountService
 
         if (account is null)
             return null;
-        
+
         return _mapper.Map<ModeratorDto>(account);
     }
-    
+
     public async Task<PersonBaseDto?> UpdateAccount(PersonBaseDto dto)
     {
         throw new NotImplementedException();
@@ -164,12 +164,12 @@ public class AccountService : IAccountService
     {
         throw new NotImplementedException();
     }
-    
+
     public async Task<ModeratorDto?> UpdateModerator(ModeratorDto dto)
     {
         throw new NotImplementedException();
     }
-    
+
     public async Task<PersonBase?> DeleteAccount(Guid getUserId)
     {
         throw new NotImplementedException();

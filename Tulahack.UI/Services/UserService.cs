@@ -65,13 +65,11 @@ public class UserService : IUserService
     [UnconditionalSuppressMessage("Trimming",
         "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access",
         Justification = "UserPreferencesDto is specified in TulahackJsonContext")]
-    public async Task SaveUserPreferences(UserPreferencesDto preferences)
-    {
+    public async Task SaveUserPreferences(UserPreferencesDto preferences) =>
         await _httpClient.PostAsJsonAsync(
             "account/preferences", 
             preferences,
             default,
             serializerOptions: _serializerOptions, 
             notificationsService: _notificationsService);
-    }
 }

@@ -36,7 +36,9 @@ public static class PropertyChangedExtensions
             private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName == _info.Name)
+                {
                     _observer.OnNext(((T)_info.GetValue(_target)!));
+                }
             }
 
             public void Dispose()
@@ -46,10 +48,8 @@ public static class PropertyChangedExtensions
             }
         }
 
-        public IDisposable Subscribe(IObserver<T> observer)
-        {
-            return new Subscription(_target, _info, observer);
-        }
+        public IDisposable Subscribe(IObserver<T> observer) =>
+            new Subscription(_target, _info, observer);
     }
 
     public static IObservable<TRes> WhenAnyValue<TModel, TRes>(this TModel model,

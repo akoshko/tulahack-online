@@ -3,57 +3,58 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Resources;
 
-namespace Tulahack.UI.Validation.Resources.StringProviders
+namespace Tulahack.UI.Validation.Resources.StringProviders;
+
+/// <summary>
+/// String provider which get strings from <see cref="ResourceManager" />.
+/// </summary>
+public class ResourceStringProvider : IStringProvider
 {
+    private readonly ResourceManager _mainResourceManager;
+    private readonly IDictionary<string, ResourceManager>? _secondaryResourceManagers;
+
     /// <summary>
-    /// String provider which get strings from <see cref="ResourceManager" />.
+    /// Create new instance of resource string provider with one main resource manager.
     /// </summary>
-    public class ResourceStringProvider : IStringProvider
+    /// <param name="mainResourceManager">Main resource manager.</param>
+    public ResourceStringProvider(ResourceManager mainResourceManager)
     {
-        private readonly ResourceManager _mainResourceManager;
-        private readonly IDictionary<string, ResourceManager>? _secondaryResourceManagers;
+        _mainResourceManager = mainResourceManager ?? throw new ArgumentNullException(nameof(mainResourceManager));
+    }
 
-        /// <summary>
-        /// Create new instance of resource string provider with one main resource manager.
-        /// </summary>
-        /// <param name="mainResourceManager">Main resource manager.</param>
-        public ResourceStringProvider(ResourceManager mainResourceManager)
+    /// <summary>
+    /// Create new instance of resource string provider with one main resource manager and many secondaries managers.
+    /// </summary>
+    /// <param name="mainResourceManager">Main resource manager.</param>
+    /// <param name="secondaryResourceManagers">
+    /// Secondary resource managers.
+    /// Key is name of resource manager.
+    /// Value is resource manager.
+    /// </param>
+    public ResourceStringProvider(ResourceManager mainResourceManager, IDictionary<string, ResourceManager> secondaryResourceManagers)
+    {
+        _mainResourceManager = mainResourceManager ?? throw new ArgumentNullException(nameof(mainResourceManager));
+        _secondaryResourceManagers = secondaryResourceManagers ?? throw new ArgumentNullException(nameof(secondaryResourceManagers));
+    }
+
+
+    /// <inheritdoc />
+    public string? GetString(string key, CultureInfo culture) =>
+        _mainResourceManager.GetString(key, culture);
+
+    /// <inheritdoc />
+    public string? GetString(string resource, string key, CultureInfo culture)
+    {
+        if (_secondaryResourceManagers == null)
         {
-            _mainResourceManager = mainResourceManager ?? throw new ArgumentNullException(nameof(mainResourceManager));
+            return null;
         }
 
-        /// <summary>
-        /// Create new instance of resource string provider with one main resource manager and many secondaries managers.
-        /// </summary>
-        /// <param name="mainResourceManager">Main resource manager.</param>
-        /// <param name="secondaryResourceManagers">
-        /// Secondary resource managers.
-        /// Key is name of resource manager.
-        /// Value is resource manager.
-        /// </param>
-        public ResourceStringProvider(ResourceManager mainResourceManager, IDictionary<string, ResourceManager> secondaryResourceManagers)
+        if (!_secondaryResourceManagers.TryGetValue(resource, out var resourceManager))
         {
-            _mainResourceManager = mainResourceManager ?? throw new ArgumentNullException(nameof(mainResourceManager));
-            _secondaryResourceManagers = secondaryResourceManagers ?? throw new ArgumentNullException(nameof(secondaryResourceManagers));
+            return null;
         }
 
-
-        /// <inheritdoc />
-        public string? GetString(string key, CultureInfo culture)
-        {
-            return _mainResourceManager.GetString(key, culture);
-        }
-
-        /// <inheritdoc />
-        public string? GetString(string resource, string key, CultureInfo culture)
-        {
-            if (_secondaryResourceManagers == null)
-                return null;
-            
-            if (!_secondaryResourceManagers.TryGetValue(resource, out var resourceManager))
-                return null;
-
-            return resourceManager.GetString(key, culture);
-        }
+        return resourceManager.GetString(key, culture);
     }
 }

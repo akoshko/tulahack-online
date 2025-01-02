@@ -10,7 +10,7 @@ namespace Tulahack.UI.Components.Controls.CodeBehind.Form;
 public class Form: ItemsControl
 {
     public const string PC_FixedWidth = ":fixed-width";
-    
+
     public static readonly StyledProperty<GridLength> LabelWidthProperty = AvaloniaProperty.Register<Form, GridLength>(
         nameof(LabelWidth));
 
@@ -61,10 +61,14 @@ public class Form: ItemsControl
         recycleKey = null;
         return item is not FormItem && item is not FormGroup;
     }
-    
+
     protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
-        if (item is not Control control) return new FormItem();
+        if (item is not Control control)
+        {
+            return new FormItem();
+        }
+
         return new FormItem()
         {
             Content = control,

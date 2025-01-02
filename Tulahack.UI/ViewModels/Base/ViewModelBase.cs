@@ -32,18 +32,24 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
 
     public NavigationArgs? NavigationArgs { get; set; }
 
+    public bool CanGoBack => NavigationArgs?.Sender is not null;
+
     public void SetArgs(NavigationArgs? args) => NavigationArgs = args;
 
     [RelayCommand]
     public virtual void GoBack(IPageContext? previousPage = null)
     {
         if (previousPage is not null)
+        {
             WeakReferenceMessenger.Default.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs
                 { ContextType = previousPage.GetType() }));
-        
+        }
+
         if (NavigationArgs?.Sender is not null)
+        {
             WeakReferenceMessenger.Default.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs
                 { ContextType = NavigationArgs.Sender.GetType() }));
+        }
     }
 
     [RelayCommand]
@@ -51,15 +57,21 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
     {
         var url = urlObj as string;
         if (url is null)
+        {
             return;
+        }
 
         if (urlObj is Uri uri && !string.IsNullOrEmpty(uri.AbsolutePath))
+        {
             url = uri.AbsolutePath;
+        }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
             //https://stackoverflow.com/a/2796367/241446
-            using var proc = new Process { StartInfo = { UseShellExecute = true, FileName = url } };
+            using var proc = new Process();
+            proc.StartInfo.UseShellExecute = true;
+            proc.StartInfo.FileName = url;
             proc.Start();
 
             return;
@@ -77,7 +89,11 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
             return;
         }
 
-        if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX)) throw new ArgumentException("invalid url: " + url);
+        if (!RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            throw new ArgumentException("invalid url: " + url);
+        }
+
         Process.Start("open", url);
     }
 }

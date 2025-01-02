@@ -64,8 +64,11 @@ public class FormItem: ContentControl
         base.OnAttachedToVisualTree(e);
         var form = this.GetVisualAncestors().OfType<Form>().FirstOrDefault();
         
-        if (form is null) return;
-        
+        if (form is null)
+        {
+            return;
+        }
+
         _formSubscriptions.Clear();
         var labelSubscription = form
             .GetObservable(Form.LabelWidthProperty)

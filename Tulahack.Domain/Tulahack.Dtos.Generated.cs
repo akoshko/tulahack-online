@@ -17,7 +17,7 @@ namespace Tulahack.Dtos
 {
     using System = global::System;
 
-    
+
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
     public partial class DashboardDto : System.ComponentModel.INotifyPropertyChanged
@@ -36,7 +36,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("participatorsCount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int ParticipatorsCount
         {
             get { return _participatorsCount; }
@@ -53,7 +53,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("expertsCount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int ExpertsCount
         {
             get { return _expertsCount; }
@@ -70,7 +70,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("companiesCount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int CompaniesCount
         {
             get { return _companiesCount; }
@@ -87,7 +87,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("casesCount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int CasesCount
         {
             get { return _casesCount; }
@@ -104,7 +104,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("teamsCount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int TeamsCount
         {
             get { return _teamsCount; }
@@ -121,7 +121,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("topicTitle")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string TopicTitle
         {
             get { return _topicTitle; }
@@ -138,7 +138,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("topic")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Topic
         {
             get { return _topic; }
@@ -155,7 +155,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("topicThumbnailUrl")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string TopicThumbnailUrl
         {
             get { return _topicThumbnailUrl; }
@@ -172,7 +172,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("upcomingEventId")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid UpcomingEventId
         {
             get { return _upcomingEventId; }
@@ -189,7 +189,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("eventThumbnailUrl")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string EventThumbnailUrl
         {
             get { return _eventThumbnailUrl; }
@@ -206,7 +206,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("timeline")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public ContestTimelineDto Timeline
         {
             get { return _timeline; }
@@ -242,7 +242,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("items")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<TimelineItemDto> Items
         {
             get { return _items; }
@@ -259,7 +259,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("hackathonStart")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime HackathonStart
         {
             get { return _hackathonStart; }
@@ -276,7 +276,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("hackathonEnd")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime HackathonEnd
         {
             get { return _hackathonEnd; }
@@ -293,7 +293,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("codingBeginning")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime CodingBeginning
         {
             get { return _codingBeginning; }
@@ -310,7 +310,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("codingDeadline")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime CodingDeadline
         {
             get { return _codingDeadline; }
@@ -349,7 +349,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("itemType")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public TimelineItemTypeDto ItemType
         {
@@ -367,7 +367,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("start")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime Start
         {
             get { return _start; }
@@ -384,7 +384,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("end")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime End
         {
             get { return _end; }
@@ -401,7 +401,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("label")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Label
         {
             get { return _label; }
@@ -418,7 +418,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("deadline")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime? Deadline
         {
             get { return _deadline; }
@@ -435,7 +435,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("url")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Url
         {
             get { return _url; }
@@ -452,7 +452,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("message")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Message
         {
             get { return _message; }
@@ -469,7 +469,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("extra")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Extra
         {
             get { return _extra; }
@@ -514,7 +514,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -531,7 +531,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Name
         {
@@ -553,7 +553,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("section")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int Section
         {
             get { return _section; }
@@ -570,7 +570,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("contestCases")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ContestCaseDto> ContestCases
         {
             get { return _contestCases; }
@@ -587,7 +587,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("contestants")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ContestantDto> Contestants
         {
             get { return _contestants; }
@@ -604,7 +604,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("teamSize")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int TeamSize
         {
             get { return _teamSize; }
@@ -621,7 +621,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("repositoryLink")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string RepositoryLink
         {
@@ -639,7 +639,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("formOfParticipation")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public FormOfParticipationTypeDto FormOfParticipation
         {
@@ -657,7 +657,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("additionalRepositoryLink")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string AdditionalRepositoryLink
         {
             get { return _additionalRepositoryLink; }
@@ -674,7 +674,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("presentationLink")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string PresentationLink
         {
             get { return _presentationLink; }
@@ -691,7 +691,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("videoLink")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string VideoLink
         {
@@ -709,7 +709,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("openUniversityProjectLink")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string OpenUniversityProjectLink
         {
@@ -731,7 +731,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("additionalInfo")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string AdditionalInfo
         {
             get { return _additionalInfo; }
@@ -752,7 +752,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("teaser")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Teaser
         {
             get { return _teaser; }
@@ -786,7 +786,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -803,7 +803,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("skillName")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string SkillName
         {
             get { return _skillName; }
@@ -820,7 +820,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("color")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Color
         {
             get { return _color; }
@@ -854,7 +854,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -871,7 +871,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("criteria")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Criteria
         {
             get { return _criteria; }
@@ -888,7 +888,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("color")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Color
         {
             get { return _color; }
@@ -927,7 +927,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -944,7 +944,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("number")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int Number
         {
             get { return _number; }
@@ -961,7 +961,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Title
         {
             get { return _title; }
@@ -978,7 +978,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Description
         {
             get { return _description; }
@@ -995,7 +995,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("complexity")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public ContestCaseComplexityDto Complexity
         {
@@ -1013,7 +1013,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("techStack")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<SkillDto> TechStack
         {
             get { return _techStack; }
@@ -1030,7 +1030,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("company")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public CompanyDto Company
         {
             get { return _company; }
@@ -1047,7 +1047,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("acceptanceCriteria")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<AcceptanceCriteriaDto> AcceptanceCriteria
         {
             get { return _acceptanceCriteria; }
@@ -1082,7 +1082,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -1099,7 +1099,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Name
         {
             get { return _name; }
@@ -1116,7 +1116,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("description")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Description
         {
             get { return _description; }
@@ -1133,7 +1133,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("experts")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ExpertDto> Experts
         {
             get { return _experts; }
@@ -1175,7 +1175,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -1192,7 +1192,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("firstname")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Firstname
         {
             get { return _firstname; }
@@ -1209,7 +1209,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("middlename")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Middlename
         {
             get { return _middlename; }
@@ -1226,7 +1226,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("lastname")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Lastname
         {
             get { return _lastname; }
@@ -1243,7 +1243,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("telegramAccount")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string TelegramAccount
         {
             get { return _telegramAccount; }
@@ -1260,7 +1260,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("phoneNumber")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string PhoneNumber
         {
             get { return _phoneNumber; }
@@ -1277,7 +1277,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("email")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Email
         {
             get { return _email; }
@@ -1294,7 +1294,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("about")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string About
         {
             get { return _about; }
@@ -1311,7 +1311,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("photoUrl")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string PhotoUrl
         {
@@ -1329,7 +1329,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("blocked")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool Blocked
         {
             get { return _blocked; }
@@ -1346,7 +1346,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("role")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public ContestRoleDto Role
         {
@@ -1397,7 +1397,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("team")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public TeamDto Team
         {
             get { return _team; }
@@ -1414,7 +1414,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("age")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int Age
         {
             get { return _age; }
@@ -1431,7 +1431,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("certificateNeeded")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool CertificateNeeded
         {
             get { return _certificateNeeded; }
@@ -1448,7 +1448,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("contestantNumber")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int ContestantNumber
         {
             get { return _contestantNumber; }
@@ -1465,7 +1465,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("companyName")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string CompanyName
         {
             get { return _companyName; }
@@ -1482,7 +1482,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("jobTitle")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string JobTitle
         {
             get { return _jobTitle; }
@@ -1499,7 +1499,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("attendingFirstTime")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool AttendingFirstTime
         {
             get { return _attendingFirstTime; }
@@ -1516,7 +1516,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("applicationConfirmationStatus")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool ApplicationConfirmationStatus
         {
             get { return _applicationConfirmationStatus; }
@@ -1533,7 +1533,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("applicationSubmissionDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime ApplicationSubmissionDate
         {
             get { return _applicationSubmissionDate; }
@@ -1550,7 +1550,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("region")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Region
         {
             get { return _region; }
@@ -1567,7 +1567,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("city")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string City
         {
             get { return _city; }
@@ -1584,7 +1584,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("university")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string University
         {
             get { return _university; }
@@ -1601,7 +1601,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("universityDepartment")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string UniversityDepartment
         {
             get { return _universityDepartment; }
@@ -1622,7 +1622,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("universityAttendanceFormat")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string UniversityAttendanceFormat
         {
             get { return _universityAttendanceFormat; }
@@ -1643,7 +1643,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("scholarship")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Scholarship
         {
             get { return _scholarship; }
@@ -1660,7 +1660,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("applicationNumber")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid ApplicationNumber
         {
             get { return _applicationNumber; }
@@ -1681,7 +1681,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("attendanceType")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string AttendanceType
         {
             get { return _attendanceType; }
@@ -1702,7 +1702,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("educationType")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string EducationType
         {
             get { return _educationType; }
@@ -1719,7 +1719,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("skills")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<SkillDto> Skills
         {
             get { return _skills; }
@@ -1750,7 +1750,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("company")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public CompanyDto Company
         {
             get { return _company; }
@@ -1767,7 +1767,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("workPosition")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string WorkPosition
         {
             get { return _workPosition; }
@@ -1784,7 +1784,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("confirmed")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool Confirmed
         {
             get { return _confirmed; }
@@ -1801,7 +1801,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("badge")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public bool Badge
         {
             get { return _badge; }
@@ -1818,7 +1818,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("photoUrl")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string PhotoUrl
         {
             get { return _photoUrl; }
@@ -1835,7 +1835,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("additionalContactPerson")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string AdditionalContactPerson
         {
             get { return _additionalContactPerson; }
@@ -1852,7 +1852,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("skills")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<SkillDto> Skills
         {
             get { return _skills; }
@@ -1869,7 +1869,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("pickedTeams")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<TeamDto> PickedTeams
         {
             get { return _pickedTeams; }
@@ -1900,7 +1900,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int Id
         {
             get { return _id; }
@@ -1917,7 +1917,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("name")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Name
         {
             get { return _name; }
@@ -1955,7 +1955,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -1972,7 +1972,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("filename")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Filename
         {
             get { return _filename; }
@@ -1989,7 +1989,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("filepath")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Filepath
         {
             get { return _filepath; }
@@ -2006,7 +2006,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("owner")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Owner
         {
             get { return _owner; }
@@ -2023,7 +2023,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("creationDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.DateTime CreationDate
         {
             get { return _creationDate; }
@@ -2040,7 +2040,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("revision")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public int Revision
         {
             get { return _revision; }
@@ -2057,7 +2057,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("purpose")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public StorageFilePurposeTypeDto Purpose
         {
@@ -2099,7 +2099,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -2120,7 +2120,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("icon")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Icon
         {
             get { return _icon; }
@@ -2141,7 +2141,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("title")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Title
         {
@@ -2163,7 +2163,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("creationDate")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public System.DateTime CreationDate
         {
@@ -2185,7 +2185,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("message")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         public string Message
         {
@@ -2207,7 +2207,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("extra")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Extra
         {
             get { return _extra; }
@@ -2228,7 +2228,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("type")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public EventTypeDto Type
@@ -2266,7 +2266,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -2283,7 +2283,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("selectedTheme")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
         public UserPreferredThemeDto SelectedTheme
         {
@@ -2323,7 +2323,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -2340,7 +2340,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("eventTitle")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string EventTitle
         {
             get { return _eventTitle; }
@@ -2357,7 +2357,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("content")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string Content
         {
             get { return _content; }
@@ -2374,7 +2374,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("eventThumbnailUrl")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public string EventThumbnailUrl
         {
             get { return _eventThumbnailUrl; }
@@ -2391,7 +2391,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("timelineItem")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public TimelineItemDto TimelineItem
         {
             get { return _timelineItem; }
@@ -2434,7 +2434,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("id")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid Id
         {
             get { return _id; }
@@ -2451,7 +2451,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("currentTopicId")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Guid CurrentTopicId
         {
             get { return _currentTopicId; }
@@ -2468,7 +2468,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("timeline")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public ContestTimelineDto Timeline
         {
             get { return _timeline; }
@@ -2485,7 +2485,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("events")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public HackathonEventDto Events
         {
             get { return _events; }
@@ -2502,7 +2502,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("moderators")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ModeratorDto> Moderators
         {
             get { return _moderators; }
@@ -2519,7 +2519,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("companies")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<CompanyDto> Companies
         {
             get { return _companies; }
@@ -2536,7 +2536,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("cases")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ContestCaseDto> Cases
         {
             get { return _cases; }
@@ -2553,7 +2553,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("applications")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ContestApplicationDto> Applications
         {
             get { return _applications; }
@@ -2570,7 +2570,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonPropertyName("teams")]
 
-        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]   
+        [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
         public System.Collections.Generic.IEnumerable<ContestApplicationDto> Teams
         {
             get { return _teams; }

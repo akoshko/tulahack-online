@@ -2,13 +2,11 @@
 
 public interface IState
 {
-    
+
 }
 
 public class SettingsState
 {
-    // public Difficulty Difficulty { get; set; }
-    // public DrawMode DrawMode { get; set; }
 }
 
 public class AppState : IState
@@ -18,7 +16,7 @@ public class AppState : IState
         // Difficulty = Difficulty.Medium,
         // DrawMode = DrawMode.DrawOne
     };
-    
+
     public AppState()
     {
     }

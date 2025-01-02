@@ -18,19 +18,32 @@ public abstract class AbstractAuthContextProvider : IAuthContextProvider
             .Where(claim => claim.Type == "group")
             .Select(claim => claim.Value)
             .ToList();
-        
+
         if (claims.Count == 0)
+        {
             return ContestRoleDto.Visitor;
-        
+        }
+
         // checking group membership from strongest to weakest
         if (claims.Contains(Groups.Superuser, StringComparer.InvariantCultureIgnoreCase))
+        {
             return ContestRoleDto.Superuser;
+        }
+
         if (claims.Contains(Groups.Moderator, StringComparer.InvariantCultureIgnoreCase))
+        {
             return ContestRoleDto.Moderator;
+        }
+
         if (claims.Contains(Groups.Expert, StringComparer.InvariantCultureIgnoreCase))
+        {
             return ContestRoleDto.Expert;
+        }
+
         if (claims.Contains(Groups.Contestant, StringComparer.InvariantCultureIgnoreCase))
+        {
             return ContestRoleDto.Contestant;
+        }
 
         return ContestRoleDto.Visitor;
     }
@@ -38,12 +51,12 @@ public abstract class AbstractAuthContextProvider : IAuthContextProvider
     public PersonBaseDto GetDefaultAccount()
     {
         var token = new JwtSecurityTokenHandler().ReadJwtToken(GetAccessToken());
-        
+
         var id = Guid.Parse(token.Claims
             .Where(claim => claim.Type == "sub")
             .Select(claim => claim.Value)
             .FirstOrDefault() ?? Guid.Empty.ToString());
-        
+
         return new PersonBaseDto()
         {
             Id = id,

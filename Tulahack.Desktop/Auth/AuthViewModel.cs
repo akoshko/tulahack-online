@@ -23,12 +23,9 @@ public class AuthViewModel : ViewModelBase
         Auth = new AsyncRelayCommand(Run);
     }
 
-
-    public async Task Run()
-    {
+    public async Task Run() =>
         await Login();
-    }
-    
+
     private async Task Login()
     {
         // create a redirect URI using an available port on the loopback address.
@@ -49,7 +46,7 @@ public class AuthViewModel : ViewModelBase
         };
 
         var oidcClient = new OidcClient(options);
-        
+
         var authorizeState = await oidcClient.PrepareLoginAsync();
         var browserResult = await browser.InvokeAsync(new BrowserOptions(authorizeState.StartUrl, string.Empty));
 
@@ -64,7 +61,7 @@ public class AuthViewModel : ViewModelBase
             RedirectUri = "http://127.0.0.1:30080",
             CodeVerifier = authorizeState.CodeVerifier
         });
-        
+
         InitApp.Invoke();
         // To get access_token by refresh_token
         // var refreshResult = await _oidcClient.RefreshTokenAsync(response.RefreshToken);

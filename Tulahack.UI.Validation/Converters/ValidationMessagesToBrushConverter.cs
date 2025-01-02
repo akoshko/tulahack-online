@@ -22,11 +22,15 @@ internal class ValidationMessagesToBrushConverter : IMultiValueConverter
     public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values.Count < 3)
+        {
             return null;
+        }
 
         var validationMessages = values[0] as IEnumerable<object>;
         if (validationMessages?.Any() != true)
+        {
             return null;
+        }
 
         var isAllMessagesAreWarnings = validationMessages
             .All(vm => (vm as ValidationMessage)?.ValidationMessageType is ValidationMessageType.Warning or ValidationMessageType.SimpleWarning);

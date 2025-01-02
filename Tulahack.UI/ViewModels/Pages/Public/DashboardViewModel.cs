@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
 using Tulahack.Dtos;
@@ -15,14 +16,15 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty] private DashboardDto _dashboardDto;
     [ObservableProperty] private List<TimelineItemViewModel> _timelineSource;
 
-    // AvaloniaUI Designer hack 
+    // AvaloniaUI Designer hack
     public DashboardViewModel() : this(new DesignDashboardService()) {}
     public DashboardViewModel(IDashboardService dashboardService)
     {
         _dashboardService = dashboardService;
     }
 
-    protected override async void OnActivated()
+    [RequiresUnreferencedCode("See comment above base class for more details.")]
+    protected async override void OnActivated()
     {
         DashboardDto = await _dashboardService.GetDashboardOverview();
         TimelineSource = DashboardDto.Timeline.Items
@@ -33,7 +35,7 @@ public partial class DashboardViewModel : ViewModelBase
                 Time = item.Start,
                 Header = item.Label,
                 ItemType = item.ItemType.ConvertToControlType()
-                
+
             })
             .ToList();
     }

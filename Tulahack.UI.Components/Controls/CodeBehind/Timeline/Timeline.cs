@@ -10,7 +10,7 @@ namespace Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 public class Timeline: ItemsControl
 {
     private static readonly FuncTemplate<Panel?> DefaultPanel = new((Func<Panel>)(() => new TimelinePanel()));
-    
+
     public static readonly StyledProperty<IBinding?> IconMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
         nameof(IconMemberBinding));
 
@@ -35,7 +35,7 @@ public class Timeline: ItemsControl
 
     public static readonly StyledProperty<IBinding?> ContentMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
         nameof(ContentMemberBinding));
-    
+
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(ItemsSource))]
     public IBinding? ContentMemberBinding
@@ -43,7 +43,7 @@ public class Timeline: ItemsControl
         get => GetValue(ContentMemberBindingProperty);
         set => SetValue(ContentMemberBindingProperty, value);
     }
-    
+
 
     public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty = AvaloniaProperty.Register<Timeline, IDataTemplate?>(
         nameof(IconTemplate));
@@ -84,7 +84,7 @@ public class Timeline: ItemsControl
         get => GetValue(TimeFormatProperty);
         set => SetValue(TimeFormatProperty, value);
     }
-    
+
 
     public static readonly StyledProperty<TimelineDisplayMode> ModeProperty = AvaloniaProperty.Register<Timeline, TimelineDisplayMode>(
         nameof(Mode));
@@ -118,7 +118,11 @@ public class Timeline: ItemsControl
 
     protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
-        if (item is TimelineItem t) return t;
+        if (item is TimelineItem t)
+        {
+            return t;
+        }
+
         return new TimelineItem();
     }
 
@@ -158,7 +162,11 @@ public class Timeline: ItemsControl
     protected override Size ArrangeOverride(Size finalSize)
     {
         var panel = this.ItemsPanelRoot as TimelinePanel;
-        if (panel != null) panel.Mode = this.Mode;
+        if (panel != null)
+        {
+            panel.Mode = this.Mode;
+        }
+
         SetItemMode();
         return base.ArrangeOverride(finalSize);
     }
@@ -207,10 +215,12 @@ public class Timeline: ItemsControl
             }
         }
     }
-    
+
     private void SetIfUnset<T>(AvaloniaObject target, StyledProperty<T> property, T value)
     {
         if (!target.IsSet(property))
+        {
             target.SetCurrentValue(property, value);
+        }
     }
 }

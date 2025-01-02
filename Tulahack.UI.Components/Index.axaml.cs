@@ -40,7 +40,11 @@ public class TulahackTheme : Styles
                 _locale = value;
                 var resource = TryGetLocaleResource(value);
                 var d = AvaloniaXamlLoader.Load(sp, new Uri(resource)) as ResourceDictionary;
-                if (d is null) return;
+                if (d is null)
+                {
+                    return;
+                }
+
                 foreach (var kv in d)
                 {
                     this.Resources.Add(kv);

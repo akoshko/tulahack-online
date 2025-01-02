@@ -121,10 +121,8 @@ public class TimelineItem: HeaderedContentControl
         AffectsMeasure<TimelineItem>(LeftWidthProperty, RightWidthProperty, IconWidthProperty);
     }
 
-    private void OnModeChanged(AvaloniaPropertyChangedEventArgs<TimelineItemPosition> args)
-    {
+    private void OnModeChanged(AvaloniaPropertyChangedEventArgs<TimelineItemPosition> args) =>
         SetMode(args.NewValue.Value);
-    }
 
     private void SetMode(TimelineItemPosition mode)
     {
@@ -145,10 +143,8 @@ public class TimelineItem: HeaderedContentControl
         SetMode(Position);
     }
 
-    private void OnIconChanged(AvaloniaPropertyChangedEventArgs<object?> args)
-    {
+    private void OnIconChanged(AvaloniaPropertyChangedEventArgs<object?> args) =>
         PseudoClasses.Set(PC_EmptyIcon, args.NewValue.Value is null);
-    }
 
     internal void SetEnd(bool start, bool end)
     {
@@ -158,7 +154,11 @@ public class TimelineItem: HeaderedContentControl
 
     internal (double left, double mid, double right) GetWidth()
     {
-        if (_headerPresenter is null) return new ValueTuple<double, double, double>(0, 0, 0);
+        if (_headerPresenter is null)
+        {
+            return new ValueTuple<double, double, double>(0, 0, 0);
+        }
+
         double header = _headerPresenter?.DesiredSize.Width ?? 0;
         double icon = _iconPresenter?.DesiredSize.Width ?? 0;
         double content = _contentPresenter?.DesiredSize.Width ?? 0;
@@ -183,7 +183,11 @@ public class TimelineItem: HeaderedContentControl
 
     internal void SetWidth(double? left, double? mid, double? right)
     {
-        if (_rootGrid is null) return;
+        if (_rootGrid is null)
+        {
+            return;
+        }
+
         _rootGrid.ColumnDefinitions[0].Width = new GridLength(left??0);
         _rootGrid.ColumnDefinitions[1].Width = new GridLength(mid??0);
         _rootGrid.ColumnDefinitions[2].Width = new GridLength(right??0);

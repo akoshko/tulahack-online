@@ -35,7 +35,7 @@ public class NotificationsService(INotificationMessageManager manager) : INotifi
             .Background("#333")
             .HasBadge("Info")
             .HasMessage(message)
-            .Dismiss().WithButton("Got it!", button => { })
+            .Dismiss().WithButton("Got it!", _ => { })
             .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
             .Queue();
 
@@ -48,8 +48,8 @@ public class NotificationsService(INotificationMessageManager manager) : INotifi
             .HasHeader("Attention!")
             .Animates(true)
             .HasMessage(message)
-            .Dismiss().WithButton("Ok", button => { })
-            .Dismiss().WithButton("Close", button => { })
+            .Dismiss().WithButton("Ok", _ => { })
+            .Dismiss().WithButton("Close", _ => { })
             .Dismiss().WithDelay(TimeSpan.FromSeconds(5))
             .Queue();
 

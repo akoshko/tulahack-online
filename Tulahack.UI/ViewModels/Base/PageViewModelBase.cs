@@ -1,6 +1,6 @@
 ﻿namespace Tulahack.UI.ViewModels.Base;
 
-public abstract partial class PageViewModelBase : ViewModelBase, IPageContext
+public abstract class PageViewModelBase : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 }

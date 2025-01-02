@@ -1,14 +1,13 @@
-﻿namespace Tulahack.UI.Validation.Resources.StringSources
+﻿namespace Tulahack.UI.Validation.Resources.StringSources;
+
+/// <summary>
+/// Special class which allows get string for a specific case.
+/// </summary>
+public interface IStringSource
 {
     /// <summary>
-    /// Special class which allows get string for a specific case.
+    /// Get string.
     /// </summary>
-    public interface IStringSource
-    {
-        /// <summary>
-        /// Get string.
-        /// </summary>
-        /// <returns>String for current case.</returns>
-        string GetString();
-    }
+    /// <returns>String for current case.</returns>
+    string GetString();
 }

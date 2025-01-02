@@ -27,7 +27,7 @@
         <converters:TeamCheckStatusConverter x:Key="TeamCheckStatusConverter" />
         <converters:TeamCheckResultToColorConverter x:Key="TeamCheckResultToColorConverter" />
         <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
-        
+
         <public:ApplicationFormConsentConverter x:Key="ApplicationFormConsentConverter" />
     </UserControl.Resources>
 
@@ -71,7 +71,7 @@
                         form:FormItem.IsRequired="True"
                         form:FormItem.Label="Telegram"
                         Text="{Binding ParticipatorTelegram}" />
-                    <MaskedTextBox 
+                    <MaskedTextBox
                         Width="300"
                         form:FormItem.IsRequired="True"
                         form:FormItem.Label="Номер телефона"
@@ -81,14 +81,14 @@
                 <form:FormGroup Header="Команда">
                     <StackPanel HorizontalAlignment="Left" Spacing="8">
                         <RadioButton
-                            IsChecked="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption, 
+                            IsChecked="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
                             GroupName="CreateOrJoinTeam"
                             Content="Создать команду" />
                         <RadioButton
-                            IsChecked="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption, 
+                            IsChecked="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
                             GroupName="CreateOrJoinTeam"
                             Content="У меня уже есть команда" />
@@ -96,8 +96,8 @@
                 </form:FormGroup>
                 <form:FormGroup x:Name="CreateNewTeamSection"
                                 Header="Создать новую команду"
-                                IsVisible="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption, 
+                                IsVisible="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).CreateNewTeamOption,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}">
                     <TextBox
                         Width="300"
@@ -126,8 +126,8 @@
                 </form:FormGroup>
                 <form:FormGroup x:Name="JoinExistingTeamSection"
                                 Header="Присоединиться к существующей команде"
-                                IsVisible="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption, 
+                                IsVisible="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).JoinExistingTeamOption,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}">
                     <TextBox
                         Width="300"
@@ -138,12 +138,12 @@
                         <StackPanel Orientation="Horizontal">
                             <Button
                                 HorizontalAlignment="Left" Content="Присоединиться"
-                                Command="{Binding 
-                                            Path=((viewModels:ApplicationFormViewModel)DataContext).CheckTeam, 
+                                Command="{Binding
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).CheckTeam,
                                             RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=Null}" />
                             <StackPanel x:Name="TeamCheckInProgress" Orientation="Horizontal"
-                                        IsVisible="{Binding 
-                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress, 
+                                        IsVisible="{Binding
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress,
                                             RelativeSource={RelativeSource AncestorType=UserControl}, FallbackValue=False}">
                                 <ProgressBar IsIndeterminate="True" Width="32"></ProgressBar>
                             </StackPanel>
@@ -151,24 +151,24 @@
                                         Orientation="Horizontal"
                                         Margin="18 0 0 0"
                                         Spacing="6"
-                                        IsVisible="{Binding 
-                                            Path=!((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress, 
+                                        IsVisible="{Binding
+                                            Path=!((viewModels:ApplicationFormViewModel)DataContext).TeamCheckInProgress,
                                             RelativeSource={RelativeSource AncestorType=UserControl}}">
                                 <PathIcon
                                     Width="16" Height="16"
                                     VerticalAlignment="Center"
-                                    Data="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResultIcon, 
+                                    Data="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResultIcon,
                                         RelativeSource={RelativeSource AncestorType=UserControl},
                                         Converter={x:Static converters:TypeConverters.IconConverter}}"
-                                    Foreground="{Binding 
-                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResult, 
+                                    Foreground="{Binding
+                                            Path=((viewModels:ApplicationFormViewModel)DataContext).TeamCheckResult,
                                             RelativeSource={RelativeSource AncestorType=UserControl},
                                             Converter={StaticResource TeamCheckResultToColorConverter}}" />
                                 <TextBlock
                                     VerticalAlignment="Center"
-                                    Text="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).ExistingTeam, 
+                                    Text="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).ExistingTeam,
                                         RelativeSource={RelativeSource AncestorType=UserControl},
                                         Converter={StaticResource TeamCheckStatusConverter}}" />
                             </StackPanel>
@@ -189,15 +189,15 @@
                 </form:FormGroup>
                 <CheckBox Content="Я даю свое согласие на обработку моих персональных данных"
                           x:Name="ConsentCheckBox"
-                          form:FormItem.NoLabel="True" 
+                          form:FormItem.NoLabel="True"
                           IsChecked="{Binding IsConsentChecked}">
                 </CheckBox>
                 <form:FormItem NoLabel="True">
                     <Button
                         HorizontalAlignment="Left"
                         Content="Отправить заявку"
-                        Command="{Binding 
-                                        Path=((viewModels:ApplicationFormViewModel)DataContext).SubmitApplication, 
+                        Command="{Binding
+                                        Path=((viewModels:ApplicationFormViewModel)DataContext).SubmitApplication,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}" >
                         <Button.IsEnabled>
                             <Binding Path="IsConsentChecked"/>

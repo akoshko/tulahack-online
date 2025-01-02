@@ -38,5 +38,5 @@ public class SuperuserController : ControllerBase
         }
 
         return File(ms.ToArray(), "application/zip", $"tulahack-{DateTime.Now.ToString(CultureInfo.InvariantCulture)}.zip");
-    }  
+    }
 }

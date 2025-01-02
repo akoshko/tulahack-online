@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Tulahack.API.Extensions;
 using Tulahack.API.Services;
 using Tulahack.API.Utils;
 using Tulahack.Dtos;

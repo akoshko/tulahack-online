@@ -149,10 +149,8 @@ public static class NotificationMessageBuilderLinq
     /// <param name="builder">The builder.</param>
     /// <returns>Returns the notification message builder.</returns>
     public static NotificationMessageBuilder.DismissNotificationMessage Dismiss(
-        this NotificationMessageBuilder builder)
-    {
-        return new NotificationMessageBuilder.DismissNotificationMessage(builder);
-    }
+        this NotificationMessageBuilder builder) =>
+        new(builder);
 
     /// <summary>
     /// Dismisses the notification message after specified time.
@@ -198,10 +196,8 @@ public static class NotificationMessageBuilderLinq
     public static NotificationMessageBuilder WithButton(
         this NotificationMessageBuilder.DismissNotificationMessage dismiss,
         object content,
-        Action<INotificationMessageButton> callback)
-    {
-        return dismiss.Builder.WithButton(content, dismiss.Builder.DismissBefore(callback));
-    }
+        Action<INotificationMessageButton> callback) =>
+        dismiss.Builder.WithButton(content, dismiss.Builder.DismissBefore(callback));
 
     /// <summary>
     /// Adds the button to the notification message.
@@ -235,14 +231,12 @@ public static class NotificationMessageBuilderLinq
     /// </returns>
     private static Action<INotificationMessage> DismissBefore(
         this NotificationMessageBuilder builder,
-        Action<INotificationMessage> callback)
-    {
-        return call =>
+        Action<INotificationMessage> callback) =>
+        call =>
         {
             builder.Manager.Dismiss(builder.Message);
             callback?.Invoke(builder.Message);
         };
-    }
 
     /// <summary>
     /// Attached the dismiss action before callback action.
@@ -255,14 +249,12 @@ public static class NotificationMessageBuilderLinq
     /// </returns>
     private static Action<INotificationMessageButton> DismissBefore(
         this NotificationMessageBuilder builder,
-        Action<INotificationMessageButton> callback)
-    {
-        return button =>
+        Action<INotificationMessageButton> callback) =>
+        button =>
         {
             builder.Manager.Dismiss(builder.Message);
             callback?.Invoke(button);
         };
-    }
 
     /// <summary>
     /// Sets the notification message overlay.

@@ -39,10 +39,14 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (minLength < 0)
+        {
             throw new ArgumentException("MinLength should be not less 0", nameof(minLength));
+        }
 
         if (minLength > maxLength)
+        {
             throw new ArgumentException("MinLength should be not less MaxLength", nameof(minLength));
+        }
 
         return ruleBuilder.SetValidator(new LengthValidator<TObject>(_ => minLength, _ => maxLength, validationMessageType));
     }
@@ -66,7 +70,9 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (maxLength < 0)
+        {
             throw new ArgumentException("MaxLength should be not less 0", nameof(maxLength));
+        }
 
         return ruleBuilder.SetValidator(new LengthValidator<TObject>(minLengthExpression, _ => maxLength, validationMessageType));
     }
@@ -90,7 +96,9 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (minLength < 0)
+        {
             throw new ArgumentException("MinLength should be not less 0", nameof(minLength));
+        }
 
         return ruleBuilder.SetValidator(new LengthValidator<TObject>(_ => minLength, maxLengthExpression, validationMessageType));
     }
@@ -111,10 +119,8 @@ public static class StringExtensions
         Expression<Func<TObject, int>> maxLengthExpression,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
         where TNext : IRuleBuilder<TObject, string, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new LengthValidator<TObject>(minLengthExpression, maxLengthExpression, validationMessageType));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new LengthValidator<TObject>(minLengthExpression, maxLengthExpression, validationMessageType));
 
     /// <summary>
     /// Defines a length validator on the current rule builder, but only for string properties.
@@ -133,7 +139,9 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (minLength < 0)
+        {
             throw new ArgumentException("MinLength should be not less 0", nameof(minLength));
+        }
 
         return ruleBuilder.SetValidator(new MinLengthValidator<TObject>(_ => minLength, validationMessageType));
     }
@@ -152,10 +160,8 @@ public static class StringExtensions
         Expression<Func<TObject, int>> minLengthExpression,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
         where TNext : IRuleBuilder<TObject, string, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new MinLengthValidator<TObject>(minLengthExpression, validationMessageType));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new MinLengthValidator<TObject>(minLengthExpression, validationMessageType));
 
     /// <summary>
     /// Defines a length validator on the current rule builder, but only for string properties.
@@ -174,7 +180,9 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (maxLength < 0)
+        {
             throw new ArgumentException("MaxLength should be not less 0", nameof(maxLength));
+        }
 
         return ruleBuilder.SetValidator(new MaxLengthValidator<TObject>(_ => maxLength, validationMessageType));
     }
@@ -193,10 +201,8 @@ public static class StringExtensions
         Expression<Func<TObject, int>> maxLengthExpression,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
         where TNext : IRuleBuilder<TObject, string, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new MaxLengthValidator<TObject>(maxLengthExpression, validationMessageType));
-    }
+        where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new MaxLengthValidator<TObject>(maxLengthExpression, validationMessageType));
 
     /// <summary>
     /// Defines a length validator on the current rule builder, but only for string properties.
@@ -215,7 +221,9 @@ public static class StringExtensions
         where TObject : IValidatableObject
     {
         if (length < 0)
+        {
             throw new ArgumentException("Length should be not less 0", nameof(length));
+        }
 
         return ruleBuilder.SetValidator(new ExactLengthValidator<TObject>(_ => length, validationMessageType));
     }
@@ -234,11 +242,9 @@ public static class StringExtensions
         Expression<Func<TObject, int>> lengthExpression,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
         where TNext : IRuleBuilder<TObject, string, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new ExactLengthValidator<TObject>(lengthExpression, validationMessageType));
-    }
-    
+        where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new ExactLengthValidator<TObject>(lengthExpression, validationMessageType));
+
     /// <summary>
     /// Defines a 'not empty' validator on the current rule builder, but only for strings.
     /// Validation will fail if the string is null or empty.
@@ -251,11 +257,9 @@ public static class StringExtensions
         this IRuleBuilderInitial<TObject, string, TNext> ruleBuilder,
         ValidationMessageType validationMessageType = ValidationMessageType.SimpleError)
         where TNext : IRuleBuilder<TObject, string, TNext>
-        where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new NotEmptyStringValidator<TObject>(validationMessageType));
-    }
-    
+        where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new NotEmptyStringValidator<TObject>(validationMessageType));
+
     /// <summary>
     /// Defines a regular expression validator on the current rule builder, but only for string properties.
     /// The validation will succeed if the property value is null or empty.
@@ -274,7 +278,9 @@ public static class StringExtensions
             where TObject : IValidatableObject
     {
         if(string.IsNullOrEmpty(regexPattern))
+        {
             throw new ArgumentException("RegexPattern should be not empty", nameof(regexPattern));
+        }
 
         return ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(_ => regexPattern, validationMessageType));
     }
@@ -299,7 +305,9 @@ public static class StringExtensions
             where TObject : IValidatableObject
     {
         if (string.IsNullOrEmpty(regexPattern))
+        {
             throw new ArgumentException("RegexPattern should be not empty", nameof(regexPattern));
+        }
 
         return ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(_ => regexPattern, regexOptions, validationMessageType));
     }
@@ -319,10 +327,8 @@ public static class StringExtensions
         Expression<Func<TObject, string>> regexPatternExpression,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
             where TNext : IRuleBuilder<TObject, string, TNext>
-            where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(regexPatternExpression, validationMessageType));
-    }
+            where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(regexPatternExpression, validationMessageType));
 
     /// <summary>
     /// Defines a regular expression validator on the current rule builder, but only for string properties.
@@ -341,8 +347,6 @@ public static class StringExtensions
         RegexOptions regexOptions,
         ValidationMessageType validationMessageType = ValidationMessageType.Error)
             where TNext : IRuleBuilder<TObject, string, TNext>
-            where TObject : IValidatableObject
-    {
-        return ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(regexPatternExpression, regexOptions, validationMessageType));
-    }
+            where TObject : IValidatableObject =>
+        ruleBuilder.SetValidator(new RegularExpressionValidator<TObject>(regexPatternExpression, regexOptions, validationMessageType));
 }

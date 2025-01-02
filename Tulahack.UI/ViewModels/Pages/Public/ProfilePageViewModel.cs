@@ -1,4 +1,5 @@
-﻿using CommunityToolkit.Mvvm.ComponentModel;
+﻿using System.Diagnostics.CodeAnalysis;
+using CommunityToolkit.Mvvm.ComponentModel;
 using Tulahack.Dtos;
 using Tulahack.UI.Extensions;
 using Tulahack.UI.Services;
@@ -8,9 +9,9 @@ using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Public;
 
-public partial class ProfilePageViewModel : ViewModelBase, IPageContext
+public partial class ProfilePageViewModel : ViewModelBase
 {
-    public bool CanGoBack { get; }
+
 
     [ObservableProperty] private PersonBaseDto _account;
     private readonly IAuthContextProvider _provider;
@@ -27,11 +28,12 @@ public partial class ProfilePageViewModel : ViewModelBase, IPageContext
     {
         _userService = userService;
         _provider = provider;
-        
+
         Account = _provider.GetDefaultAccount();
     }
-    
-    protected override async void OnActivated()
+
+    [RequiresUnreferencedCode("See comment above base class for more details.")]
+    protected async override void OnActivated()
     {
         switch (_provider.GetRole())
         {

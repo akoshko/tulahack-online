@@ -60,7 +60,9 @@ public class PropertiesThrottle : IPropertiesThrottle
         CancellationToken cancellationToken)
     {
         if (!propertyChangedStopwatches.TryGetValue(propertyName, out var propertyChangedStopwatch))
+        {
             return Task.CompletedTask;
+        }
 
         return propertyChangedStopwatch.WaitUntilAsync(propertyDueTo, cancellationToken);
     }

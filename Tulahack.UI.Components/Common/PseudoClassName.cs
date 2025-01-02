@@ -30,6 +30,6 @@ public static partial class PseudoClassName
     public const string PC_Empty = ":empty";
 
     #endregion
-    
-    
+
+
 }

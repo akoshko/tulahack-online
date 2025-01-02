@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -48,18 +47,18 @@ public class TeamService : ITeamService
     public async Task<TeamDto?> GetTeam()
     {
         var result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            "teams", 
-            _serializerOptions, 
+            "teams",
+            _serializerOptions,
             _notificationsService);
         return result;
     }
-    
+
 
     public async Task<TeamDto?> GetTeamById(Guid teamId)
     {
         var result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            $"teams/{teamId}", 
-            _serializerOptions, 
+            $"teams/{teamId}",
+            _serializerOptions,
             _notificationsService);
         return result;
     }
@@ -67,16 +66,16 @@ public class TeamService : ITeamService
     public async Task<List<StorageFileDto>> GetStorageFiles()
     {
         var result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            "storage/files", 
+            "storage/files",
             _serializerOptions,
             _notificationsService);
         return result;
     }
-    
+
     public async Task<List<StorageFileDto>> GetStorageFiles(Guid teamId)
     {
         var result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            $"storage/{teamId}/files", 
+            $"storage/{teamId}/files",
             _serializerOptions,
             _notificationsService);
         return result;
@@ -110,7 +109,7 @@ public class TeamService : ITeamService
                 serializerOptions: _serializerOptions);
         _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
     }
-    
+
     public async Task CreateTeam(ContestApplicationDto application)
     {
         await _httpClient

@@ -7,7 +7,7 @@ namespace Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 
 public class TimelineIconTemplateSelector: ResourceDictionary, IDataTemplate
 {
-    
+
     public Control? Build(object? param)
     {
         if (param is TimelineItemType t)
@@ -26,8 +26,6 @@ public class TimelineIconTemplateSelector: ResourceDictionary, IDataTemplate
         return null;
     }
 
-    public bool Match(object? data)
-    {
-        return data is TimelineItemType;
-    }
+    public bool Match(object? data) =>
+        data is TimelineItemType;
 }

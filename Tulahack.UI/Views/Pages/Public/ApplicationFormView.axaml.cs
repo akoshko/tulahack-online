@@ -12,17 +12,23 @@ namespace Tulahack.UI.Views.Pages.Public;
 
 public class ApplicationFormConsentConverter : IMultiValueConverter
 {
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    public object? Convert(IList<object?>? values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values?.Count != 2)
+        {
             throw new NotSupportedException();
-        
+        }
+
         if (!values.All(x => x is bool or UnsetValueType or null or ContestApplicationDto))
+        {
             throw new NotSupportedException();
-        
+        }
+
         if (values[0] is not bool consent ||
             values[1] is not ContestApplicationDto dto)
+        {
             return BindingOperations.DoNothing;
+        }
 
         dto.Validate();
         return consent && !dto.HasErrors;

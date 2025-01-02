@@ -21,11 +21,9 @@ public static class MessageExtensions
         this IRuleBuilder<TObject, TProp, TNext> ruleBuilder,
         string message)
             where TNext : IRuleBuilder<TObject, TProp, TNext>
-            where TObject : IValidatableObject
-    {
-        return ruleBuilder.WithMessageSource(new StaticStringSource(message));
-    }
-    
+            where TObject : IValidatableObject =>
+        ruleBuilder.WithMessageSource(new StaticStringSource(message));
+
     /// <summary>
     /// Allow replace default last validator's message with localized text.
     /// </summary>
@@ -38,11 +36,9 @@ public static class MessageExtensions
         this IRuleBuilder<TObject, TProp, TNext> ruleBuilder,
         string messageKey)
             where TNext : IRuleBuilder<TObject, TProp, TNext>
-            where TObject : IValidatableObject
-    {
-        return ruleBuilder.WithMessageSource(new LanguageStringSource(messageKey));
-    }
-    
+            where TObject : IValidatableObject =>
+        ruleBuilder.WithMessageSource(new LanguageStringSource(messageKey));
+
     /// <summary>
     /// Allow replace default last validator's message with localized text.
     /// </summary>
@@ -57,8 +53,6 @@ public static class MessageExtensions
         string resource,
         string messageKey)
             where TNext : IRuleBuilder<TObject, TProp, TNext>
-            where TObject : IValidatableObject
-    {
-        return ruleBuilder.WithMessageSource(new LanguageStringSource(resource, messageKey));
-    }
+            where TObject : IValidatableObject =>
+        ruleBuilder.WithMessageSource(new LanguageStringSource(resource, messageKey));
 }

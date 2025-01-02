@@ -2,7 +2,6 @@ using System.Globalization;
 using Avalonia;
 using Avalonia.Data.Converters;
 using Avalonia.Media;
-using Tulahack.UI.Components.Controls.CodeBehind;
 using Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 
 namespace Tulahack.UI.Components.Converters;
@@ -55,7 +54,7 @@ public class TimelineItemTypeToIconForegroundConverter: AvaloniaObject, IMultiVa
     }
 
 
-    public object? Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(IList<object?> values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values[0] is TimelineItemType type)
         {

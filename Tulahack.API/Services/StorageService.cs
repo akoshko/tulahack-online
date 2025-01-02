@@ -111,7 +111,7 @@ public class StorageService : IStorageService
         var ownerId = await GetStorageId(userAccount);
         if (ownerId == Guid.Empty)
             throw new ValidationException("Unable to get storage id for provided account");
-        
+
         var filePath = ownerId.GetStoragePath(userAccount.Role, purpose, formFile.FileName);
         if (string.IsNullOrEmpty(filePath))
             throw new ValidationException("Invalid file path");
@@ -148,7 +148,7 @@ public class StorageService : IStorageService
     public Task<StorageFile?> GetFile(Guid userId, Guid fileId, CancellationToken cancellationToken) =>
         _tulahackContext.StorageFiles
             .FirstOrDefaultAsync(item => item.Id == fileId, cancellationToken: cancellationToken);
-    
+
     public Task<List<StorageFile>> GetFiles(Guid personId)
         => _tulahackContext.StorageFiles
             .Where(item => item.Owner == personId)

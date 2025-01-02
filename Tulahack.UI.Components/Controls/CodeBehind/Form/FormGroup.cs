@@ -13,7 +13,11 @@ public class FormGroup: HeaderedItemsControl
 
     protected override Control CreateContainerForItemOverride(object? item, int index, object? recycleKey)
     {
-        if (item is not Control control) return new FormItem();
+        if (item is not Control control)
+        {
+            return new FormItem();
+        }
+
         return new FormItem
         {
             Content = control,

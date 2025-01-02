@@ -17,5 +17,5 @@ public static partial class PartNames
     public const string PART_BackgroundBorder = "PART_BackgroundBorder";
     public const string PART_FocusElement = "PART_FocusElement";
     public const string PART_Thumb = "PART_Thumb";
-    
+
 }

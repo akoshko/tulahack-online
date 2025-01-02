@@ -17,24 +17,27 @@ public partial class NavigationViewModel : ViewModelBase
     private readonly TitleViewModel _titleViewModel;
     private readonly ContentViewModel _contentViewModel;
     private readonly ILogger<NavigationViewModel> _logger;
-    
+
     [ObservableProperty] private ObservableCollection<PageContextModel> _navigationItems;
     [ObservableProperty] private PageContextModel? _selectedListItem;
 
     partial void OnSelectedListItemChanged(PageContextModel? value)
     {
-        if (value is null) return;
-        
+        if (value is null)
+        {
+            return;
+        }
+
         NavigateToPage(value);
     }
-    
+
     public NavigationViewModel() : this(
         DesignerMocks.ContentViewModelMock,
         DesignerMocks.TitleViewModelMock,
         new DesignNavigationService(),
         WeakReferenceMessenger.Default,
         DesignerMocks.LoggerMock<NavigationViewModel>().Object) {}
-    
+
     public NavigationViewModel(
         ContentViewModel contentViewModel,
         TitleViewModel titleViewModel,
@@ -45,20 +48,22 @@ public partial class NavigationViewModel : ViewModelBase
         _contentViewModel = contentViewModel;
         _titleViewModel = titleViewModel;
         _logger = logger;
-        
+
         // navigationService and messenger are registered as singletons
-        messenger.Register<SelectedPageContextChanged>(this, (r, m) =>
+        messenger.Register<SelectedPageContextChanged>(this, (_, m) =>
         {
             var page = navigationService.Pages.First(item => item.ViewModelType == m.Value.ContextType);
             if (m.Value.NavigationArgs is null)
+            {
                 NavigateToPage(page);
-            
+            }
+
             NavigateToPage(page, m.Value.NavigationArgs);
         });
-        
+
         var menu = navigationService.GetApplicationMenu();
         NavigationItems = new ObservableCollection<PageContextModel>(menu);
-        
+
         SelectedListItem = NavigationItems.First(item => item.ViewModelType == typeof(DashboardViewModel));
     }
 
@@ -69,21 +74,23 @@ public partial class NavigationViewModel : ViewModelBase
             _logger.LogWarning($"Cannot perform navigation: {context?.Label ?? "Unknown"} page context is null!");
             return;
         }
-            
+
         _logger.LogWarning($"Navigating to {context.Label} page");
         var pageContext = Ioc.Default.GetService(context.ViewModelType) as ViewModelBase;
-        if (pageContext is null)     
+        if (pageContext is null)
         {
             _logger.LogWarning($"Cannot perform navigation: not found {context.Label} page ViewModel in DI container!");
             return;
         }
-        
+
         _contentViewModel.CurrentPageContext = pageContext;
         _titleViewModel.CurrentPage = context;
-        
+
         if (args is not null)
+        {
             pageContext.SetArgs(args);
-        
+        }
+
         pageContext.Activate();
     }
 }

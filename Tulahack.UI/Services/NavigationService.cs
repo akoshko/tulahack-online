@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.Extensions.Logging;
 using Tulahack.UI.Constants;
@@ -31,7 +30,7 @@ public class NavigationService : INavigationService
     private readonly IMessenger _messenger;
     private readonly IAuthContextProvider _authContextProvider;
     private readonly ILogger<INavigationService> _logger;
-    
+
     private readonly IEnumerable<PageContextModel> _pages = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
@@ -54,7 +53,7 @@ public class NavigationService : INavigationService
         new(NavigationKeys.HackathonOverview, IconKeys.HeartPulseRegular, typeof(HackathonOverviewPageViewModel)),
         new(NavigationKeys.HackathonSettings, IconKeys.OptionsRegular, typeof(HackathonSettingsPageViewModel))
     };
-    
+
     private readonly IEnumerable<PageContextModel> _appTitleButtons = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
@@ -118,29 +117,39 @@ public class NavigationService : INavigationService
         _logger.LogWarning($"Claim role: {role}");
 
         if (role == Groups.Public)
+        {
             return _publicPages;
+        }
 
         if (role == Groups.Contestant)
+        {
             return _publicPages
                 .Concat(_contestantPages);
+        }
 
         if (role == Groups.Expert)
+        {
             return _publicPages
                 .Concat(_contestantPages)
                 .Concat(_expertPages);
+        }
 
         if (role == Groups.Moderator)
+        {
             return _publicPages
                 .Concat(_contestantPages)
                 .Concat(_expertPages)
                 .Concat(_moderatorPages);
+        }
 
         if (role == Groups.Superuser)
+        {
             return _publicPages
                 .Concat(_contestantPages)
                 .Concat(_expertPages)
                 .Concat(_moderatorPages)
                 .Concat(_superuserPages);
+        }
 
         return _publicPages;
     }

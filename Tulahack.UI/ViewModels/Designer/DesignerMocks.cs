@@ -35,7 +35,7 @@ public class DesignNavigationService : INavigationService
         new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel)),
         new(NavigationKeys.ApplicationForm, IconKeys.RocketRegular, typeof(ApplicationFormViewModel)),
         new(NavigationKeys.ContestTask, IconKeys.TasksAppRegular, typeof(ContestTaskPageViewModel)),
-        
+
         new(NavigationKeys.Dashboard, IconKeys.HomeRegular, typeof(DashboardViewModel)),
         new(NavigationKeys.Team, IconKeys.PeopleRegular, typeof(TeamPageViewModel)),
         new(NavigationKeys.ContestTaskboard, IconKeys.TaskListRegular, typeof(ContestTaskboardPageViewModel)),
@@ -55,14 +55,12 @@ public class DesignNavigationService : INavigationService
 
     public IEnumerable<PageContextModel> Pages => _allPages;
 
-    public IEnumerable<PageContextModel> GetTitleMenu()
-    {
-        return new List<PageContextModel>()
+    public IEnumerable<PageContextModel> GetTitleMenu() =>
+        new List<PageContextModel>()
         {
             new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
             new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel))
         };
-    }
 
     public IEnumerable<PageContextModel> GetApplicationMenu() => _allPages.Skip(3);
 
@@ -91,26 +89,20 @@ public class DesignNavigationService : INavigationService
 
 public class DesignDashboardService : IDashboardService
 {
-    public Task<DashboardDto> GetDashboardOverview()
-    {
-        return Task.FromResult(new DashboardDto());
-    }
+    public Task<DashboardDto> GetDashboardOverview() =>
+        Task.FromResult(new DashboardDto());
 }
 
 public class DesignTaskboardService : ITaskboardService
 {
-    public Task<List<ContestCaseDto>> GetContestCases()
-    {
-        return Task.FromResult(new List<ContestCaseDto>());
-    }
+    public Task<List<ContestCaseDto>> GetContestCases() =>
+        Task.FromResult(new List<ContestCaseDto>());
 }
 
 public class DesignUserService : IUserService
 {
-    public Task<T?> GetAccountAs<T>(string entityName) where T : class
-    {
-        return Task.FromResult(new ContestantDto { Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid() } as T);
-    }
+    public Task<T?> GetAccountAs<T>(string entityName) where T : class =>
+        Task.FromResult(new ContestantDto { Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid() } as T);
 
     public Task<ContestantDto?> GetAccount() => Task.FromResult(new ContestantDto { Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid() })!;
     public Task SaveUserPreferences(UserPreferencesDto preferences) => Task.FromResult(true);
@@ -119,15 +111,15 @@ public class DesignUserService : IUserService
 public class DesignApplicationService : IApplicationService
 {
     public Task SubmitApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default) => Task.FromResult(true);
 
     public Task ApproveApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default) => Task.FromResult(true);
 
     public Task DeclineApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default) => Task.FromResult(true);
 }
 

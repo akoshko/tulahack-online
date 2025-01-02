@@ -14,10 +14,8 @@ public class NotificationMessageFactory : INotificationMessageFactory
     /// <returns>
     /// Returns new instance of notification message.
     /// </returns>
-    public INotificationMessage GetMessage()
-    {
-        return new NotificationMessage();
-    }
+    public INotificationMessage GetMessage() =>
+        new NotificationMessage();
 
     /// <summary>
     /// Gets the button.
@@ -25,8 +23,6 @@ public class NotificationMessageFactory : INotificationMessageFactory
     /// <returns>
     /// Returns new instance of notification message button.
     /// </returns>
-    public INotificationMessageButton GetButton()
-    {
-        return new NotificationMessageButton();
-    }
+    public INotificationMessageButton GetButton() =>
+        new NotificationMessageButton();
 }

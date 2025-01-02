@@ -22,10 +22,8 @@ public partial class AppViewModel : PersistedViewModelBase<AppState>
     public INotificationMessageManager Manager { get; set; }
 
     [RelayCommand]
-    private void TriggerPane()
-    {
+    private void TriggerPane() =>
         IsPaneOpen = !IsPaneOpen;
-    }
 
     public AppViewModel() : this(
         DesignerMocks.NavigationViewModelMock,

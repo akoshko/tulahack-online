@@ -1,5 +1,4 @@
-﻿using System;
-using Tulahack.Dtos;
+﻿using Tulahack.Dtos;
 using Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 
 namespace Tulahack.UI.Extensions;

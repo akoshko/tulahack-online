@@ -28,28 +28,22 @@ public class NotificationMessageBuilder
     /// Creates the message.
     /// </summary>
     /// <returns>Returns new instance of notification message builder that is used to create notification message.</returns>
-    public static NotificationMessageBuilder CreateMessage()
-    {
-        return new NotificationMessageBuilder();
-    }
+    public static NotificationMessageBuilder CreateMessage() =>
+        new();
 
     /// <summary>
     /// Sets the header.
     /// </summary>
     /// <param name="header">The header.</param>
-    public void SetHeader(string header)
-    {
+    public void SetHeader(string header) =>
         this.Message.Header = header;
-    }
 
     /// <summary>
     /// Sets the message.
     /// </summary>
     /// <param name="message">The message.</param>
-    public void SetMessage(string message)
-    {
+    public void SetMessage(string message) =>
         this.Message.Message = message;
-    }
 
     /// <summary>
     /// Adds the button.
@@ -58,7 +52,9 @@ public class NotificationMessageBuilder
     public void AddButton(INotificationMessageButton button)
     {
         if (button == null)
+        {
             throw new ArgumentNullException(nameof(button));
+        }
 
         this.Message.Buttons.Add(button);
     }
@@ -67,19 +63,15 @@ public class NotificationMessageBuilder
     /// Sets the badge.
     /// </summary>
     /// <param name="badgeText">The badge text.</param>
-    public void SetBadge(string badgeText)
-    {
+    public void SetBadge(string badgeText) =>
         this.Message.BadgeText = badgeText;
-    }
 
     /// <summary>
     /// Sets the accent.
     /// </summary>
     /// <param name="accentBrush">The accent brush.</param>
-    public void SetAccent(IBrush accentBrush)
-    {
+    public void SetAccent(IBrush accentBrush) =>
         this.Message.AccentBrush = accentBrush;
-    }
 
     /*/// <summary>
     /// Sets the background.
@@ -94,64 +86,50 @@ public class NotificationMessageBuilder
     /// Sets the overlay.
     /// </summary>
     /// <param name="overlay">The overlay.</param>
-    public void SetOverlay(object overlay)
-    {
+    public void SetOverlay(object overlay) =>
         this.Message.OverlayContent = overlay;
-    }
 
     /// <summary>
     /// Sets the top additional content.
     /// </summary>
     /// <param name="additionalContentTop">The additional content.</param>
-    public void SetAdditionalContentTop(object additionalContentTop)
-    {
+    public void SetAdditionalContentTop(object additionalContentTop) =>
         this.Message.AdditionalContentTop = additionalContentTop;
-    }
 
     /// <summary>
     /// Sets the bottom additional content.
     /// </summary>
     /// <param name="additionalContentBottom">The additional content.</param>
-    public void SetAdditionalContentBottom(object additionalContentBottom)
-    {
+    public void SetAdditionalContentBottom(object additionalContentBottom) =>
         this.Message.AdditionalContentBottom = additionalContentBottom;
-    }
 
     /// <summary>
     /// Sets the left additional content.
     /// </summary>
     /// <param name="additionalContentLeft">The additional content.</param>
-    public void SetAdditionalContentLeft(object additionalContentLeft)
-    {
+    public void SetAdditionalContentLeft(object additionalContentLeft) =>
         this.Message.AdditionalContentLeft = additionalContentLeft;
-    }
 
     /// <summary>
     /// Sets the right additional content.
     /// </summary>
     /// <param name="additionalContentRight">The additional content.</param>
-    public void SetAdditionalContentRight(object additionalContentRight)
-    {
+    public void SetAdditionalContentRight(object additionalContentRight) =>
         this.Message.AdditionalContentRight = additionalContentRight;
-    }
 
     /// <summary>
     /// Sets the center additional content.
     /// </summary>
     /// <param name="additionalContentMain">The additional content.</param>
-    public void SetAdditionalContentMain(object additionalContentMain)
-    {
+    public void SetAdditionalContentMain(object additionalContentMain) =>
         this.Message.AdditionalContentMain = additionalContentMain;
-    }
 
     /// <summary>
     /// Sets the additional content over the badge.
     /// </summary>
     /// <param name="additionalContentOverBadge">The additional content.</param>
-    public void SetAdditionalContentOverBadge(object additionalContentOverBadge)
-    {
+    public void SetAdditionalContentOverBadge(object additionalContentOverBadge) =>
         this.Message.AdditionalContentOverBadge = additionalContentOverBadge;
-    }
 
     /*/// <summary>
     /// Sets the text brush.
@@ -177,19 +155,15 @@ public class NotificationMessageBuilder
     /// <summary>
     /// Sets the text brush.
     /// </summary>
-    public void SetForeground(IBrush brush)
-    {
+    public void SetForeground(IBrush brush) =>
         this.Message.Foreground = brush;
-    }
 
     /// <summary>
     /// Sets the background.
     /// </summary>
     /// <param name="backgroundBrush">The background brush.</param>
-    public void SetBackground(IBrush backgroundBrush)
-    {
+    public void SetBackground(IBrush backgroundBrush) =>
         this.Message.Background = backgroundBrush;
-    }
 
     /// <summary>
     /// Queues the message to manager.
@@ -207,10 +181,8 @@ public class NotificationMessageBuilder
     /// </summary>
     /// <param name="delayMilliseconds">The delay in milliseconds.</param>
     /// <param name="action">The action.</param>
-    public void Delay(int delayMilliseconds, Action<INotificationMessage> action)
-    {
+    public void Delay(int delayMilliseconds, Action<INotificationMessage> action) =>
         this.Delay(TimeSpan.FromMilliseconds(delayMilliseconds), action);
-    }
 
     /// <summary>
     /// Executes the action after specified delay time.
@@ -220,12 +192,16 @@ public class NotificationMessageBuilder
     public void Delay(TimeSpan delay, Action<INotificationMessage> action)
     {
         if (OperatingSystem.IsBrowser())
+        {
             Task.Delay(delay).ContinueWith(
                 context => action(this.Message));
+        }
         else
+        {
             Task.Delay(delay).ContinueWith(
                 context => action(this.Message),
                 TaskScheduler.FromCurrentSynchronizationContext());
+        }
     }
 
     /// <summary>

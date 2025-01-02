@@ -1,28 +1,27 @@
-﻿namespace Tulahack.UI.Validation.Enums
+﻿namespace Tulahack.UI.Validation.Enums;
+
+/// <summary>
+/// The type of validation message.
+/// </summary>
+public enum ValidationMessageType
 {
     /// <summary>
-    /// The type of validation message.
+    /// Used when property has invalid value.
     /// </summary>
-    public enum ValidationMessageType
-    {
-        /// <summary>
-        /// Used when property has invalid value.
-        /// </summary>
-        Error,
+    Error,
 
-        /// <summary>
-        /// A simple error (for example, an empty field), which should be shown only when mouse over the control.
-        /// </summary>
-        SimpleError,
+    /// <summary>
+    /// A simple error (for example, an empty field), which should be shown only when mouse over the control.
+    /// </summary>
+    SimpleError,
 
-        /// <summary>
-        /// Allows show message, but don't broke validation.
-        /// </summary>
-        Warning,
+    /// <summary>
+    /// Allows show message, but don't broke validation.
+    /// </summary>
+    Warning,
 
-        /// <summary>
-        /// Allows show message only if mouse over the control and don't broke validation.
-        /// </summary>
-        SimpleWarning
-    }
+    /// <summary>
+    /// Allows show message only if mouse over the control and don't broke validation.
+    /// </summary>
+    SimpleWarning
 }

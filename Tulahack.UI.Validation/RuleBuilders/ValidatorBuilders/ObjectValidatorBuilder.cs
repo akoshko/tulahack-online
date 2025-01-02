@@ -3,35 +3,38 @@ using System.Collections.Generic;
 using Tulahack.UI.Validation.ObjectValidator;
 using Tulahack.UI.Validation.ValidatableObject;
 
-namespace Tulahack.UI.Validation.RuleBuilders.ValidatorBuilders
+namespace Tulahack.UI.Validation.RuleBuilders.ValidatorBuilders;
+
+/// <inheritdoc cref="IObjectValidatorBuilder" />
+internal class ObjectValidatorBuilder<TObject> : IObjectValidatorBuilder
+    where TObject : IValidatableObject
 {
-    /// <inheritdoc cref="IObjectValidatorBuilder" />
-    internal class ObjectValidatorBuilder<TObject> : IObjectValidatorBuilder
-        where TObject : IValidatableObject
+    private readonly IReadOnlyList<IRuleBuilder<TObject>> _rulesBuilders;
+
+    /// <summary>
+    /// Create validation builder with specified adapters.
+    /// </summary>
+    public ObjectValidatorBuilder(IReadOnlyList<IRuleBuilder<TObject>> rulesBuilders)
     {
-        private readonly IReadOnlyList<IRuleBuilder<TObject>> _rulesBuilders;
+        _rulesBuilders = rulesBuilders;
+    }
 
-        /// <summary>
-        /// Create validation builder with specified adapters.
-        /// </summary>
-        public ObjectValidatorBuilder(IReadOnlyList<IRuleBuilder<TObject>> rulesBuilders)
+    /// <inheritdoc />
+    public Type SupportedType => typeof(TObject);
+
+    /// <inheritdoc />
+    public IObjectValidator Build(IValidatableObject instance)
+    {
+        if (instance == null)
         {
-            _rulesBuilders = rulesBuilders;
+            throw new ArgumentNullException(nameof(instance));
         }
 
-        /// <inheritdoc />
-        public Type SupportedType => typeof(TObject);
-
-        /// <inheritdoc />
-        public IObjectValidator Build(IValidatableObject instance)
+        if (instance is TObject i)
         {
-            if (instance == null)
-                throw new ArgumentNullException(nameof(instance));
-
-            if (instance is TObject i)
-                return new ObjectValidator<TObject>(i, _rulesBuilders);
-
-            throw new NotSupportedException($"Cannot create validator for type {instance.GetType()}, supported only {typeof(TObject)}");
+            return new ObjectValidator<TObject>(i, _rulesBuilders);
         }
+
+        throw new NotSupportedException($"Cannot create validator for type {instance.GetType()}, supported only {typeof(TObject)}");
     }
 }

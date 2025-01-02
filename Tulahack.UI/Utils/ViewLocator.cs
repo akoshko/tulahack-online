@@ -10,23 +10,26 @@ public class ViewLocator : IDataTemplate
     public Control? Build(object? data)
     {
         if (data is null)
-            return null;
-
-        var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
-        var type = Type.GetType(name);
-
-        if (type != null)
         {
-            var control = (Control)Activator.CreateInstance(type)!;
-            control.DataContext = data;
-            return control;
+            return null;
         }
 
-        return new TextBlock { Text = "Not Found: " + name };
+        var name = data.GetType().FullName!.Replace("ViewModel", "View", StringComparison.Ordinal);
+#pragma warning disable IL2057
+        var type = Type.GetType(name);
+#pragma warning restore IL2057
+
+        if (type == null)
+        {
+            return new TextBlock { Text = "Not Found: " + name };
+        }
+
+        var control = (Control)Activator.CreateInstance(type)!;
+        control.DataContext = data;
+        return control;
+
     }
 
-    public bool Match(object? data)
-    {
-        return data is ViewModelBase;
-    }
+    public bool Match(object? data) =>
+        data is ViewModelBase;
 }

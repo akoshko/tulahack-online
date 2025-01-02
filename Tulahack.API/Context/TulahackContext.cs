@@ -26,7 +26,7 @@ public class TulahackContext : DbContext, ITulahackContext
     {
         // how to create tables with model inheritance and entity type hierarchy mapping
         // https://learn.microsoft.com/en-us/ef/core/modeling/inheritance
-        
+
         // Table-per-concrete-type configuration
         // Separate table for each entity: Accounts, Contestants, Experts and Moderators
         // modelBuilder.Entity<PersonBase>()
@@ -50,9 +50,9 @@ public class TulahackContext : DbContext, ITulahackContext
         //     .ToTable("Teams")
         //     .Property(p => p.Id)
         //     .ValueGeneratedOnAdd();
-        
+
         // Table-per-hierarchy and discriminator configuration
-        // Single table 'Accounts' for PersonBase, Contestant, Expert and Moderator entities 
+        // Single table 'Accounts' for PersonBase, Contestant, Expert and Moderator entities
         modelBuilder.Entity<PersonBase>()
             .HasDiscriminator(item => item.Role)
             .HasValue<PersonBase>(ContestRole.Visitor)
@@ -68,18 +68,18 @@ public class TulahackContext : DbContext, ITulahackContext
         modelBuilder.Entity<Expert>();
         modelBuilder.Entity<Moderator>();
         modelBuilder.Entity<Superuser>();
-        
+
         // ugly hack to enable inherited model type mutation
         modelBuilder.Entity<PersonBase>()
             .Property<ContestRole>(nameof(PersonBase.Role))
             .Metadata
             .SetAfterSaveBehavior(PropertySaveBehavior.Save);
-        
+
         modelBuilder.Entity<Team>()
             .ToTable("Teams")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
-        
+
         modelBuilder.Entity<ContestCase>()
             .ToTable("ContestCases")
             .Property(p => p.Id)
@@ -98,7 +98,7 @@ public class TulahackContext : DbContext, ITulahackContext
             .ValueGeneratedOnAdd();
     }
 
-    public async Task<T> AddNewRecord<T>(T newItem) where T: class 
+    public async Task<T> AddNewRecord<T>(T newItem) where T: class
     {
         var dbSet = Set<T>();
         var result = dbSet.Add(newItem);
@@ -122,7 +122,7 @@ public class TulahackContext : DbContext, ITulahackContext
         return result.Entity;
     }
 
-    public async Task<T> AddNewRecord<T>(T newItem, CancellationToken cancellationToken) where T: class 
+    public async Task<T> AddNewRecord<T>(T newItem, CancellationToken cancellationToken) where T: class
     {
         var dbSet = Set<T>();
         var result = dbSet.Add(newItem);

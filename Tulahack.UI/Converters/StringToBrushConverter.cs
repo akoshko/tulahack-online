@@ -7,9 +7,9 @@ namespace Tulahack.UI.Converters;
 
 public class StringToBrushConverter : IValueConverter
 {
-    public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value is string brush ? Brush.Parse(brush) : Brushes.Transparent;
 
-    public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
+    public object ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture)
         => value?.ToString() ?? "Transparent";
 }

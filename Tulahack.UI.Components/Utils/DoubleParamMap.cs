@@ -1,73 +1,74 @@
-﻿namespace Tulahack.UI.Components.Utils
+﻿namespace Tulahack.UI.Components.Utils;
+
+public class DoubleParamMap<OuterKeyType, InnerKeyType, InfoType>
 {
-    public class DoubleParamMap<OuterKeyType, InnerKeyType, InfoType>
+    Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>> _dictionary =
+        new Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>>();
+
+    public void AddKeyValue
+    (
+        OuterKeyType outerKey,
+        InnerKeyType innerKey,
+        InfoType infoData
+    )
     {
-        Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>> _dictionary =
-            new Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>>();
+        Dictionary<InnerKeyType, InfoType> innerDictionary;
 
-        public void AddKeyValue
-        (
-            OuterKeyType outerKey,
-            InnerKeyType innerKey,
-            InfoType infoData
-        )
+        if (!_dictionary.TryGetValue(outerKey, out innerDictionary))
         {
-            Dictionary<InnerKeyType, InfoType> innerDictionary;
+            innerDictionary = new Dictionary<InnerKeyType, InfoType>();
 
-            if (!_dictionary.TryGetValue(outerKey, out innerDictionary))
-            {
-                innerDictionary = new Dictionary<InnerKeyType, InfoType>();
-
-                _dictionary[outerKey] = innerDictionary;
-            }
-
-            innerDictionary[innerKey] = infoData;
+            _dictionary[outerKey] = innerDictionary;
         }
 
-        public bool TryGetValue
-        (
-            OuterKeyType outerKey,
-            InnerKeyType innerKey,
-            out InfoType infoData
+        innerDictionary[innerKey] = infoData;
+    }
+
+    public bool TryGetValue
+    (
+        OuterKeyType outerKey,
+        InnerKeyType innerKey,
+        out InfoType infoData
+    )
+    {
+        infoData = default(InfoType);
+        Dictionary<InnerKeyType, InfoType> innerDictionary;
+
+        if (
+            (!_dictionary.TryGetValue(outerKey, out innerDictionary)) ||
+            (innerDictionary == null)
         )
         {
-            infoData = default(InfoType);
-            Dictionary<InnerKeyType, InfoType> innerDictionary;
-
-            if (
-                (!_dictionary.TryGetValue(outerKey, out innerDictionary)) ||
-                (innerDictionary == null)
-               )
-            {
-                return false;
-            }
-
-            return
-                innerDictionary.TryGetValue(innerKey, out infoData);
+            return false;
         }
 
-        public bool ContainsKeys
-        (
-            OuterKeyType outerKey,
-            InnerKeyType innerKey
-        )
+        return
+            innerDictionary.TryGetValue(innerKey, out infoData);
+    }
+
+    public bool ContainsKeys
+    (
+        OuterKeyType outerKey,
+        InnerKeyType innerKey
+    )
+    {
+        InfoType infoData;
+
+        return this.TryGetValue(outerKey, innerKey, out infoData);
+    }
+
+    public InfoType GetValue
+    (
+        OuterKeyType outerKey,
+        InnerKeyType innerKey
+    )
+    {
+        InfoType result = default(InfoType);
+        if (!TryGetValue(outerKey, innerKey, out result))
         {
-            InfoType infoData;
-
-            return this.TryGetValue(outerKey, innerKey, out infoData);
+            throw new Exception("There is no value in dictionary");
         }
 
-        public InfoType GetValue
-        (
-            OuterKeyType outerKey, 
-            InnerKeyType innerKey
-        )
-        {
-            InfoType result = default(InfoType);
-            if (!TryGetValue(outerKey, innerKey, out result))
-                throw new Exception("There is no value in dictionary");
-
-            return result;
-        }
+        return result;
     }
 }

@@ -3,65 +3,74 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Tulahack.UI.Validation.Resources.StringSources
+namespace Tulahack.UI.Validation.Resources.StringSources;
+
+/// <summary>
+/// String source for validation message.
+/// </summary>
+public class ValidationMessageStringSource : IStringSource
 {
+    private readonly IStringSource _patternStringSource;
+    private readonly Dictionary<string, IStringSource> _arguments;
+
     /// <summary>
-    /// String source for validation message.
+    /// Create new instance of validation message source.
     /// </summary>
-    public class ValidationMessageStringSource : IStringSource
+    /// <param name="patternStringSource">Source of message patter.</param>
+    /// <param name="arguments">Sources of message arguments.</param>
+    public ValidationMessageStringSource(IStringSource patternStringSource, Dictionary<string, IStringSource> arguments)
     {
-        private readonly IStringSource _patternStringSource;
-        private readonly Dictionary<string, IStringSource> _arguments;
+        _patternStringSource = patternStringSource ?? throw new ArgumentNullException(nameof(patternStringSource));
+        _arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+    }
 
-        /// <summary>
-        /// Create new instance of validation message source.
-        /// </summary>
-        /// <param name="patternStringSource">Source of message patter.</param>
-        /// <param name="arguments">Sources of message arguments.</param>
-        public ValidationMessageStringSource(IStringSource patternStringSource, Dictionary<string, IStringSource> arguments)
+    /// <inheritdoc />
+    public string GetString()
+    {
+        var messagePattern = new StringBuilder(_patternStringSource.GetString());
+
+        foreach (var messageArgument in _arguments)
         {
-            _patternStringSource = patternStringSource ?? throw new ArgumentNullException(nameof(patternStringSource));
-            _arguments = arguments ?? throw new ArgumentNullException(nameof(arguments));
+            messagePattern = messagePattern.Replace($"{{{messageArgument.Key}}}", messageArgument.Value.GetString());
         }
 
-        /// <inheritdoc />
-        public string GetString()
+        return messagePattern.ToString();
+    }
+
+    /// <inheritdoc />
+    public override bool Equals(object? obj)
+    {
+        if (ReferenceEquals(null, obj))
         {
-            var messagePattern = new StringBuilder(_patternStringSource.GetString());
-
-            foreach (var messageArgument in _arguments)
-            {
-                messagePattern = messagePattern.Replace($"{{{messageArgument.Key}}}", messageArgument.Value.GetString());
-            }
-
-            return messagePattern.ToString();
+            return false;
         }
 
-        /// <inheritdoc />
-        public override bool Equals(object? obj)
+        if (ReferenceEquals(this, obj))
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((ValidationMessageStringSource) obj);
+            return true;
         }
 
-        /// <inheritdoc />
-        public override int GetHashCode()
+        if (obj.GetType() != this.GetType())
         {
-            unchecked
-            {
-                return (_patternStringSource.GetHashCode() * 397) ^ (_arguments.GetHashCode());
-            }
+            return false;
         }
 
-        /// <summary>
-        /// Check if two sources are equal.
-        /// </summary>
-        protected bool Equals(ValidationMessageStringSource other)
+        return Equals((ValidationMessageStringSource) obj);
+    }
+
+    /// <inheritdoc />
+    public override int GetHashCode()
+    {
+        unchecked
         {
-            return Equals(_patternStringSource, other._patternStringSource) &&
-                    _arguments.SequenceEqual(other._arguments);
+            return (_patternStringSource.GetHashCode() * 397) ^ (_arguments.GetHashCode());
         }
     }
+
+    /// <summary>
+    /// Check if two sources are equal.
+    /// </summary>
+    protected bool Equals(ValidationMessageStringSource other) =>
+        Equals(_patternStringSource, other._patternStringSource) &&
+        _arguments.SequenceEqual(other._arguments);
 }

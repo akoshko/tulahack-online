@@ -9,7 +9,7 @@ using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Public;
 
-public partial class SettingsViewModel : ViewModelBase, IPageContext
+public partial class SettingsViewModel : ViewModelBase
 {
     private readonly IUserService _userService;
     private readonly ILogger<SettingsViewModel> _logger;
@@ -25,7 +25,7 @@ public partial class SettingsViewModel : ViewModelBase, IPageContext
     [ObservableProperty] private ContestantDto? _contestant;
     [ObservableProperty] private ContestCaseComplexityDto? _complexity;
 
-    // AvaloniaUI Designer hack 
+    // AvaloniaUI Designer hack
     public SettingsViewModel() : this(
         new DesignUserService(),
         DesignerMocks.LoggerMock<SettingsViewModel>().Object)
@@ -44,7 +44,9 @@ public partial class SettingsViewModel : ViewModelBase, IPageContext
     public async Task SaveChanges()
     {
         if (Preferences is null)
+        {
             return;
+        }
 
         // await _userService.SaveUserPreferences(Preferences);
     }

@@ -11,9 +11,9 @@ namespace Tulahack.UI.Utils;
 public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged,
     IDisposable
 {
-    private const string CountString = "Count";
+    private const string PC_CountString = "Count";
 
-    private const string IndexerName = "Item[]";
+    private const string PC_IndexerName = "Item[]";
 
     // ReSharper disable once StaticMemberInGenericType
     private static readonly NotifyCollectionChangedEventHandler EmptyDelegate = delegate { };
@@ -34,9 +34,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
     private event NotifyCollectionChangedEventHandler CollectionChanged = EmptyDelegate;
 
-    public BatchObservableCollection()
-    {
-    }
+    public BatchObservableCollection() { }
 
 
     private BatchObservableCollection(BatchObservableCollection<T>? parent, bool notify)
@@ -68,15 +66,18 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                 {
                     _fireCountAndIndexerChanged = delegate
                     {
-                        OnPropertyChanged(new PropertyChangedEventArgs(CountString));
-                        OnPropertyChanged(new PropertyChangedEventArgs(IndexerName));
+                        OnPropertyChanged(new PropertyChangedEventArgs(PC_CountString));
+                        OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
                     };
-                    _fireIndexerChanged = delegate { OnPropertyChanged(new PropertyChangedEventArgs(IndexerName)); };
+                    _fireIndexerChanged = delegate { OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName)); };
                 }
 
                 PropertyChanged += value;
             }
-            else if (_notifyInfo.RootCollection != null) _notifyInfo.RootCollection.PropertyChanged += value;
+            else if (_notifyInfo.RootCollection != null)
+            {
+                _notifyInfo.RootCollection.PropertyChanged += value;
+            }
         }
 
         remove
@@ -91,7 +92,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                     _fireIndexerChanged = delegate { };
                 }
             }
-            else if (_notifyInfo.RootCollection != null) _notifyInfo.RootCollection.PropertyChanged -= value;
+            else if (_notifyInfo.RootCollection != null)
+            {
+                _notifyInfo.RootCollection.PropertyChanged -= value;
+            }
         }
     }
 
@@ -102,12 +106,20 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             if (null == _notifyInfo)
             {
                 if (1 == CollectionChanged.GetInvocationList().Length)
+                {
                     CollectionChanged -= EmptyDelegate;
+                }
 
                 CollectionChanged += value;
-                if (CollectionChanged != null) _disableReentry = CollectionChanged.GetInvocationList().Length > 1;
+                if (CollectionChanged != null)
+                {
+                    _disableReentry = CollectionChanged.GetInvocationList().Length > 1;
+                }
             }
-            else if (_notifyInfo.RootCollection != null) _notifyInfo.RootCollection.CollectionChanged += value;
+            else if (_notifyInfo.RootCollection != null)
+            {
+                _notifyInfo.RootCollection.CollectionChanged += value;
+            }
         }
 
         remove
@@ -117,11 +129,16 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                 CollectionChanged -= value;
 
                 if ((null == CollectionChanged) || (0 == CollectionChanged.GetInvocationList().Length))
+                {
                     CollectionChanged += EmptyDelegate;
+                }
 
                 _disableReentry = CollectionChanged.GetInvocationList().Length > 1;
             }
-            else if (_notifyInfo.RootCollection != null) _notifyInfo.RootCollection.CollectionChanged -= value;
+            else if (_notifyInfo.RootCollection != null)
+            {
+                _notifyInfo.RootCollection.CollectionChanged -= value;
+            }
         }
     }
 
@@ -133,20 +150,14 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
         }
     }
 
-    public void Move(int oldIndex, int newIndex)
-    {
+    public void Move(int oldIndex, int newIndex) =>
         MoveItem(oldIndex, newIndex);
-    }
 
-    public BatchObservableCollection<T> DelayNotifications()
-    {
-        return new BatchObservableCollection<T>((null == _notifyInfo) ? this : _notifyInfo.RootCollection, true);
-    }
+    public BatchObservableCollection<T> DelayNotifications() =>
+        new((null == _notifyInfo) ? this : _notifyInfo.RootCollection, true);
 
-    public BatchObservableCollection<T> DisableNotifications()
-    {
-        return new BatchObservableCollection<T>((null == _notifyInfo) ? this : _notifyInfo.RootCollection, false);
-    }
+    public BatchObservableCollection<T> DisableNotifications() =>
+        new((null == _notifyInfo) ? this : _notifyInfo.RootCollection, false);
 
     protected override void ClearItems()
     {
@@ -206,10 +217,8 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
     }
 
 
-    private void OnPropertyChanged(PropertyChangedEventArgs e)
-    {
+    private void OnPropertyChanged(PropertyChangedEventArgs e) =>
         PropertyChanged?.Invoke(this, e);
-    }
 
     private void OnCollectionChanged(NotifyCollectionChangedEventArgs e)
     {
@@ -219,10 +228,8 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
         }
     }
 
-    private IDisposable BlockReentrancy()
-    {
-        return _monitor.Enter();
-    }
+    private IDisposable BlockReentrancy() =>
+        _monitor.Enter();
 
     private void CheckReentrancy()
     {
@@ -240,13 +247,19 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
     private void DisposeInternal()
     {
-        if (_notifyInfo is not { HasEventArgs: true }) return;
+        if (_notifyInfo is not { HasEventArgs: true })
+        {
+            return;
+        }
+
         if (null != _notifyInfo.RootCollection?.PropertyChanged)
         {
             if (_notifyInfo.IsCountChanged)
-                _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(CountString));
+            {
+                _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PC_CountString));
+            }
 
-            _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(IndexerName));
+            _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
         }
 
         using (_notifyInfo.RootCollection?.BlockReentrancy())
@@ -273,15 +286,9 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             return this;
         }
 
-        public void Dispose()
-        {
-            --_referenceCount;
-        }
+        public void Dispose() => --_referenceCount;
 
-        public bool IsNotifying
-        {
-            get { return _referenceCount != 0; }
-        }
+        public bool IsNotifying => _referenceCount != 0;
     }
 
     private class NotificationInfo
@@ -318,9 +325,15 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                         wrapper.CollectionChanged = (_, e) =>
                         {
                             AssertActionType(e);
-                            if (e.NewItems == null) return;
+                            if (e.NewItems == null)
+                            {
+                                return;
+                            }
+
                             foreach (T item in e.NewItems)
+                            {
                                 _newItems.Add(item);
+                            }
                         };
                         wrapper.CollectionChanged(sender, args);
                         break;
@@ -331,9 +344,15 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                         wrapper.CollectionChanged = (_, e) =>
                         {
                             AssertActionType(e);
-                            if (e.OldItems == null) return;
+                            if (e.OldItems == null)
+                            {
+                                return;
+                            }
+
                             foreach (T item in e.OldItems)
+                            {
                                 _oldItems.Add(item);
+                            }
                         };
                         wrapper.CollectionChanged(sender, args);
                         break;
@@ -345,12 +364,20 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                         {
                             AssertActionType(e);
                             if (e.NewItems != null)
+                            {
                                 foreach (T item in e.NewItems)
+                                {
                                     _newItems.Add(item);
+                                }
+                            }
 
                             if (e.OldItems != null)
+                            {
                                 foreach (T item in e.OldItems)
+                                {
                                     _oldItems.Add(item);
+                                }
+                            }
                         };
                         wrapper.CollectionChanged(sender, args);
                         break;
@@ -399,8 +426,13 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
                     case NotifyCollectionChangedAction.Replace:
                         if (_newItems != null)
+                        {
                             if (_oldItems != null)
+                            {
                                 return new NotifyCollectionChangedEventArgs(_action.Value, _newItems, _oldItems);
+                            }
+                        }
+
                         break;
                 }
 
@@ -408,10 +440,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             }
         }
 
-        public bool HasEventArgs
-        {
-            get { return _action.HasValue; }
-        }
+        public bool HasEventArgs => _action.HasValue;
 
         private void AssertActionType(NotifyCollectionChangedEventArgs e)
         {
