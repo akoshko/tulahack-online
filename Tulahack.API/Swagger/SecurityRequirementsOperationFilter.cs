@@ -9,26 +9,23 @@ public class SecurityRequirementsOperationFilter : IOperationFilter
     public void Apply(OpenApiOperation operation, OperationFilterContext context)
     {
         // Policy names map to scopes
-        var requiredScopes = context.MethodInfo
+        IEnumerable<string?> requiredScopes = context.MethodInfo
             .GetCustomAttributes(true)
             .OfType<AuthorizeAttribute>()
             .Select(attr => attr.Policy)
-            .Distinct();
+            .Distinct()
+            .ToList();
 
-        if (requiredScopes.Any())
+        if (!requiredScopes.Any())
         {
-            var bearerScheme = new OpenApiSecurityScheme
-            {
-                Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
-            };
-
-            operation.Security = new List<OpenApiSecurityRequirement>
-            {
-                new ()
-                {
-                    [ bearerScheme ] = requiredScopes.ToList()
-                }
-            };
+            return;
         }
+
+        var bearerScheme = new OpenApiSecurityScheme
+        {
+            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+        };
+
+        operation.Security = [new OpenApiSecurityRequirement { [bearerScheme] = requiredScopes.ToList() }];
     }
 }

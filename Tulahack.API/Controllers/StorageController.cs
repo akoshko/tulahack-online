@@ -29,10 +29,12 @@ public class StorageController : ControllerBase
     [ProducesResponseType(typeof(StorageFile), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get(Guid fileId)
     {
-        var result = await _storageService.GetFile(HttpContext.User.GetUserId(), fileId, default);
+        StorageFile? result = await _storageService.GetFile(HttpContext.User.GetUserId(), fileId, default);
 
         if (result is null)
+        {
             return NotFound("Cannot find file for provided FileId");
+        }
 
         return Ok(result);
     }
@@ -40,12 +42,14 @@ public class StorageController : ControllerBase
     [HttpGet("file")]
     public async Task<IActionResult> GetFile(Guid fileId)
     {
-        var result = await _storageService.GetFile(HttpContext.User.GetUserId(), fileId, default);
+        StorageFile? result = await _storageService.GetFile(HttpContext.User.GetUserId(), fileId, default);
 
         if (result is null)
+        {
             return NotFound("Cannot find file for provided FileId");
+        }
 
-        var stream = new FileStream(result.Filepath, FileMode.Open, FileAccess.Read);
+        await using var stream = new FileStream(result.Filepath, FileMode.Open, FileAccess.Read);
         return File(stream, MediaTypeNames.Application.Octet, result.Filename);
     }
 
@@ -53,11 +57,7 @@ public class StorageController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<StorageFile>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFiles(Guid teamId)
     {
-        var result = await _storageService.GetTeamFiles(teamId);
-
-        if (result is null)
-            return NotFound("Cannot find any file for provided User");
-
+        List<StorageFile> result = await _storageService.GetTeamFiles(teamId);
         return Ok(result);
     }
 
@@ -65,11 +65,7 @@ public class StorageController : ControllerBase
     [ProducesResponseType(typeof(IEnumerable<StorageFile>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetFiles()
     {
-        var result = await _storageService.GetFiles(HttpContext.User.GetUserId());
-
-        if (result is null)
-            return NotFound("Cannot find any file for provided User");
-
+        List<StorageFile> result = await _storageService.GetFiles(HttpContext.User.GetUserId());
         return Ok(result);
     }
 
@@ -77,7 +73,7 @@ public class StorageController : ControllerBase
     [ProducesResponseType(typeof(StorageFile), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create(IFormFile files, [FromQuery] FilePurposeType purposeType)
     {
-        var result = await _storageService.UploadFile(
+        StorageFile result = await _storageService.UploadFile(
             files,
             purpose: purposeType,
             userId: HttpContext.User.GetUserId(),
@@ -87,15 +83,10 @@ public class StorageController : ControllerBase
 
     [HttpPatch]
     [ProducesResponseType(typeof(StorageFile), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Patch(Guid fileId)
-    {
-        return Ok();
-    }
+    public Task<IActionResult> Patch() =>
+        Task.FromResult<IActionResult>(Ok());
 
     [HttpDelete]
     [ProducesResponseType(typeof(StorageFile), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Delete()
-    {
-        return Ok();
-    }
+    public Task<IActionResult> Delete() => Task.FromResult<IActionResult>(Ok());
 }

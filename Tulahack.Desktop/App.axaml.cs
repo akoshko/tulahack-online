@@ -38,21 +38,21 @@ public class App : Application
         base.OnFrameworkInitializationCompleted();
     }
 
-    private async void InitApp(
+    private void InitApp(
         AuthViewModel splashScreenViewModel,
         AuthView splashScreen,
         IClassicDesktopStyleApplicationLifetime application)
     {
         try
         {
-            var token = splashScreenViewModel.GetAccessToken();
+            IdentityModel.Client.TokenResponse token = splashScreenViewModel.GetAccessToken();
             if (string.IsNullOrEmpty(token.AccessToken))
             {
                 return;
             }
 
             var services = new ServiceCollection();
-            var configuration = services.AddConfiguration();
+            Microsoft.Extensions.Configuration.IConfiguration configuration = services.AddConfiguration();
             var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost";
             // TODO: check for default origin
             services.AddDesktopTokenProvider(token);
@@ -61,12 +61,12 @@ public class App : Application
             services.AddServices();
             services.AddViewModels();
 
-            var provider = services.BuildServiceProvider();
+            ServiceProvider provider = services.BuildServiceProvider();
             Ioc.Default.ConfigureServices(provider);
 
             var appWindow = new AppViewWindow();
             application.MainWindow = appWindow;
-            var mainWindowViewModel = Ioc.Default.GetRequiredService<AppViewModel>();
+            AppViewModel mainWindowViewModel = Ioc.Default.GetRequiredService<AppViewModel>();
             application.MainWindow.DataContext = mainWindowViewModel;
 
             appWindow.Show();
@@ -81,14 +81,14 @@ public class App : Application
     private void InitDesignApp()
     {
         var services = new ServiceCollection();
-        var configuration = services.AddConfiguration();
+        Microsoft.Extensions.Configuration.IConfiguration configuration = services.AddConfiguration();
         var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost:8080";
         services.AddDesignProviders();
         services.AddEssentials(origin);
         services.AddServices();
         services.AddViewModels();
 
-        var provider = services.BuildServiceProvider();
+        ServiceProvider provider = services.BuildServiceProvider();
         Ioc.Default.ConfigureServices(provider);
     }
 }

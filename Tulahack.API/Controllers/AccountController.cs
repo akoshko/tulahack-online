@@ -28,8 +28,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Get()
     {
-        var user = await _accountService.GetAccount(HttpContext.User.GetUserId());
-        if (user is null) return NotFound();
+        Model.PersonBase? user = await _accountService.GetAccount(HttpContext.User.GetUserId());
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -38,8 +41,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ContestantDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetContestant()
     {
-        var user = await _accountService.GetContestantDetails(HttpContext.User.GetUserId());
-        if (user is null) return NotFound();
+        ContestantDto? user = await _accountService.GetContestantDetails(HttpContext.User.GetUserId());
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -48,8 +54,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ExpertDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetExpert()
     {
-        var user = await _accountService.GetExpertDetails(HttpContext.User.GetUserId());
-        if (user is null) return NotFound();
+        ExpertDto? user = await _accountService.GetExpertDetails(HttpContext.User.GetUserId());
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -58,8 +67,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ModeratorDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetModerator()
     {
-        var user = await _accountService.GetModeratorDetails(HttpContext.User.GetUserId());
-        if (user is null) return NotFound();
+        ModeratorDto? user = await _accountService.GetModeratorDetails(HttpContext.User.GetUserId());
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -68,8 +80,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Patch([FromBody] PersonBaseDto dto)
     {
-        var user = await _accountService.UpdateAccount(dto);
-        if (user is null) return NotFound();
+        PersonBaseDto? user = await _accountService.UpdateAccount(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -78,8 +93,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ContestantDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> PatchContestant([FromBody] ContestantDto dto)
     {
-        var user = await _accountService.UpdateContestant(dto);
-        if (user is null) return NotFound();
+        ContestantDto? user = await _accountService.UpdateContestant(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -88,8 +106,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ExpertDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> PatchExpert([FromBody] ExpertDto dto)
     {
-        var user = await _accountService.UpdateExpert(dto);
-        if (user is null) return NotFound();
+        ExpertDto? user = await _accountService.UpdateExpert(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -98,8 +119,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ModeratorDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> PatchModerator([FromBody] ModeratorDto dto)
     {
-        var user = await _accountService.UpdateModerator(dto);
-        if (user is null) return NotFound();
+        ModeratorDto? user = await _accountService.UpdateModerator(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -108,8 +132,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] PersonBaseDto dto)
     {
-        var user = await _accountService.CreateAccount(dto);
-        if (user is null) return NotFound();
+        PersonBaseDto? user = await _accountService.CreateAccount(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -118,8 +145,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ContestantDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateContestant([FromBody] ContestantDto dto)
     {
-        var user = await _accountService.CreateContestant(dto);
-        if (user is null) return NotFound();
+        ContestantDto? user = await _accountService.CreateContestant(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -128,8 +158,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ExpertDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateExpert([FromBody] ExpertDto dto)
     {
-        var user = await _accountService.CreateExpert(dto);
-        if (user is null) return NotFound();
+        ExpertDto? user = await _accountService.CreateExpert(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -138,8 +171,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(ModeratorDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateModerator([FromBody] ModeratorDto dto)
     {
-        var user = await _accountService.CreateModerator(dto);
-        if (user is null) return NotFound();
+        ModeratorDto? user = await _accountService.CreateModerator(dto);
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }
@@ -148,8 +184,11 @@ public class AccountController : ControllerBase
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> Delete()
     {
-        var user = await _accountService.DeleteAccount(HttpContext.User.GetUserId());
-        if (user is null) return NotFound();
+        Model.PersonBase? user = await _accountService.DeleteAccount(HttpContext.User.GetUserId());
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }

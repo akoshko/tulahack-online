@@ -14,7 +14,7 @@ public class AuthViewModel : ViewModelBase
     private const string PC_ClientId = "tulahack-client";
     private const string PC_Secret = "<TOP_SECRET>";
 
-    private TokenResponse _tokenResponse = new ();
+    private TokenResponse _tokenResponse = new();
     public Action InitApp { get; set; } = () => { };
     public AsyncRelayCommand Auth { get; set; }
 
@@ -23,15 +23,14 @@ public class AuthViewModel : ViewModelBase
         Auth = new AsyncRelayCommand(Run);
     }
 
-    public async Task Run() =>
-        await Login();
+    private async Task Run() => await Login();
 
     private async Task Login()
     {
         // create a redirect URI using an available port on the loopback address.
         // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
         var browser = new SystemBrowser(30080);
-        string redirectUri = string.Format($"http://127.0.0.1:{browser.Port}");
+        var redirectUri = $"http://127.0.0.1:{browser.Port}";
 
         var options = new OidcClientOptions
         {
@@ -47,20 +46,22 @@ public class AuthViewModel : ViewModelBase
 
         var oidcClient = new OidcClient(options);
 
-        var authorizeState = await oidcClient.PrepareLoginAsync();
-        var browserResult = await browser.InvokeAsync(new BrowserOptions(authorizeState.StartUrl, string.Empty));
+        AuthorizeState authorizeState = await oidcClient.PrepareLoginAsync();
+        BrowserResult browserResult =
+            await browser.InvokeAsync(new BrowserOptions(authorizeState.StartUrl, string.Empty));
 
-        var httpClient = new HttpClient();
+        using var httpClient = new HttpClient();
         var code = HttpUtility.ParseQueryString($"{redirectUri}{browserResult.Response}").Get("code");
-        _tokenResponse = await httpClient.RequestAuthorizationCodeTokenAsync(new AuthorizationCodeTokenRequest
-        {
-            Address = $"{PC_Authority}/protocol/openid-connect/token",
-            ClientId = PC_ClientId,
-            ClientSecret = PC_Secret,
-            Code = code ?? string.Empty,
-            RedirectUri = "http://127.0.0.1:30080",
-            CodeVerifier = authorizeState.CodeVerifier
-        });
+
+        using var request = new AuthorizationCodeTokenRequest();
+        request.Address = $"{PC_Authority}/protocol/openid-connect/token";
+        request.ClientId = PC_ClientId;
+        request.ClientSecret = PC_Secret;
+        request.Code = code ?? string.Empty;
+        request.RedirectUri = "http://127.0.0.1:30080";
+        request.CodeVerifier = authorizeState.CodeVerifier;
+
+        _tokenResponse = await httpClient.RequestAuthorizationCodeTokenAsync(request);
 
         InitApp.Invoke();
         // To get access_token by refresh_token

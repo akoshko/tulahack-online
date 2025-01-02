@@ -27,14 +27,17 @@ public class AssessmentController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(PersonBase), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetUser()
+    public async Task<IActionResult> Get()
     {
-        var ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
-        Guid.TryParse(ssoUserClaim.Value, out var userId);
+        Claim ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
+        _ = Guid.TryParse(ssoUserClaim.Value, out Guid userId);
 
-        var user = await _accountService.GetAccount(userId);
+        PersonBase? user = await _accountService.GetAccount(userId);
 
-        if (user is null) return NotFound();
+        if (user is null)
+        {
+            return NotFound();
+        }
 
         return Ok(user);
     }

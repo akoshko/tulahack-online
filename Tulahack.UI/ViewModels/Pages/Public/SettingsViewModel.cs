@@ -14,10 +14,12 @@ public partial class SettingsViewModel : ViewModelBase
     private readonly IUserService _userService;
     private readonly ILogger<SettingsViewModel> _logger;
 
-    [ObservableProperty] private ContestCaseComplexityDto _difficulty = ContestCaseComplexityDto.Easy;
-    [ObservableProperty] private FormOfParticipationTypeDto _participation = FormOfParticipationTypeDto.Online;
-
-    [ObservableProperty] private UserPreferencesDto? _preferences = new()
+    [ObservableProperty]
+    private ContestCaseComplexityDto _difficulty = ContestCaseComplexityDto.Easy;
+    [ObservableProperty]
+    private FormOfParticipationTypeDto _participation = FormOfParticipationTypeDto.Online;
+    [ObservableProperty]
+    private UserPreferencesDto? _preferences = new()
     {
         SelectedTheme = UserPreferredThemeDto.Default
     };
@@ -29,8 +31,7 @@ public partial class SettingsViewModel : ViewModelBase
     public SettingsViewModel() : this(
         new DesignUserService(),
         DesignerMocks.LoggerMock<SettingsViewModel>().Object)
-    {
-    }
+    { }
 
     public SettingsViewModel(
         IUserService userService,
@@ -41,13 +42,14 @@ public partial class SettingsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    public async Task SaveChanges()
+    public Task SaveChanges()
     {
         if (Preferences is null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
+        return Task.CompletedTask;
         // await _userService.SaveUserPreferences(Preferences);
     }
 }

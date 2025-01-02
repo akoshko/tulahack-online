@@ -2,7 +2,7 @@
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 RUN apt-get update -y
 RUN apt-get install -y python3
@@ -19,9 +19,9 @@ COPY Tulahack.UI.Components/ Tulahack.UI.Components/
 COPY Tulahack.Web/ Tulahack.Web/
 # https://docs.avaloniaui.net/docs/guides/platforms/how-to-use-web-assembly
 #
-# Beware: Currently using dotnet publish with the -o or --output flag 
-# does not produce the AppBundle folder in the output directory. 
-# (See this issue. https://github.com/dotnet/runtime/issues/94319)  
+# Beware: Currently using dotnet publish with the -o or --output flag
+# does not produce the AppBundle folder in the output directory.
+# (See this issue. https://github.com/dotnet/runtime/issues/94319)
 # You'll still have to grab it out of the bin directory at the path specified by the publish output.
 WORKDIR /src/Tulahack.Web
 RUN dotnet build "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build

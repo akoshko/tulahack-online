@@ -25,29 +25,21 @@ public class TaskController : ControllerBase
 
     [HttpGet]
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Get()
-    {
-        return Ok();
-    }
+    public Task<IActionResult> Get() =>
+        Task.FromResult<IActionResult>(Ok());
 
     [HttpPost]
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Create([FromBody] PersonBaseDto dto)
-    {
-        return Ok();
-    }
-    
+    public Task<IActionResult> Create() =>
+        Task.FromResult<IActionResult>(Ok());
+
     [HttpPatch]
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Patch([FromBody] PersonBaseDto dto)
-    {
-        return Ok();
-    }
+    public Task<IActionResult> Patch() =>
+        Task.FromResult<IActionResult>(Ok());
 
     [HttpDelete]
     [ProducesResponseType(typeof(PersonBaseDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> Delete()
-    {
-        return Ok();
-    }
+    public Task<IActionResult> Delete() =>
+        Task.FromResult<IActionResult>(Ok());
 }

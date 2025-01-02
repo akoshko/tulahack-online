@@ -29,8 +29,10 @@ public static class NotificationMessageBuilderLinq
         this NotificationMessageBuilder builder,
         string foregroundBrush)
     {
-        var brush = new BrushConverter().ConvertFrom(foregroundBrush) as IBrush;
-        builder.SetForeground(brush);
+        if (new BrushConverter().ConvertFrom(foregroundBrush) is IBrush brush)
+        {
+            builder.SetForeground(brush);
+        }
 
         return builder;
     }
@@ -45,8 +47,10 @@ public static class NotificationMessageBuilderLinq
         this NotificationMessageBuilder builder,
         string backgroundBrush)
     {
-        var brush = new BrushConverter().ConvertFrom(backgroundBrush) as IBrush;
-        builder.SetBackground(brush);
+        if (new BrushConverter().ConvertFrom(backgroundBrush) is IBrush brush)
+        {
+            builder.SetForeground(brush);
+        }
 
         return builder;
     }
@@ -76,8 +80,10 @@ public static class NotificationMessageBuilderLinq
         this NotificationMessageBuilder builder,
         string accentBrush)
     {
-        var brush = new BrushConverter().ConvertFrom(accentBrush) as IBrush;
-        builder.SetAccent(brush);
+        if (new BrushConverter().ConvertFrom(accentBrush) is IBrush brush)
+        {
+            builder.SetForeground(brush);
+        }
 
         return builder;
     }
@@ -162,7 +168,7 @@ public static class NotificationMessageBuilderLinq
     public static NotificationMessageBuilder WithDelay(
         this NotificationMessageBuilder.DismissNotificationMessage dismiss,
         int delayMilliseconds,
-        Action<INotificationMessage> callback = null)
+        Action<INotificationMessage>? callback = null)
     {
         dismiss.Builder.Delay(delayMilliseconds, dismiss.Builder.DismissBefore(callback));
 
@@ -179,7 +185,7 @@ public static class NotificationMessageBuilderLinq
     public static NotificationMessageBuilder WithDelay(
         this NotificationMessageBuilder.DismissNotificationMessage dismiss,
         TimeSpan delay,
-        Action<INotificationMessage> callback = null)
+        Action<INotificationMessage>? callback = null)
     {
         dismiss.Builder.Delay(delay, dismiss.Builder.DismissBefore(callback));
 
@@ -211,7 +217,7 @@ public static class NotificationMessageBuilderLinq
         object content,
         Action<INotificationMessageButton> callback)
     {
-        var button = builder.Manager.Factory.GetButton();
+        INotificationMessageButton button = builder.Manager.Factory.GetButton();
         button.Callback = callback;
         button.Content = content;
 
@@ -226,12 +232,12 @@ public static class NotificationMessageBuilderLinq
     /// <param name="builder">The builder.</param>
     /// <param name="callback">The callback.</param>
     /// <returns>
-    /// Returns the action that will call manager dismiss for notification 
+    /// Returns the action that will call manager dismiss for notification
     /// message builder when called and then call the callback action.
     /// </returns>
     private static Action<INotificationMessage> DismissBefore(
         this NotificationMessageBuilder builder,
-        Action<INotificationMessage> callback) =>
+        Action<INotificationMessage>? callback) =>
         call =>
         {
             builder.Manager.Dismiss(builder.Message);
@@ -244,7 +250,7 @@ public static class NotificationMessageBuilderLinq
     /// <param name="builder">The builder.</param>
     /// <param name="callback">The callback.</param>
     /// <returns>
-    /// Returns the action that will call manager dismiss for notification 
+    /// Returns the action that will call manager dismiss for notification
     /// message in builder when button is clicked and then call the callback action.
     /// </returns>
     private static Action<INotificationMessageButton> DismissBefore(
@@ -286,39 +292,39 @@ public static class NotificationMessageBuilderLinq
         switch (contentLocation)
         {
             case ContentLocation.Top:
-            {
-                builder.SetAdditionalContentTop(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentTop(additionalContent);
+                    break;
+                }
             case ContentLocation.Bottom:
-            {
-                builder.SetAdditionalContentBottom(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentBottom(additionalContent);
+                    break;
+                }
             case ContentLocation.Left:
-            {
-                builder.SetAdditionalContentLeft(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentLeft(additionalContent);
+                    break;
+                }
             case ContentLocation.Right:
-            {
-                builder.SetAdditionalContentRight(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentRight(additionalContent);
+                    break;
+                }
             case ContentLocation.Main:
-            {
-                builder.SetAdditionalContentMain(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentMain(additionalContent);
+                    break;
+                }
             case ContentLocation.AboveBadge:
-            {
-                builder.SetAdditionalContentOverBadge(additionalContent);
-                break;
-            }
+                {
+                    builder.SetAdditionalContentOverBadge(additionalContent);
+                    break;
+                }
             default:
-            {
-                break;
-            }
+                {
+                    break;
+                }
         }
 
 

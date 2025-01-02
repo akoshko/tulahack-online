@@ -2,16 +2,12 @@
 
 namespace Tulahack.UI.Components.Behaviors;
 
-public interface ISuspendableDisposable : ISuspendable, IDisposable
-{
-
-}
+public interface ISuspendableDisposable : ISuspendable, IDisposable { }
 
 // used to dispose of behaviors
 public class BehaviorsDisposable<T> : ISuspendableDisposable
 {
-    List<DisposableBehaviorContainer<T>> _disposableBehaviors = new List<DisposableBehaviorContainer<T>>();
-
+    readonly List<DisposableBehaviorContainer<T>> _disposableBehaviors = new();
 
     public T TheObjectTheBehaviorsAreAttachedTo =>
         _disposableBehaviors.LastOrDefault().TheObjectTheBehaviorIsAttachedTo;

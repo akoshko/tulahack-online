@@ -19,7 +19,7 @@ public interface INotificationMessageButton
     /// <value>
     /// The content.
     /// </value>
-    object Content { get; set; }
+    object? Content { get; set; }
 
     /// <summary>
     /// Gets or sets the callback.

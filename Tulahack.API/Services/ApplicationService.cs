@@ -41,18 +41,20 @@ public class ApplicationService : IApplicationService
 
     public async Task<ContestApplicationDto> SubmitApplication(Guid userId, ContestApplicationDto dto)
     {
-        var application = _mapper.Map<ContestApplication>(dto);
-        var account = await _tulahackContext.Accounts.SingleOrDefaultAsync(item => item.Id == userId);
+        ContestApplication application = _mapper.Map<ContestApplication>(dto);
+        PersonBase? account = await _tulahackContext.Accounts.SingleOrDefaultAsync(item => item.Id == userId);
 
         if (account is null)
+        {
             throw new ValidationException("Unable to find user account in DB, re-login and try again");
+        }
 
         account = _mapper.Map<PersonBase>(dto);
-        
-        _tulahackContext.Accounts.Update(account);
-        _tulahackContext.ContestApplications.Add(application);
-        await _tulahackContext.SaveChangesAsync();
-        
+
+        _ = _tulahackContext.Accounts.Update(account);
+        _ = _tulahackContext.ContestApplications.Add(application);
+        _ = await _tulahackContext.SaveChangesAsync();
+
         return dto;
     }
 
@@ -61,16 +63,18 @@ public class ApplicationService : IApplicationService
         Guid applicationId,
         string justification)
     {
-        var application = await _tulahackContext.ContestApplications
+        ContestApplication? application = await _tulahackContext.ContestApplications
             .SingleOrDefaultAsync(item => item.Id == applicationId && item.UserId == userId);
-        
+
         if (application is null)
+        {
             throw new ValidationException("Unable to find application in DB");
-        
+        }
+
         application.Status = ContestApplicationStatus.Accepted;
         application.Justification = justification;
-        await _tulahackContext.SaveChangesAsync();
-        
+        _ = await _tulahackContext.SaveChangesAsync();
+
         return _mapper.Map<ContestApplicationDto>(application);
     }
 
@@ -79,16 +83,18 @@ public class ApplicationService : IApplicationService
         Guid applicationId,
         string justification)
     {
-        var application = await _tulahackContext.ContestApplications
+        ContestApplication? application = await _tulahackContext.ContestApplications
             .SingleOrDefaultAsync(item => item.Id == applicationId && item.UserId == userId);
-        
+
         if (application is null)
+        {
             throw new ValidationException("Unable to find application in DB");
-        
+        }
+
         application.Status = ContestApplicationStatus.Declined;
         application.Justification = justification;
-        await _tulahackContext.SaveChangesAsync();
-        
+        _ = await _tulahackContext.SaveChangesAsync();
+
         return _mapper.Map<ContestApplicationDto>(application);
     }
 }

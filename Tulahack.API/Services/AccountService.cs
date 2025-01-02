@@ -42,30 +42,30 @@ public class AccountService : IAccountService
         _mapper = mapper;
     }
 
-    public async Task<PersonBaseDto?> CreateAccount(PersonBaseDto dto)
+    public Task<PersonBaseDto?> CreateAccount(PersonBaseDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ContestantDto?> CreateContestant(ContestantDto dto)
+    public Task<ContestantDto?> CreateContestant(ContestantDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ExpertDto?> CreateExpert(ExpertDto dto)
+    public Task<ExpertDto?> CreateExpert(ExpertDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ModeratorDto?> CreateModerator(ModeratorDto dto)
+    public Task<ModeratorDto?> CreateModerator(ModeratorDto dto)
     {
         throw new NotImplementedException();
     }
 
     public async Task<PersonBase> RefreshAccess(string jwt)
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
-        var user = _tulahackContext.Accounts
+        JwtSecurityToken token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
+        PersonBase user = _tulahackContext.Accounts
             .AsTracking()
             .First(item => item.Id == Guid.Parse(token.Subject));
 
@@ -76,7 +76,7 @@ public class AccountService : IAccountService
 
     public async Task<PersonBase> CreateAccount(string jwt)
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
+        JwtSecurityToken token = new JwtSecurityTokenHandler().ReadJwtToken(jwt);
 
         var user = new PersonBase
         {
@@ -87,39 +87,38 @@ public class AccountService : IAccountService
             PhotoUrl = "https://cdn.<you-name-it>/avatar/hacker.png",
             Role = ContestRole.Visitor,
         };
-        _tulahackContext.Accounts.Add(user);
+        _ = _tulahackContext.Accounts.Add(user);
         await _tulahackContext.SaveChangesAsync();
         return user;
     }
 
     public async Task<PersonBase?> GetAccount(Guid userId)
     {
-        var account = await _tulahackContext
+        PersonBase? account = await _tulahackContext
             .Accounts
             .FirstOrDefaultAsync(user => user.Id == userId);
-
-        if (account is null)
-            return null;
 
         return account;
     }
 
     public async Task<ContestantDto?> GetContestantDetails(Guid userId)
     {
-        var account = await _tulahackContext
+        Contestant? account = await _tulahackContext
             .Contestants
             .Include(item => item.Team)
             .FirstOrDefaultAsync(user => user.Id == userId);
 
         if (account is null)
+        {
             return null;
+        }
 
-        var team = await _tulahackContext
+        List<Contestant> team = await _tulahackContext
             .Contestants
             .Where(item => item.Team.Id == account.Team.Id)
             .ToListAsync();
 
-        var result = _mapper.Map<ContestantDto>(account);
+        ContestantDto result = _mapper.Map<ContestantDto>(account);
         result.Team.Contestants = _mapper.Map<List<ContestantDto>>(team);
 
         return result;
@@ -127,50 +126,44 @@ public class AccountService : IAccountService
 
     public async Task<ExpertDto?> GetExpertDetails(Guid userId)
     {
-        var account = await _tulahackContext
+        Expert? account = await _tulahackContext
             .Experts
             .FirstOrDefaultAsync(user => user.Id == userId);
 
-        if (account is null)
-            return null;
-
-        return _mapper.Map<ExpertDto>(account);
+        return account is null ? null : _mapper.Map<ExpertDto>(account);
     }
 
 
     public async Task<ModeratorDto?> GetModeratorDetails(Guid userId)
     {
-        var account = await _tulahackContext
+        Moderator? account = await _tulahackContext
             .Moderators
             .FirstOrDefaultAsync(user => user.Id == userId);
 
-        if (account is null)
-            return null;
-
-        return _mapper.Map<ModeratorDto>(account);
+        return account is null ? null : _mapper.Map<ModeratorDto>(account);
     }
 
-    public async Task<PersonBaseDto?> UpdateAccount(PersonBaseDto dto)
+    public Task<PersonBaseDto?> UpdateAccount(PersonBaseDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ContestantDto?> UpdateContestant(ContestantDto dto)
+    public Task<ContestantDto?> UpdateContestant(ContestantDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ExpertDto?> UpdateExpert(ExpertDto dto)
+    public Task<ExpertDto?> UpdateExpert(ExpertDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<ModeratorDto?> UpdateModerator(ModeratorDto dto)
+    public Task<ModeratorDto?> UpdateModerator(ModeratorDto dto)
     {
         throw new NotImplementedException();
     }
 
-    public async Task<PersonBase?> DeleteAccount(Guid getUserId)
+    public Task<PersonBase?> DeleteAccount(Guid getUserId)
     {
         throw new NotImplementedException();
     }

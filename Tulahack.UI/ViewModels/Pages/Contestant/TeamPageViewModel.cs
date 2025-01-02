@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
@@ -21,7 +20,8 @@ public partial class TeamPageViewModel : ViewModelBase
     private readonly IMainViewProvider _mainViewProvider;
     private readonly ILogger<TeamPageViewModel> _logger;
 
-    [ObservableProperty] private HyperlinkContent _backHyperlink = new()
+    [ObservableProperty]
+    private HyperlinkContent _backHyperlink = new()
     {
         Alias = "Back", Url = "_blank"
     };
@@ -49,31 +49,32 @@ public partial class TeamPageViewModel : ViewModelBase
     [RelayCommand]
     public async Task UploadTeaserCommand()
     {
-        var sp = _mainViewProvider.GetStorageProvider();
+        _logger.LogInformation("TeamPageViewModel: Executing UploadTeaserCommand");
+        IStorageProvider? sp = _mainViewProvider.GetStorageProvider();
         if (sp is null)
         {
             return;
         }
 
-        var result = await sp.OpenFilePickerAsync(new FilePickerOpenOptions()
+        IReadOnlyList<IStorageFile> result = await sp.OpenFilePickerAsync(new FilePickerOpenOptions()
         {
             Title = "Open File",
-            FileTypeFilter = new List<FilePickerFileType>
-            {
+            FileTypeFilter =
+            [
                 FilePickerFileTypes.All,
                 FilePickerFileTypes.TextPlain
-            },
+            ],
             AllowMultiple = false
         });
 
         if (result.Count != 0)
         {
-            await _teamService.UploadTeaser(result.First());
+            await _teamService.UploadTeaser(result[0]);
         }
     }
 
     [RequiresUnreferencedCode("See comment above base class for more details.")]
-    protected async override void OnActivated()
+    protected override void OnActivated()
     {
         if (NavigationArgs?.Args is TeamDto dto)
         {

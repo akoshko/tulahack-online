@@ -53,21 +53,21 @@ public class TulahackContext : DbContext, ITulahackContext
 
         // Table-per-hierarchy and discriminator configuration
         // Single table 'Accounts' for PersonBase, Contestant, Expert and Moderator entities
-        modelBuilder.Entity<PersonBase>()
+        _ = modelBuilder.Entity<PersonBase>()
             .HasDiscriminator(item => item.Role)
             .HasValue<PersonBase>(ContestRole.Visitor)
             .HasValue<Contestant>(ContestRole.Contestant)
             .HasValue<Expert>(ContestRole.Expert)
             .HasValue<Moderator>(ContestRole.Moderator)
             .HasValue<Superuser>(ContestRole.Superuser);
-        modelBuilder.Entity<PersonBase>()
+        _ = modelBuilder.Entity<PersonBase>()
             .ToTable("Accounts")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
-        modelBuilder.Entity<Contestant>();
-        modelBuilder.Entity<Expert>();
-        modelBuilder.Entity<Moderator>();
-        modelBuilder.Entity<Superuser>();
+        _ = modelBuilder.Entity<Contestant>();
+        _ = modelBuilder.Entity<Expert>();
+        _ = modelBuilder.Entity<Moderator>();
+        _ = modelBuilder.Entity<Superuser>();
 
         // ugly hack to enable inherited model type mutation
         modelBuilder.Entity<PersonBase>()
@@ -75,74 +75,74 @@ public class TulahackContext : DbContext, ITulahackContext
             .Metadata
             .SetAfterSaveBehavior(PropertySaveBehavior.Save);
 
-        modelBuilder.Entity<Team>()
+        _ = modelBuilder.Entity<Team>()
             .ToTable("Teams")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
 
-        modelBuilder.Entity<ContestCase>()
+        _ = modelBuilder.Entity<ContestCase>()
             .ToTable("ContestCases")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
-        modelBuilder.Entity<Company>()
+        _ = modelBuilder.Entity<Company>()
             .ToTable("Companies")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
-        modelBuilder.Entity<Skill>()
+        _ = modelBuilder.Entity<Skill>()
             .ToTable("Skills")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
-        modelBuilder.Entity<StorageFile>()
+        _ = modelBuilder.Entity<StorageFile>()
             .ToTable("StorageFiles")
             .Property(p => p.Id)
             .ValueGeneratedOnAdd();
     }
 
-    public async Task<T> AddNewRecord<T>(T newItem) where T: class
+    public async Task<T> AddNewRecord<T>(T newItem) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Add(newItem);
-        await SaveChangesAsync();
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Add(newItem);
+        _ = await SaveChangesAsync();
         return result.Entity;
     }
 
-    public async Task<T> UpdateRecord<T>(T record) where T: class
+    public async Task<T> UpdateRecord<T>(T record) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Update(record);
-        await SaveChangesAsync();
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Update(record);
+        _ = await SaveChangesAsync();
         return result.Entity;
     }
 
     public async Task<T> RemoveRecord<T>(T record) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Remove(record);
-        await SaveChangesAsync();
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Remove(record);
+        _ = await SaveChangesAsync();
         return result.Entity;
     }
 
-    public async Task<T> AddNewRecord<T>(T newItem, CancellationToken cancellationToken) where T: class
+    public async Task<T> AddNewRecord<T>(T newItem, CancellationToken cancellationToken) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Add(newItem);
-        await SaveChangesAsync(cancellationToken);
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Add(newItem);
+        _ = await SaveChangesAsync(cancellationToken);
         return result.Entity;
     }
 
-    public async Task<T> UpdateRecord<T>(T record, CancellationToken cancellationToken) where T: class
+    public async Task<T> UpdateRecord<T>(T record, CancellationToken cancellationToken) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Update(record);
-        await SaveChangesAsync(cancellationToken);
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Update(record);
+        _ = await SaveChangesAsync(cancellationToken);
         return result.Entity;
     }
 
     public async Task<T> RemoveRecord<T>(T record, CancellationToken cancellationToken) where T : class
     {
-        var dbSet = Set<T>();
-        var result = dbSet.Remove(record);
-        await SaveChangesAsync(cancellationToken);
+        DbSet<T> dbSet = Set<T>();
+        Microsoft.EntityFrameworkCore.ChangeTracking.EntityEntry<T> result = dbSet.Remove(record);
+        _ = await SaveChangesAsync(cancellationToken);
         return result.Entity;
     }
 

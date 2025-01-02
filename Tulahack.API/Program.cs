@@ -10,15 +10,15 @@ using Tulahack.API.Static;
 using Tulahack.API.Utils;
 using Tulahack.Model;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<ITulahackContext, TulahackContext>(options =>
 {
-    options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+    _ = options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
 
-    Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage", "database"));
+    _ = Directory.CreateDirectory(Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage", "database"));
     var datasource = Path.Combine(Directory.GetCurrentDirectory(), "appData", "storage", "database", "tulahack.db");
-    options.UseSqlite($"Data Source={datasource}");
+    _ = options.UseSqlite($"Data Source={datasource}");
 });
 
 builder.Services
@@ -38,19 +38,28 @@ builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);
 builder.Services
     .AddAuthorization(o =>
         {
-            o.AddPolicy("Public", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Public); });
-            o.AddPolicy("Public+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.PublicPlus); });
+            o.AddPolicy("Public", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Public));
+            o.AddPolicy("Public+", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.PublicPlus));
 
-            o.AddPolicy("Contestant", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Contestant); });
-            o.AddPolicy("Contestant+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ContestantPlus); });
+            o.AddPolicy("Contestant", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Contestant));
+            o.AddPolicy("Contestant+", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ContestantPlus));
 
-            o.AddPolicy("Expert", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Expert); });
-            o.AddPolicy("Expert+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ExpertPlus); });
+            o.AddPolicy("Expert", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Expert));
+            o.AddPolicy("Expert+", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ExpertPlus));
 
-            o.AddPolicy("Moderator", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Moderator); });
-            o.AddPolicy("Moderator+", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ModeratorPlus); });
+            o.AddPolicy("Moderator", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Moderator));
+            o.AddPolicy("Moderator+", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.ModeratorPlus));
 
-            o.AddPolicy("Superuser", b => { b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Superuser); });
+            o.AddPolicy("Superuser", b =>
+                _ = b.RequireClaim(TulahackClaimTypes.KeycloakGroup, Groups.Superuser));
         }
     ).AddKeycloakAuthorization(builder.Configuration);
 
@@ -58,7 +67,7 @@ builder.Services.AddAutoMapper(cfg => cfg.AddProfile<TulahackProfile>());
 
 builder.Services.AddServices();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 app.UseSwagger(c => { c.RouteTemplate = "api/swagger/{documentName}/swagger.json"; });
 app.UseSwaggerUI(c =>
@@ -92,33 +101,41 @@ app.UseStaticFiles(new StaticFileOptions
 });
 
 // Initial migration and DB seeding
-using (var scope = app.Services.CreateScope())
+using (IServiceScope scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<ITulahackContext>() as TulahackContext;
-    if (context != null)
+    if (scope.ServiceProvider.GetRequiredService<ITulahackContext>() is TulahackContext context)
     {
-        if (context.Database.GetPendingMigrations().Any())
-            context.Database.Migrate();
+        IEnumerable<string> migrations = await context.Database.GetPendingMigrationsAsync();
+
+        if (migrations.Any())
+        {
+            await context.Database.MigrateAsync();
+        }
 
         var skillsCount = context.Skills.Count();
+
         if (skillsCount == 0)
         {
-            JsonSerializer serializer = new JsonSerializer();
+            var serializer = new JsonSerializer();
             using var stream = new StreamReader("Static/skills.json");
             await using JsonReader reader = new JsonTextReader(stream);
-            var skills = serializer.Deserialize<List<string>>(reader);
-            foreach (var skill in skills)
+            List<string>? skills = serializer.Deserialize<List<string>>(reader);
+
+            if (skills != null)
             {
-                context.Skills.Add(new Skill()
+                foreach (var skill in skills)
                 {
-                    Id = Guid.NewGuid(),
-                    SkillName = skill
-                });
+                    _ = context.Skills.Add(new Skill()
+                    {
+                        Id = Guid.NewGuid(),
+                        SkillName = skill
+                    });
+                }
             }
 
-            await context.SaveChangesAsync();
+            _ = await context.SaveChangesAsync();
         }
     }
 }
 
-app.Run();
+await app.RunAsync();

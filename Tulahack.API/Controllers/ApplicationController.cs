@@ -32,12 +32,10 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(typeof(ContestApplicationDto), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> SubmitApplication([FromBody] ContestApplicationDto application)
     {
-        var ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
-        Guid.TryParse(ssoUserClaim.Value, out var userId);
+        Claim ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
+        _ = Guid.TryParse(ssoUserClaim.Value, out Guid userId);
 
-        var result = await _applicationService.SubmitApplication(userId, application);
-
-        if (result is null) return NotFound();
+        ContestApplicationDto result = await _applicationService.SubmitApplication(userId, application);
 
         return Ok(result);
     }
@@ -46,12 +44,10 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(typeof(ContestApplicationDto), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> AcceptApplication([FromRoute] Guid applicationId, [FromBody] string justification)
     {
-        var ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
-        Guid.TryParse(ssoUserClaim.Value, out var userId);
+        Claim ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
+        _ = Guid.TryParse(ssoUserClaim.Value, out Guid userId);
 
-        var result = await _applicationService.AcceptApplication(userId, applicationId, justification);
-
-        if (result is null) return NotFound();
+        ContestApplicationDto result = await _applicationService.AcceptApplication(userId, applicationId, justification);
 
         return Ok(result);
     }
@@ -60,12 +56,10 @@ public class ApplicationController : ControllerBase
     [ProducesResponseType(typeof(ContestApplicationDto), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> DeclineApplication([FromRoute] Guid applicationId, [FromBody] string justification)
     {
-        var ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
-        Guid.TryParse(ssoUserClaim.Value, out var userId);
+        Claim ssoUserClaim = HttpContext.User.Claims.First(claim => claim.Type == ClaimTypes.NameIdentifier);
+        _ = Guid.TryParse(ssoUserClaim.Value, out Guid userId);
 
-        var result = await _applicationService.DeclineApplication(userId, applicationId, justification);
-
-        if (result is null) return NotFound();
+        ContestApplicationDto result = await _applicationService.DeclineApplication(userId, applicationId, justification);
 
         return Ok(result);
     }

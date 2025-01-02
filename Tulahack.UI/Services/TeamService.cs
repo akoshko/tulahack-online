@@ -40,13 +40,14 @@ public class TeamService : ITeamService
     {
         _httpClient = httpClient;
         _serializerOptions = serializerOptions;
-        _logger = logger;
         _notificationsService = notificationsService;
+
+        _logger = logger;
     }
 
     public async Task<TeamDto?> GetTeam()
     {
-        var result = await _httpClient.GetAndHandleAsync<TeamDto>(
+        TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
             "teams",
             _serializerOptions,
             _notificationsService);
@@ -56,7 +57,7 @@ public class TeamService : ITeamService
 
     public async Task<TeamDto?> GetTeamById(Guid teamId)
     {
-        var result = await _httpClient.GetAndHandleAsync<TeamDto>(
+        TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
             $"teams/{teamId}",
             _serializerOptions,
             _notificationsService);
@@ -65,7 +66,7 @@ public class TeamService : ITeamService
 
     public async Task<List<StorageFileDto>> GetStorageFiles()
     {
-        var result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
+        List<StorageFileDto>? result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
             "storage/files",
             _serializerOptions,
             _notificationsService);
@@ -83,20 +84,20 @@ public class TeamService : ITeamService
 
     public async Task UploadTeaser(IStorageFile file)
     {
-        var stream = await file.OpenReadAsync();
+        _logger.LogInformation("Sending teaser file");
+        System.IO.Stream stream = await file.OpenReadAsync();
+        using var streamContent = new StreamContent(stream);
+        using var content = new MultipartFormDataContent
+        {
+            { streamContent, "files", file.Name }
+        };
         await _httpClient
             .PostAndHandleAsync(
                 "storage?purposeType=SolutionTeaser",
-                new MultipartFormDataContent
-                {
-                    {
-                        new StreamContent(stream),
-                        "files",
-                        file.Name
-                    }
-                },
+                content,
                 cancellationToken: default);
-        _notificationsService.ShowSuccess($"Тизер успешно загружен!");
+        _ = _notificationsService.ShowSuccess($"Тизер успешно загружен!");
+        _logger.LogInformation("Successfully uploaded teaser file");
     }
 
     public async Task JoinTeam(ContestApplicationDto application)
@@ -107,7 +108,7 @@ public class TeamService : ITeamService
                 application,
                 cancellationToken: default,
                 serializerOptions: _serializerOptions);
-        _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
+        _ = _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
     }
 
     public async Task CreateTeam(ContestApplicationDto application)
@@ -118,6 +119,6 @@ public class TeamService : ITeamService
                 application,
                 cancellationToken: default,
                 serializerOptions: _serializerOptions);
-        _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
+        _ = _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
     }
 }

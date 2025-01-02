@@ -12,8 +12,7 @@ public class NotificationMessageButton : Button, INotificationMessageButton
     /// <summary>
     /// Initializes a new instance of the <see cref="NotificationMessageButton"/> class.
     /// </summary>
-    public NotificationMessageButton()
-        : this(null)
+    public NotificationMessageButton() : this(string.Empty)
     {
     }
 
@@ -27,7 +26,7 @@ public class NotificationMessageButton : Button, INotificationMessageButton
     }
 
     /// <summary>
-    /// Called when a <see cref="T:System.Windows.Controls.Button" /> is clicked.
+    /// Called when a <see ref="T:System.Windows.Controls.Button" /> is clicked.
     /// </summary>
     protected override void OnClick()
     {
@@ -36,7 +35,7 @@ public class NotificationMessageButton : Button, INotificationMessageButton
     }
 
     /// <summary>
-    /// Initializes the <see cref="NotificationMessageButton"/> class.
+    /// Initializes the <see ref="NotificationMessageButton"/> class.
     /// </summary>
     static NotificationMessageButton()
     {

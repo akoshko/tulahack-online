@@ -15,9 +15,8 @@ public static class ServiceCollectionExtensions
         services.AddTransient<ITaskService, TaskService>();
         services.AddTransient<ITeamsService, TeamsService>();
     }
-    
-    public static void AddCustomSwagger(this IServiceCollection services)
-    {
+
+    public static void AddCustomSwagger(this IServiceCollection services) =>
         services.AddSwaggerGen(option =>
         {
             option.SwaggerDoc("v1", new OpenApiInfo
@@ -55,9 +54,8 @@ public static class ServiceCollectionExtensions
                             Id = "Bearer"
                         }
                     },
-                    new string[] { }
+                    []
                 }
             });
         });
-    }
 }

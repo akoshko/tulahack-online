@@ -12,12 +12,14 @@ public partial class ContestTaskPageViewModel : ViewModelBase
 {
     [ObservableProperty] private ContestCaseDto? _contestCase;
 
-    [ObservableProperty] private HyperlinkContent _backHyperlink = new()
+    [ObservableProperty]
+    private HyperlinkContent _backHyperlink = new()
     {
         Alias = "Back", Url = "_blank"
     };
 
-    [ObservableProperty] private HyperlinkContent _lofiHyperlink = new()
+    [ObservableProperty]
+    private HyperlinkContent _lofiHyperlink = new()
     {
         Alias = "Get some LoFi",
         Url = "https://www.youtube.com/watch?v=jfKfPfyJRdk"
@@ -26,9 +28,7 @@ public partial class ContestTaskPageViewModel : ViewModelBase
     private readonly ITaskboardService _taskboardService;
 
     // AvaloniaUI Designer hack
-    public ContestTaskPageViewModel() : this(new DesignTaskboardService())
-    {
-    }
+    public ContestTaskPageViewModel() : this(new DesignTaskboardService()) { }
 
     public ContestTaskPageViewModel(ITaskboardService taskboardService)
     {
@@ -36,7 +36,7 @@ public partial class ContestTaskPageViewModel : ViewModelBase
     }
 
     [RequiresUnreferencedCode("See comment above base class for more details.")]
-    protected async override void OnActivated()
+    protected override void OnActivated()
     {
         if (NavigationArgs?.Args is null)
         {

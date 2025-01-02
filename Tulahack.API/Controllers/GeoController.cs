@@ -19,27 +19,27 @@ public class GeoController : ControllerBase
     {
         _logger = logger;
     }
-    
+
     [HttpGet("GetProvincesList")]
     [ProducesResponseType(typeof(List<Province>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProvincesList()
     {
-        JsonSerializer serializer = new JsonSerializer();
+        var serializer = new JsonSerializer();
         using var stream = new StreamReader("Static/provinces.json");
         await using JsonReader reader = new JsonTextReader(stream);
-        var provinces = serializer.Deserialize<List<Province>>(reader);
+        List<Province>? provinces = serializer.Deserialize<List<Province>>(reader);
         return Ok(provinces);
     }
-    
+
     [HttpGet("GetProvinceById/{id}")]
     [ProducesResponseType(typeof(Province), StatusCodes.Status200OK)]
-    public async Task<IActionResult> GetProvinceById([FromRoute]int id)
+    public async Task<IActionResult> GetProvinceById([FromRoute] int id)
     {
-        JsonSerializer serializer = new JsonSerializer();
+        var serializer = new JsonSerializer();
         using var stream = new StreamReader("Static/provinces.json");
         await using JsonReader reader = new JsonTextReader(stream);
-        var provinces = serializer.Deserialize<List<Province>>(reader);
-        var province = provinces?.FirstOrDefault(item => item.Id == id);
+        List<Province>? provinces = serializer.Deserialize<List<Province>>(reader);
+        Province? province = provinces?.FirstOrDefault(item => item.Id == id);
         return Ok(province);
     }
 }

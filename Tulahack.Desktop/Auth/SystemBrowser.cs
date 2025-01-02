@@ -19,20 +19,12 @@ public class SystemBrowser : IBrowser
     public SystemBrowser(int? port = null, string? path = null)
     {
         _path = path;
-
-        if (!port.HasValue)
-        {
-            Port = GetRandomUnusedPort();
-        }
-        else
-        {
-            Port = port.Value;
-        }
+        Port = port ?? GetRandomUnusedPort();
     }
 
     private int GetRandomUnusedPort()
     {
-        var listener = new TcpListener(IPAddress.Loopback, 0);
+        using var listener = new TcpListener(IPAddress.Loopback, 0);
         listener.Start();
         var port = ((IPEndPoint)listener.LocalEndpoint).Port;
         listener.Stop();
@@ -40,77 +32,79 @@ public class SystemBrowser : IBrowser
     }
 
     public async Task<BrowserResult> InvokeAsync(BrowserOptions options,
-        CancellationToken cancellationToken = default(CancellationToken))
+        CancellationToken cancellationToken = default)
     {
-        using (var listener = new LoopbackHttpListener(Port, _path))
+        if (_path is null)
         {
-            OpenBrowser(options.StartUrl);
+            return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = "Path is null or empty." };
+        }
 
-            try
-            {
-                var result = await listener.WaitForCallbackAsync();
-                if (String.IsNullOrWhiteSpace(result))
-                {
-                    return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = "Empty response." };
-                }
+        using var listener = new LoopbackHttpListener(Port, _path);
 
-                return new BrowserResult { Response = result, ResultType = BrowserResultType.Success };
-            }
-            catch (TaskCanceledException ex)
+        OpenBrowser(new Uri(options.StartUrl));
+
+        try
+        {
+            var result = await listener.WaitForCallbackAsync();
+            if (string.IsNullOrWhiteSpace(result))
             {
-                return new BrowserResult { ResultType = BrowserResultType.Timeout, Error = ex.Message };
+                return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = "Empty response." };
             }
-            catch (Exception ex)
-            {
-                return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = ex.Message };
-            }
+
+            return new BrowserResult { Response = result, ResultType = BrowserResultType.Success };
+        }
+        catch (TaskCanceledException ex)
+        {
+            return new BrowserResult { ResultType = BrowserResultType.Timeout, Error = ex.Message };
+        }
+        catch (Exception ex)
+        {
+            return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = ex.Message };
         }
     }
 
-    public static void OpenBrowser(string url)
+    private static void OpenBrowser(Uri url)
     {
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
-            Process.Start(new ProcessStartInfo
+            _ = Process.Start(new ProcessStartInfo
             {
-                FileName = url,
+                FileName = url.ToString(),
                 UseShellExecute = true,
             });
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Process.Start("xdg-open", url);
+            _ = Process.Start("xdg-open", url.ToString());
         }
         else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
         {
-            Process.Start("open", url);
+            _ = Process.Start("open", url.ToString());
         }
     }
 }
 
 public class LoopbackHttpListener : IDisposable
 {
-    const int DefaultTimeout = 60 * 5; // 5 mins (in seconds)
+    const int PC_DefaultTimeout = 60 * 5; // 5 mins (in seconds)
 
     readonly IWebHost _host;
     readonly TaskCompletionSource<string> _source = new();
-    string _url;
 
-    public string Url => _url;
 
-    public LoopbackHttpListener(int port, string path = null)
+    public LoopbackHttpListener(int port, string? path = null)
     {
-        path = path ?? String.Empty;
-        if (path.StartsWith("/"))
+        path ??= string.Empty;
+        if (path.StartsWith('/'))
         {
-            path = path.Substring(1);
+            path = path[1..];
         }
 
-        _url = $"http://127.0.0.1:{port}/{path}";
+        var url = $"http://127.0.0.1:{port}/{path}";
 
         _host = new WebHostBuilder()
             .UseKestrel()
-            .UseUrls(_url)
+            .UseUrls(url)
             .Configure(Configure)
             .Build();
         _host.Start();
@@ -123,32 +117,29 @@ public class LoopbackHttpListener : IDisposable
             _host.Dispose();
         });
 
-    void Configure(IApplicationBuilder app) =>
+    private void Configure(IApplicationBuilder app) =>
         app.Run(async ctx =>
         {
-            if (ctx.Request.Method == "GET")
+            switch (ctx.Request.Method)
             {
-                await SetResultAsync(ctx.Request.QueryString.Value, ctx);
-            }
-            else if (ctx.Request.Method == "POST")
-            {
-                if (!ctx.Request.ContentType.Equals("application/x-www-form-urlencoded",
-                        StringComparison.OrdinalIgnoreCase))
-                {
+                case "GET":
+                    await SetResultAsync(ctx.Request.QueryString.Value, ctx);
+                    break;
+                case "POST" when !ctx.Request.ContentType.Equals("application/x-www-form-urlencoded",
+                    StringComparison.OrdinalIgnoreCase):
                     ctx.Response.StatusCode = 415;
-                }
-                else
-                {
-                    using (var sr = new StreamReader(ctx.Request.Body, Encoding.UTF8))
+                    break;
+                case "POST":
                     {
+                        using var sr = new StreamReader(ctx.Request.Body, Encoding.UTF8);
                         var body = await sr.ReadToEndAsync();
                         await SetResultAsync(body, ctx);
+
+                        break;
                     }
-                }
-            }
-            else
-            {
-                ctx.Response.StatusCode = 405;
+                default:
+                    ctx.Response.StatusCode = 405;
+                    break;
             }
         });
 
@@ -160,8 +151,7 @@ public class LoopbackHttpListener : IDisposable
             ctx.Response.ContentType = "text/html";
             await ctx.Response.WriteAsync("<h1>You can now return to the application.</h1>");
             await ctx.Response.Body.FlushAsync();
-
-            _source.TrySetResult(value);
+            _ = _source.TrySetResult(value);
         }
         catch (Exception ex)
         {
@@ -174,12 +164,12 @@ public class LoopbackHttpListener : IDisposable
         }
     }
 
-    public Task<string> WaitForCallbackAsync(int timeoutInSeconds = DefaultTimeout)
+    public Task<string> WaitForCallbackAsync(int timeoutInSeconds = PC_DefaultTimeout)
     {
-        Task.Run(async () =>
+        _ = Task.Run(async () =>
         {
             await Task.Delay(timeoutInSeconds * 1000);
-            _source.TrySetCanceled();
+            _ = _source.TrySetCanceled();
         });
 
         return _source.Task;

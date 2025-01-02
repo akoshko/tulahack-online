@@ -11,13 +11,9 @@ public class SettingsState
 
 public class AppState : IState
 {
-    public SettingsState SettingsState = new SettingsState()
+    public SettingsState SettingsState = new()
     {
         // Difficulty = Difficulty.Medium,
         // DrawMode = DrawMode.DrawOne
     };
-
-    public AppState()
-    {
-    }
 };

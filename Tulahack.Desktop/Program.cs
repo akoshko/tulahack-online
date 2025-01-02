@@ -15,21 +15,21 @@ sealed class Program
             // TODO: find a way how to show error notifications
             // var notificationsService = Ioc.Default.GetRequiredService<INotificationsService>();
             // notificationsService.ShowError(e.Message);
-            
+
             Console.WriteLine(sender?.ToString() ?? "Critical async exception");
             Console.WriteLine(eventArgs.ToString());
         };
-        
+
         try
         {
             // prepare and run your App here
-            BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
+            _ = BuildAvaloniaApp().StartWithClassicDesktopLifetime(args);
         }
         catch (Exception e)
         {
             // here we can work with the exception, for example add it to our log file
             Console.WriteLine(e.Message);
-            
+
             // TODO: find a way how to show error notifications
             // var notificationsService = Ioc.Default.GetRequiredService<INotificationsService>();
             // notificationsService.ShowError(e.Message);
@@ -37,6 +37,7 @@ sealed class Program
     }
 
     // Avalonia configuration, don't remove; also used by visual designer.
+    // ReSharper disable once MemberCanBePrivate.Global
     public static AppBuilder BuildAvaloniaApp()
         => AppBuilder.Configure<App>()
             .UsePlatformDetect()

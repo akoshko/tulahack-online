@@ -63,7 +63,9 @@ public partial class ApplicationFormViewModel : ViewModelBase
         {
             TeamCheckInProgress = true;
 
+#pragma warning disable IDE0045
             if (ContestsApplication.ExistingTeamId.HasValue)
+#pragma warning restore IDE0045
             {
                 ExistingTeam = await _teamService.GetTeamById(ContestsApplication.ExistingTeamId.Value);
             }
@@ -74,7 +76,7 @@ public partial class ApplicationFormViewModel : ViewModelBase
 
             TeamCheckInProgress = false;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             ExistingTeam = null;
             TeamCheckInProgress = false;
