@@ -8,6 +8,7 @@ namespace Tulahack.UI.Components.Behaviors.DataGridBehaviors;
 public static class DataGridCollectionViewBehavior
 {
     #region ItemsSource Attached Avalonia Property
+
     public static IEnumerable GetItemsSource(DataGrid obj) =>
         obj.GetValue(ItemsSourceProperty);
 
@@ -19,19 +20,21 @@ public static class DataGridCollectionViewBehavior
         (
             "ItemsSource"
         );
+
     #endregion ItemsSource Attached Avalonia Property
 
     static DataGridCollectionViewBehavior()
     {
-        ItemsSourceProperty.Changed.Subscribe(OnItemsSourcePropertyChanged);
+        _ = ItemsSourceProperty.Changed.Subscribe(OnItemsSourcePropertyChanged);
     }
 
     private static void OnItemsSourcePropertyChanged(AvaloniaPropertyChangedEventArgs<IEnumerable> args)
     {
-        DataGrid dataGrid = (DataGrid) args.Sender;
+        var dataGrid = (DataGrid)args.Sender;
 
         IEnumerable itemsSource = args.NewValue.Value;
 
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         dataGrid.ItemsSource = itemsSource == null ? null : new DataGridCollectionView(itemsSource);
     }
 }

@@ -17,7 +17,7 @@ public class TulahackContext : DbContext, ITulahackContext
     public DbSet<ContestApplication> ContestApplications { get; set; }
     public DbSet<StorageFile> StorageFiles { get; set; }
 
-    Task ITulahackContext.SaveChangesAsync() => SaveChangesAsync(default);
+    Task ITulahackContext.SaveChangesAsync() => SaveChangesAsync();
     Task ITulahackContext.SaveChangesAsync(CancellationToken cancellationToken) => SaveChangesAsync(cancellationToken);
 
     public TulahackContext(DbContextOptions<TulahackContext> options) : base(options) { }

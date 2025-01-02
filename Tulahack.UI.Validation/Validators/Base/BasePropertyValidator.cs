@@ -37,7 +37,8 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
     /// <param name="stringSource">Source for validation message.</param>
     /// <param name="validationMessageType">Type of validation message.</param>
     /// <param name="relatedProperties">Properties which can affect on state of validatable property.</param>
-    protected BasePropertyValidator(IStringSource stringSource, ValidationMessageType validationMessageType, params LambdaExpression[] relatedProperties)
+    protected BasePropertyValidator(IStringSource stringSource, ValidationMessageType validationMessageType,
+        params LambdaExpression[] relatedProperties)
     {
         _stringSource = stringSource;
         _validationMessageType = validationMessageType;
@@ -61,7 +62,8 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
     /// <inheritdoc />
     public void SetStringSource(IStringSource stringSource)
     {
-        _overriddenStringSource.GuardNotCallTwice($"Methods 'WithMessage'/'WithLocalizedMessage' already has been called for {this.GetType()}");
+        _overriddenStringSource.GuardNotCallTwice(
+            $"Methods 'WithMessage'/'WithLocalizedMessage' already has been called for {this.GetType()}");
         _overriddenStringSource = stringSource;
     }
 
@@ -109,15 +111,16 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
     /// </summary>
     protected virtual IReadOnlyList<ValidationMessage> GetValidationMessages(ValidationContext<TObject, TProp> context)
     {
-        var messageSource = context.GetMessageSource(_overriddenStringSource ?? _stringSource);
+        IStringSource messageSource = context.GetMessageSource(_overriddenStringSource ?? _stringSource);
         var validationMessage = new ValidationMessage(messageSource, _validationMessageType);
-        return new []{ validationMessage };
+        return [validationMessage];
     }
 
     /// <summary>
     /// Execute delay because of throttle.
     /// </summary>
-    protected async Task ThrottleAsync(ValidationContextFactory<TObject> contextFactory, CancellationToken cancellationToken)
+    protected async Task ThrottleAsync(ValidationContextFactory<TObject> contextFactory,
+        CancellationToken cancellationToken)
     {
         if (_throttle != null)
         {
@@ -130,11 +133,12 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
     /// <summary>
     /// Get names of related properties.
     /// </summary>
-    private IReadOnlyList<string> GetUnionRelatedProperties(IReadOnlyList<LambdaExpression> relatedPropertiesExpressions)
+    private IReadOnlyList<string> GetUnionRelatedProperties(
+        IReadOnlyList<LambdaExpression> relatedPropertiesExpressions)
     {
         // Because this method call from ctor, RelatedProperties can be null at this moment.
         // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
-        var existingRelatedProperties = RelatedProperties ?? Array.Empty<string>();
+        IReadOnlyList<string> existingRelatedProperties = RelatedProperties ?? Array.Empty<string>();
 
         if (relatedPropertiesExpressions.Any() != true)
         {
@@ -142,12 +146,14 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
         }
 
         var relatedProperties = new HashSet<string>(existingRelatedProperties);
-        foreach (var expression in relatedPropertiesExpressions)
+
+        foreach (LambdaExpression expression in relatedPropertiesExpressions)
         {
             var propertyName = ReactiveValidationHelper.GetPropertyName(typeof(TObject), expression);
+
             if (!string.IsNullOrEmpty(propertyName))
             {
-                relatedProperties.Add(propertyName!);
+                _ = relatedProperties.Add(propertyName!);
             }
         }
 

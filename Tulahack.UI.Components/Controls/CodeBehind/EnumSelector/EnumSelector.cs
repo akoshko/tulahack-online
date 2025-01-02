@@ -11,7 +11,7 @@ public class EnumItemTuple
     public object? Value { get; set; }
 }
 
-public class EnumSelector: TemplatedControl
+public class EnumSelector : TemplatedControl
 {
     public static readonly StyledProperty<Type?> EnumTypeProperty = AvaloniaProperty.Register<EnumSelector, Type?>(
         nameof(EnumType), validate: OnTypeValidate);
@@ -33,9 +33,9 @@ public class EnumSelector: TemplatedControl
     }
 
     public static readonly StyledProperty<object?> ValueProperty = AvaloniaProperty.Register<EnumSelector, object?>(
-        nameof(Value), defaultBindingMode: BindingMode.TwoWay, coerce:OnValueCoerce);
+        nameof(EnumValue), defaultBindingMode: BindingMode.TwoWay, coerce: OnValueCoerce);
 
-    private static object? OnValueCoerce(AvaloniaObject o,  object? value)
+    private static object? OnValueCoerce(AvaloniaObject o, object? value)
     {
         if (o is not EnumSelector selector)
         {
@@ -52,7 +52,8 @@ public class EnumSelector: TemplatedControl
             return null;
         }
 
-        var first = selector.Values?.FirstOrDefault(a => Equals(a.Value, value));
+        EnumItemTuple? first = selector.Values?.FirstOrDefault(a => Equals(a.Value, value));
+
         if (first is null)
         {
             return null;
@@ -61,7 +62,7 @@ public class EnumSelector: TemplatedControl
         return value;
     }
 
-    public object? Value
+    public object? EnumValue
     {
         get => GetValue(ValueProperty);
         set => SetValue(ValueProperty, value);
@@ -69,8 +70,9 @@ public class EnumSelector: TemplatedControl
 
     private EnumItemTuple? _selectedValue;
 
-    public static readonly DirectProperty<EnumSelector, EnumItemTuple?> SelectedValueProperty = AvaloniaProperty.RegisterDirect<EnumSelector, EnumItemTuple?>(
-        nameof(SelectedValue), o => o.SelectedValue, (o, v) => o.SelectedValue = v);
+    public static readonly DirectProperty<EnumSelector, EnumItemTuple?> SelectedValueProperty =
+        AvaloniaProperty.RegisterDirect<EnumSelector, EnumItemTuple?>(
+            nameof(SelectedValue), o => o.SelectedValue, (o, v) => o.SelectedValue = v);
 
     public EnumItemTuple? SelectedValue
     {
@@ -78,8 +80,9 @@ public class EnumSelector: TemplatedControl
         private set => SetAndRaise(SelectedValueProperty, ref _selectedValue, value);
     }
 
-    public static readonly DirectProperty<EnumSelector, IList<EnumItemTuple>?> ValuesProperty = AvaloniaProperty.RegisterDirect<EnumSelector, IList<EnumItemTuple>?>(
-        nameof(Values), o => o.Values);
+    public static readonly DirectProperty<EnumSelector, IList<EnumItemTuple>?> ValuesProperty =
+        AvaloniaProperty.RegisterDirect<EnumSelector, IList<EnumItemTuple>?>(
+            nameof(Values), o => o.Values);
 
     private IList<EnumItemTuple>? _values;
     internal IList<EnumItemTuple>? Values
@@ -88,8 +91,9 @@ public class EnumSelector: TemplatedControl
         private set => SetAndRaise(ValuesProperty, ref _values, value);
     }
 
-    public static readonly StyledProperty<bool> DisplayDescriptionProperty = AvaloniaProperty.Register<EnumSelector, bool>(
-        nameof(DisplayDescription));
+    public static readonly StyledProperty<bool> DisplayDescriptionProperty =
+        AvaloniaProperty.Register<EnumSelector, bool>(
+            nameof(DisplayDescription));
 
     public bool DisplayDescription
     {
@@ -99,9 +103,10 @@ public class EnumSelector: TemplatedControl
 
     static EnumSelector()
     {
-        EnumTypeProperty.Changed.AddClassHandler<EnumSelector, Type?>((o, e) => o.OnTypeChanged(e));
-        SelectedValueProperty.Changed.AddClassHandler<EnumSelector, EnumItemTuple?>((o, e) => o.OnSelectedValueChanged(e));
-        ValueProperty.Changed.AddClassHandler<EnumSelector, object?>((o, e) => o.OnValueChanged(e));
+        _ = EnumTypeProperty.Changed.AddClassHandler<EnumSelector, Type?>((o, e) => o.OnTypeChanged(e));
+        _ = SelectedValueProperty.Changed.AddClassHandler<EnumSelector, EnumItemTuple?>((o, e) =>
+            o.OnSelectedValueChanged(e));
+        _ = ValueProperty.Changed.AddClassHandler<EnumSelector, object?>((o, e) => o.OnValueChanged(e));
     }
 
     private void OnValueChanged(AvaloniaPropertyChangedEventArgs<object?> args)
@@ -112,6 +117,7 @@ public class EnumSelector: TemplatedControl
         }
 
         var newValue = args.NewValue.Value;
+
         if (newValue is null)
         {
             SetCurrentValue(SelectedValueProperty, null);
@@ -122,6 +128,7 @@ public class EnumSelector: TemplatedControl
             {
                 SetCurrentValue(SelectedValueProperty, null);
             }
+
             var tuple = Values?.FirstOrDefault(x => Equals(x.Value, newValue));
             SetCurrentValue(SelectedValueProperty, tuple);
         }
@@ -141,10 +148,12 @@ public class EnumSelector: TemplatedControl
     {
         Values?.Clear();
         var newType = args.GetNewValue<Type?>();
+
         if (newType is null || !newType.IsEnum)
         {
             return;
         }
+
         Values = GenerateItemTuple();
     }
 
@@ -155,20 +164,28 @@ public class EnumSelector: TemplatedControl
             return new List<EnumItemTuple>();
         }
 
-        var values = Enum.GetValues(EnumType);
+        Array values = Enum.GetValues(EnumType);
         List<EnumItemTuple> list = new();
-        var fields = EnumType.GetFields();
+        System.Reflection.FieldInfo[] fields = EnumType.GetFields();
+
         foreach (var value in values)
         {
             if (value.GetType() == EnumType)
             {
                 var displayName = value.ToString();
-                var field = EnumType.GetField(displayName);
+                if (displayName is null)
+                {
+                    continue;
+                }
+
+                System.Reflection.FieldInfo? field = EnumType.GetField(displayName);
                 var description = field?.GetCustomAttributes(typeof(DescriptionAttribute), false).FirstOrDefault();
+
                 if (description is not null)
                 {
-                    displayName = ((DescriptionAttribute) description).Description;
+                    displayName = ((DescriptionAttribute)description).Description;
                 }
+
                 list.Add(new EnumItemTuple()
                 {
                     DisplayName = displayName,

@@ -29,7 +29,7 @@ public static class SettingsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
 
         rb.PropertyCascadeMode.GuardNotCallTwice("CascadeMode is already assigned");
         rb.PropertyCascadeMode = propertyCascadeMode;
@@ -51,7 +51,7 @@ public static class SettingsExtensions
         where TObject : IValidatableObject
         where TProp : INotifyPropertyChanged
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
         rb.ObservingPropertiesSettings.TrackValueChanged = true;
 
         return ruleBuilder;
@@ -71,7 +71,7 @@ public static class SettingsExtensions
         where TObject : IValidatableObject
         where TProp : INotifyDataErrorInfo
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
         rb.ObservingPropertiesSettings.TrackValueErrorsChanged = true;
 
         return ruleBuilder;
@@ -92,15 +92,11 @@ public static class SettingsExtensions
         where TObject : IValidatableObject
         where TProp : IValidatableObject?
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
-        if (validatorFactoryMethod == null)
-        {
-            rb.ObservingPropertiesSettings.PropertyValueFactoryMethod = ValidationOptions.ValidatorFactory.GetValidator;
-        }
-        else
-        {
-            rb.ObservingPropertiesSettings.PropertyValueFactoryMethod = o => validatorFactoryMethod((TProp) o);
-        }
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
+
+        rb.ObservingPropertiesSettings.PropertyValueFactoryMethod = validatorFactoryMethod == null
+            ? ValidationOptions.ValidatorFactory.GetValidator
+            : (o => validatorFactoryMethod((TProp)o));
 
         return ruleBuilder;
     }
@@ -113,12 +109,13 @@ public static class SettingsExtensions
     /// <typeparam name="TCollection">The type of collection.</typeparam>
     /// <typeparam name="TItem">The type of collection item.</typeparam>
     /// <param name="ruleBuilder">The rule builder.</param>
-    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionChanged<TObject, TCollection, TItem>(
+    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionChanged<TObject,
+        TCollection, TItem>(
         this ICollectionRuleBuilderInitial<TObject, TCollection, TItem> ruleBuilder)
         where TObject : IValidatableObject
         where TCollection : IEnumerable<TItem>, INotifyCollectionChanged
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
         rb.ObservingPropertiesSettings.TrackCollectionChanged = true;
 
         return ruleBuilder;
@@ -132,13 +129,14 @@ public static class SettingsExtensions
     /// <typeparam name="TCollection">The type of collection.</typeparam>
     /// <typeparam name="TItem">The type of collection item.</typeparam>
     /// <param name="ruleBuilder">The rule builder.</param>
-    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionItemChanged<TObject, TCollection, TItem>(
+    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionItemChanged<TObject,
+        TCollection, TItem>(
         this ICollectionRuleBuilderInitial<TObject, TCollection, TItem> ruleBuilder)
         where TObject : IValidatableObject
         where TCollection : IEnumerable<TItem>
         where TItem : INotifyPropertyChanged
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
         rb.ObservingPropertiesSettings.TrackCollectionItemChanged = true;
 
         if (typeof(INotifyCollectionChanged).IsAssignableFrom(typeof(TCollection)))
@@ -157,13 +155,14 @@ public static class SettingsExtensions
     /// <typeparam name="TCollection">The type of collection.</typeparam>
     /// <typeparam name="TItem">The type of collection item.</typeparam>
     /// <param name="ruleBuilder">The rule builder.</param>
-    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionItemErrorsChanged<TObject, TCollection, TItem>(
+    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> TrackCollectionItemErrorsChanged<TObject,
+        TCollection, TItem>(
         this ICollectionRuleBuilderInitial<TObject, TCollection, TItem> ruleBuilder)
         where TObject : IValidatableObject
         where TCollection : IEnumerable<TItem>
         where TItem : INotifyDataErrorInfo
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
         rb.ObservingPropertiesSettings.TrackCollectionItemErrorsChanged = true;
 
         if (typeof(INotifyCollectionChanged).IsAssignableFrom(typeof(TCollection)))
@@ -182,22 +181,19 @@ public static class SettingsExtensions
     /// <typeparam name="TItem">The type of collection item.</typeparam>
     /// <param name="ruleBuilder">The rule builder.</param>
     /// <param name="validatorFactoryMethod">Method which allows create object validator for items.</param>
-    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> SetCollectionItemValidator<TObject, TCollection, TItem>(
+    public static ICollectionRuleBuilderInitial<TObject, TCollection, TItem> SetCollectionItemValidator<TObject,
+        TCollection, TItem>(
         this ICollectionRuleBuilderInitial<TObject, TCollection, TItem> ruleBuilder,
         Func<TItem, IObjectValidator>? validatorFactoryMethod = null)
         where TObject : IValidatableObject
         where TCollection : IEnumerable<TItem>
         where TItem : IValidatableObject
     {
-        var rb = (IRuleBuilder<TObject>) ruleBuilder;
-        if (validatorFactoryMethod == null)
-        {
-            rb.ObservingPropertiesSettings.CollectionItemFactoryMethod = ValidationOptions.ValidatorFactory.GetValidator;
-        }
-        else
-        {
-            rb.ObservingPropertiesSettings.CollectionItemFactoryMethod = o => validatorFactoryMethod((TItem)o);
-        }
+        var rb = (IRuleBuilder<TObject>)ruleBuilder;
+
+        rb.ObservingPropertiesSettings.CollectionItemFactoryMethod = validatorFactoryMethod == null
+            ? ValidationOptions.ValidatorFactory.GetValidator
+            : (o => validatorFactoryMethod((TItem)o));
 
         return ruleBuilder;
     }

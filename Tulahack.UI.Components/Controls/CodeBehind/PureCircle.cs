@@ -4,7 +4,7 @@ using Avalonia.Media;
 
 namespace Tulahack.UI.Components.Controls.CodeBehind;
 
-public class PureCircle: Control
+public class PureCircle : Control
 {
     public static readonly StyledProperty<double> DiameterProperty = AvaloniaProperty.Register<PureCircle, double>(
         nameof(Diameter));
@@ -33,19 +33,19 @@ public class PureCircle: Control
 
     protected override Size MeasureOverride(Size availableSize)
     {
-        double diameter = Math.Max(0, Diameter);
+        var diameter = Math.Max(0, Diameter);
         return new Size(diameter, diameter);
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        double diameter = Math.Max(0, Diameter);
+        var diameter = Math.Max(0, Diameter);
         return new Size(diameter, diameter);
     }
 
     public override void Render(DrawingContext context)
     {
-        double radius = Math.Max(0, Diameter) / 2;
+        var radius = Math.Max(0, Diameter) / 2;
         context.DrawEllipse(Background, null, new(radius, radius), radius, radius);
     }
 }

@@ -27,22 +27,21 @@ internal class DefaultValidatorFactory : IValidatorFactory
     /// Registration of new object validator builder using its creator.
     /// </summary>
     /// <param name="creator">Creator of object validator builder.</param>
+    /// <exception cref="ArgumentNullException"></exception>
     public void Register(IObjectValidatorBuilderCreator creator)
     {
-        if (creator == null)
+        ArgumentNullException.ThrowIfNull(creator);
+
+        IObjectValidatorBuilder builder = creator.Create();
+
+        if (builder == null)
         {
             throw new ArgumentNullException(nameof(creator));
         }
 
-        var builder = creator.Create();
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
         if (_validatorsBuilder.ContainsKey(builder.SupportedType))
         {
-            throw new ObjectValidatorBuilderAlreadyRegistered(builder.SupportedType);
+            throw new ObjectValidatorBuilderAlreadyRegisteredException(builder.SupportedType);
         }
 
         _validatorsBuilder.Add(builder.SupportedType, builder);
@@ -58,20 +57,15 @@ internal class DefaultValidatorFactory : IValidatorFactory
     /// </param>
     public void Register(Assembly assembly, Func<Type, IObjectValidatorBuilderCreator>? factoryMethod = null)
     {
-        var creatorTypes = assembly
+        IEnumerable<Type> creatorTypes = assembly
             .GetTypes()
             .Where(p => typeof(IObjectValidatorBuilderCreator).IsAssignableFrom(p));
-        foreach (var creatorType in creatorTypes)
+
+        foreach (Type creatorType in creatorTypes)
         {
-            IObjectValidatorBuilderCreator creator;
-            if (factoryMethod != null)
-            {
-                creator = factoryMethod.Invoke(creatorType);
-            }
-            else
-            {
-                creator = (IObjectValidatorBuilderCreator) Activator.CreateInstance(creatorType)!;
-            }
+            IObjectValidatorBuilderCreator creator = factoryMethod != null
+                ? factoryMethod.Invoke(creatorType)
+                : (IObjectValidatorBuilderCreator)Activator.CreateInstance(creatorType)!;
 
             Register(creator);
         }
@@ -80,28 +74,24 @@ internal class DefaultValidatorFactory : IValidatorFactory
     /// <inheritdoc />
     public IObjectValidator GetValidator(IValidatableObject instance)
     {
-        if (instance == null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         if (!TryGetValidatorBuilder(instance.GetType(), out var builder))
         {
-            throw new ObjectValidatorBuilderNotFound(instance.GetType());
+            throw new ObjectValidatorBuilderNotFoundException(instance.GetType());
         }
 
         return builder.Build(instance);
     }
 
     /// <inheritdoc />
-    public bool TryGetValidator<TObject>(IValidatableObject instance, [NotNullWhen(true)]out IObjectValidator? objectValidator)
+    public bool TryGetValidator<TObject>(IValidatableObject instance,
+        [NotNullWhen(true)] out IObjectValidator? objectValidator)
     {
-        if (instance == null)
-        {
-            throw new ArgumentNullException(nameof(instance));
-        }
+        ArgumentNullException.ThrowIfNull(instance);
 
         objectValidator = null;
+
         if (!TryGetValidatorBuilder(instance.GetType(), out var builder))
         {
             return false;

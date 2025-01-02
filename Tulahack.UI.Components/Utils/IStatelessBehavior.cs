@@ -2,9 +2,9 @@
 
 public interface IStatelessBehavior<in T>
 {
-    void Attach(T obj, bool setItems = true);
+    public void Attach(T obj, bool setItems = true);
 
-    void Detach(T obj, bool unsetItems = true);
+    public void Detach(T obj, bool unsetItems = true);
 }
 
 public interface ICollectionItemBehavior<in T>

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -24,13 +25,13 @@ public class DashboardService(
 {
     public async Task<DashboardDto> GetDashboardOverview()
     {
-        var result = await httpClient.GetAndHandleAsync<DashboardDto>("dashboard", serializerOptions, notificationsService);
+        DashboardDto? result = await httpClient.GetAndHandleAsync<DashboardDto>(new Uri("dashboard"), serializerOptions);
 
         if (result is null)
         {
             throw new HttpRequestException("cannot get Dashboard data api/dashboard from server, result is null");
         }
-
+        _ = notificationsService.ShowSuccess("Dashboard data api/dashboard from server");
         return result;
     }
 }

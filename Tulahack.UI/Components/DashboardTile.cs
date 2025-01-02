@@ -19,7 +19,7 @@ public class DashboardTile : TemplatedControl
         get => GetValue(TileHeaderProperty);
         set => SetValue(TileHeaderProperty, value);
     }
-    
+
     /// <summary>
     /// Defines the <see cref="TileContent"/> property.
     /// </summary>

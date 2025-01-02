@@ -16,7 +16,8 @@ namespace Tulahack.UI.Validation.Validators.Collections;
 /// <typeparam name="TObject">The type of validatable object.</typeparam>
 /// <typeparam name="TCollection">The type of collection.</typeparam>
 /// <typeparam name="TItem">The type of element of collection.</typeparam>
-public class CollectionElementsAreValidValidator<TObject, TCollection, TItem> : BaseSyncPropertyValidator<TObject, TCollection>
+public class
+    CollectionElementsAreValidValidator<TObject, TCollection, TItem> : BaseSyncPropertyValidator<TObject, TCollection>
     where TObject : IValidatableObject
     where TCollection : IEnumerable<TItem>
     where TItem : INotifyDataErrorInfo
@@ -26,8 +27,7 @@ public class CollectionElementsAreValidValidator<TObject, TCollection, TItem> : 
     /// </summary>
     /// <param name="validationMessageType">The type of validatable message.</param>
     public CollectionElementsAreValidValidator(ValidationMessageType validationMessageType)
-        : base(new LanguageStringSource(ValidatorsNames.CollectionElementsAreValidValidator), validationMessageType)
-    {}
+        : base(new LanguageStringSource(ValidatorsNames.CollectionElementsAreValidValidator), validationMessageType) { }
 
 
     /// <inheritdoc />

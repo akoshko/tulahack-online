@@ -17,6 +17,7 @@ public static class MathHelpers
     public static double SafeClamp(double value, double min, double max)
     {
         (min, max) = GetMinMax(min, max);
+
         if (value < min)
         {
             return min;
@@ -28,6 +29,7 @@ public static class MathHelpers
     public static decimal SafeClamp(decimal value, decimal min, decimal max)
     {
         (min, max) = GetMinMax(min, max);
+
         if (value < min)
         {
             return min;
@@ -39,6 +41,7 @@ public static class MathHelpers
     public static int SafeClamp(int value, int min, int max)
     {
         (min, max) = GetMinMax(min, max);
+
         if (value < min)
         {
             return min;
@@ -46,10 +49,11 @@ public static class MathHelpers
 
         return value > max ? max : value;
     }
-    
+
     public static float SafeClamp(float value, float min, float max)
     {
         (min, max) = GetMinMax(min, max);
+
         if (value < min)
         {
             return min;

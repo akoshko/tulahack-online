@@ -7,7 +7,7 @@ namespace Tulahack.UI.Components.Controls.CodeBehind;
 /// <summary>
 /// Provide the most simplified shape implementation. This is a rectangle with a background, without border and corner radius.
 /// </summary>
-public class PureRectangle: Control
+public class PureRectangle : Control
 {
     public static readonly StyledProperty<IBrush?> BackgroundProperty =
         Border.BackgroundProperty.AddOwner<PureRectangle>();

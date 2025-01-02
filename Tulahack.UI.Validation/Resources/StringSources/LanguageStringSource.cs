@@ -39,7 +39,7 @@ public class LanguageStringSource : IStringSource
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
@@ -54,7 +54,7 @@ public class LanguageStringSource : IStringSource
             return false;
         }
 
-        return Equals((LanguageStringSource) obj);
+        return Equals((LanguageStringSource)obj);
     }
 
     /// <inheritdoc />
@@ -70,5 +70,5 @@ public class LanguageStringSource : IStringSource
     /// Check if two sources are equal.
     /// </summary>
     protected bool Equals(LanguageStringSource other) =>
-        string.Equals(_key, other._key) && string.Equals(_resource, other._resource);
+        string.Equals(_key, other._key, StringComparison.Ordinal) && string.Equals(_resource, other._resource, StringComparison.Ordinal);
 }

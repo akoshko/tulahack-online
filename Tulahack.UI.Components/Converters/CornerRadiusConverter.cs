@@ -20,14 +20,14 @@ public enum CornerRadiusPosition
 
 public class CornerRadiusIncludeConverter(CornerRadiusPosition position) : IValueConverter
 {
-    public static CornerRadiusIncludeConverter TopLeft { get; } = new( CornerRadiusPosition.TopLeft );
-    public static CornerRadiusIncludeConverter TopRight { get; } = new( CornerRadiusPosition.TopRight );
-    public static CornerRadiusIncludeConverter BottomLeft { get; } = new( CornerRadiusPosition.BottomLeft );
-    public static CornerRadiusIncludeConverter BottomRight { get; } = new( CornerRadiusPosition.BottomRight );
-    public static CornerRadiusIncludeConverter Top { get; } = new( CornerRadiusPosition.Top );
-    public static CornerRadiusIncludeConverter Left { get; } = new( CornerRadiusPosition.Left );
-    public static CornerRadiusIncludeConverter Right { get; } = new( CornerRadiusPosition.Right );
-    public static CornerRadiusIncludeConverter Bottom { get; } = new( CornerRadiusPosition.Bottom );
+    public static CornerRadiusIncludeConverter TopLeft { get; } = new(CornerRadiusPosition.TopLeft);
+    public static CornerRadiusIncludeConverter TopRight { get; } = new(CornerRadiusPosition.TopRight);
+    public static CornerRadiusIncludeConverter BottomLeft { get; } = new(CornerRadiusPosition.BottomLeft);
+    public static CornerRadiusIncludeConverter BottomRight { get; } = new(CornerRadiusPosition.BottomRight);
+    public static CornerRadiusIncludeConverter Top { get; } = new(CornerRadiusPosition.Top);
+    public static CornerRadiusIncludeConverter Left { get; } = new(CornerRadiusPosition.Left);
+    public static CornerRadiusIncludeConverter Right { get; } = new(CornerRadiusPosition.Right);
+    public static CornerRadiusIncludeConverter Bottom { get; } = new(CornerRadiusPosition.Bottom);
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
@@ -50,14 +50,14 @@ public class CornerRadiusIncludeConverter(CornerRadiusPosition position) : IValu
 
 public class CornerRadiusExcludeConverter(CornerRadiusPosition position) : IValueConverter
 {
-    public static CornerRadiusExcludeConverter TopLeft { get; } = new( CornerRadiusPosition.TopLeft );
-    public static CornerRadiusExcludeConverter TopRight { get; } = new( CornerRadiusPosition.TopRight );
-    public static CornerRadiusExcludeConverter BottomLeft { get; } = new( CornerRadiusPosition.BottomLeft );
-    public static CornerRadiusExcludeConverter BottomRight { get; } = new( CornerRadiusPosition.BottomRight );
-    public static CornerRadiusExcludeConverter Top { get; } = new( CornerRadiusPosition.Top );
-    public static CornerRadiusExcludeConverter Left { get; } = new( CornerRadiusPosition.Left );
-    public static CornerRadiusExcludeConverter Right { get; } = new( CornerRadiusPosition.Right );
-    public static CornerRadiusExcludeConverter Bottom { get; } = new( CornerRadiusPosition.Bottom );
+    public static CornerRadiusExcludeConverter TopLeft { get; } = new(CornerRadiusPosition.TopLeft);
+    public static CornerRadiusExcludeConverter TopRight { get; } = new(CornerRadiusPosition.TopRight);
+    public static CornerRadiusExcludeConverter BottomLeft { get; } = new(CornerRadiusPosition.BottomLeft);
+    public static CornerRadiusExcludeConverter BottomRight { get; } = new(CornerRadiusPosition.BottomRight);
+    public static CornerRadiusExcludeConverter Top { get; } = new(CornerRadiusPosition.Top);
+    public static CornerRadiusExcludeConverter Left { get; } = new(CornerRadiusPosition.Left);
+    public static CornerRadiusExcludeConverter Right { get; } = new(CornerRadiusPosition.Right);
+    public static CornerRadiusExcludeConverter Bottom { get; } = new(CornerRadiusPosition.Bottom);
 
     public object Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {

@@ -18,7 +18,7 @@ public class TulahackTheme : Styles
                 { new CultureInfo("en-US"), "avares://Tulahack.UI.Components/Locale/en-US.axaml" },
             });
 
-    private static readonly string _defaultResource = "avares://Tulahack.UI.Components/Locale/ru-RU.axaml";
+    private const string PC_DefaultResource = "avares://Tulahack.UI.Components/Locale/ru-RU.axaml";
 
     private readonly IServiceProvider? sp;
 
@@ -39,15 +39,15 @@ public class TulahackTheme : Styles
             {
                 _locale = value;
                 var resource = TryGetLocaleResource(value);
-                var d = AvaloniaXamlLoader.Load(sp, new Uri(resource)) as ResourceDictionary;
-                if (d is null)
+
+                if (AvaloniaXamlLoader.Load(sp, new Uri(resource)) is not ResourceDictionary d)
                 {
                     return;
                 }
 
-                foreach (var kv in d)
+                foreach (KeyValuePair<object, object?> kv in d)
                 {
-                    this.Resources.Add(kv);
+                    Resources.Add(kv);
                 }
             }
             catch
@@ -61,7 +61,7 @@ public class TulahackTheme : Styles
     {
         if (Equals(locale, CultureInfo.InvariantCulture))
         {
-            return _defaultResource;
+            return PC_DefaultResource;
         }
 
         if (locale is null)

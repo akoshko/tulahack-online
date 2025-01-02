@@ -9,9 +9,20 @@ namespace Tulahack.UI.Utils;
 // https://www.twilio.com/en-us/blog/use-jsonserializeroptions-with-source-generated-json-deserialization
 
 [JsonSourceGenerationOptions(
-    PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
-    IncludeFields = true,
-    WriteIndented = false)]
+     UseStringEnumConverter = true,
+     PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase,
+     IncludeFields = true,
+     WriteIndented = false)]
+// Enums
+[JsonSerializable(typeof(ContestRoleDto))]
+[JsonSerializable(typeof(UserPreferredThemeDto))]
+[JsonSerializable(typeof(EventTypeDto))]
+[JsonSerializable(typeof(FormOfParticipationTypeDto))]
+[JsonSerializable(typeof(TimelineItemTypeDto))]
+[JsonSerializable(typeof(ContestCaseComplexityDto))]
+[JsonSerializable(typeof(StorageFilePurposeTypeDto))]
+[JsonSerializable(typeof(ApprovalStatusDto))]
+// DTO
 [JsonSerializable(typeof(DashboardDto))]
 [JsonSerializable(typeof(ContestTimelineDto))]
 [JsonSerializable(typeof(TimelineItemDto))]
@@ -23,4 +34,4 @@ namespace Tulahack.UI.Utils;
 [JsonSerializable(typeof(UserPreferencesDto))]
 [JsonSerializable(typeof(ContestApplicationDto))]
 [JsonSerializable(typeof(IState))]
-public partial class TulahackJsonContext : JsonSerializerContext {}
+public partial class TulahackJsonContext : JsonSerializerContext { }

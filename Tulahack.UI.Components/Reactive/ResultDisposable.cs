@@ -10,8 +10,5 @@ public class ResultDisposable(IDisposable? disposable, bool result) : IDisposabl
 
 internal class EmptyDisposable : IDisposable
 {
-    public void Dispose()
-    {
-        
-    }
+    public void Dispose() { }
 }

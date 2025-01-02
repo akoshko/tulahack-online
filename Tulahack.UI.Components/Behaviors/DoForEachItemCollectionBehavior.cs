@@ -5,42 +5,48 @@ namespace Tulahack.UI.Components.Behaviors;
 public class DoForEachItemCollectionBehavior<TCollItem> :
     IForEachItemCollectionBehavior<TCollItem>
 {
-    Action<TCollItem> UnsetItemDelegate { get; }
-    Action<TCollItem> SetItemDelegate { get; }
+    Action<TCollItem>? UnsetItemDelegate { get; }
+    Action<TCollItem>? SetItemDelegate { get; }
 
-    void ICollectionItemBehavior<TCollItem>.OnItemAdded(TCollItem item) =>
+    public void OnItemAdded(TCollItem item) =>
         SetItemDelegate?.Invoke(item);
 
-    void ICollectionItemBehavior<TCollItem>.OnItemRemoved(TCollItem item) =>
+    public void OnItemRemoved(TCollItem item) =>
         UnsetItemDelegate?.Invoke(item);
 
     public DoForEachItemCollectionBehavior
     (
-        Action<TCollItem> OnAdd,
-        Action<TCollItem> OnRemove = null)
+        Action<TCollItem> onAdd,
+        Action<TCollItem>? onRemove = null)
     {
-        SetItemDelegate = OnAdd;
-        UnsetItemDelegate = OnRemove;
+        SetItemDelegate = onAdd;
+        UnsetItemDelegate = onRemove;
     }
+
+    public void Attach(IEnumerable<TCollItem> obj, bool setItems = true) =>
+        throw new NotImplementedException();
+
+    public void Detach(IEnumerable<TCollItem> obj, bool unsetItems = true) =>
+        throw new NotImplementedException();
 }
 
 public static class DoForEachBehaviorUtils
 {
     private static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehaviorImpl<TCollItem>
     (
-        this IEnumerable<TCollItem> collection,
+        this IEnumerable<TCollItem>? collection,
         IStatelessBehavior<IEnumerable<TCollItem>> behavior,
-        BehaviorsDisposable<IEnumerable<TCollItem>> previousBehavior = null)
+        BehaviorsDisposable<IEnumerable<TCollItem>>? previousBehavior = null)
     {
         if (collection == null)
         {
             return null;
         }
 
-        DisposableBehaviorContainer<IEnumerable<TCollItem>> behaviorContainer =
+        var behaviorContainer =
             new DisposableBehaviorContainer<IEnumerable<TCollItem>>(behavior, collection);
 
-        BehaviorsDisposable<IEnumerable<TCollItem>> behaviorsDisposable =
+        var behaviorsDisposable =
             new BehaviorsDisposable<IEnumerable<TCollItem>>(behaviorContainer, previousBehavior);
 
         return behaviorsDisposable;
@@ -59,15 +65,33 @@ public static class DoForEachBehaviorUtils
         IStatelessBehavior<IEnumerable<TCollItem>> behavior
     )
     {
-        IEnumerable<TCollItem> collection = previousBehavior.TheObjectTheBehaviorsAreAttachedTo;
+        Func<IEnumerable<TCollItem>> collection = previousBehavior.TheObjectTheBehaviorsAreAttachedTo;
         return AddBehaviorImpl(collection, behavior, previousBehavior);
+    }
+
+    private static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehaviorImpl<TCollItem>(
+        Func<IEnumerable<TCollItem>>? func,
+        IStatelessBehavior<IEnumerable<TCollItem>> behavior,
+        BehaviorsDisposable<IEnumerable<TCollItem>> previousBehavior)
+    {
+        if (func == null)
+        {
+            return null;
+        }
+
+        IEnumerable<TCollItem> collection = func.Invoke();
+        var behaviorContainer = new DisposableBehaviorContainer<IEnumerable<TCollItem>>(behavior, collection);
+
+        var behaviorsDisposable = new BehaviorsDisposable<IEnumerable<TCollItem>>(behaviorContainer, previousBehavior);
+
+        return behaviorsDisposable;
     }
 
     private static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehaviorImpl<TCollItem>
     (
-        this IEnumerable<TCollItem> collection,
+        this IEnumerable<TCollItem>? collection,
         DoForEachItemCollectionBehavior<TCollItem> behavior,
-        BehaviorsDisposable<IEnumerable<TCollItem>> previousBehavior = null
+        BehaviorsDisposable<IEnumerable<TCollItem>>? previousBehavior = null
     )
     {
         if (collection == null)
@@ -75,11 +99,9 @@ public static class DoForEachBehaviorUtils
             return null;
         }
 
-        DisposableBehaviorContainer<IEnumerable<TCollItem>> behaviorContainer =
-            new DisposableBehaviorContainer<IEnumerable<TCollItem>>(behavior, collection);
+        var behaviorContainer = new DisposableBehaviorContainer<IEnumerable<TCollItem>>(behavior, collection);
 
-        BehaviorsDisposable<IEnumerable<TCollItem>> behaviorsDisposable =
-            new BehaviorsDisposable<IEnumerable<TCollItem>>(behaviorContainer, previousBehavior);
+        var behaviorsDisposable = new BehaviorsDisposable<IEnumerable<TCollItem>>(behaviorContainer, previousBehavior);
 
         return behaviorsDisposable;
     }
@@ -88,14 +110,14 @@ public static class DoForEachBehaviorUtils
     (
         this IEnumerable<TCollItem> collection,
         Action<TCollItem> onAdd,
-        Action<TCollItem> onRemove = null,
-        BehaviorsDisposable<IEnumerable<TCollItem>> previousBehavior = null
+        Action<TCollItem>? onRemove = null,
+        BehaviorsDisposable<IEnumerable<TCollItem>>? previousBehavior = null
     )
     {
-        DoForEachItemCollectionBehavior<TCollItem> behavior =
+        var behavior =
             new DoForEachItemCollectionBehavior<TCollItem>(onAdd, onRemove);
 
-        return collection?.AddBehaviorImpl<TCollItem>(behavior, previousBehavior);
+        return collection?.AddBehaviorImpl(behavior, previousBehavior);
     }
 
     public static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehavior<TCollItem>
@@ -109,7 +131,7 @@ public static class DoForEachBehaviorUtils
     (
         this IEnumerable<TCollItem> collection,
         Action<TCollItem> onAdd,
-        Action<TCollItem> onRemove = null
+        Action<TCollItem>? onRemove = null
     ) =>
         collection.AddBehaviorImpl<TCollItem>(onAdd, onRemove);
 
@@ -117,10 +139,10 @@ public static class DoForEachBehaviorUtils
     (
         this BehaviorsDisposable<IEnumerable<TCollItem>> previousBehaviors,
         Action<TCollItem> onAdd,
-        Action<TCollItem> onRemove = null
+        Action<TCollItem>? onRemove = null
     )
     {
-        IEnumerable<TCollItem> collection = previousBehaviors.TheObjectTheBehaviorsAreAttachedTo;
+        IEnumerable<TCollItem> collection = previousBehaviors.TheObjectTheBehaviorsAreAttachedTo();
 
         return collection.AddBehaviorImpl<TCollItem>(onAdd, onRemove, previousBehaviors);
     }

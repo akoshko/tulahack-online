@@ -57,7 +57,7 @@ public static class NavigationKeys
     public static string Settings = "Settings";
     public static string Profile = "Profile";
     public static string ApplicationForm = "ApplicationForm";
-    
+
     // Contestant
     public static string Team = "Team";
     public static string ContestTask = "ContestTask";
@@ -65,17 +65,17 @@ public static class NavigationKeys
     public static string ContestSchedule = "ContestSchedule";
     public static string ContestEventSchedule = "ContestEventSchedule";
     public static string ContestEvent = "ContestEvent";
-    
+
     // Expert
     public static string Rating = "Rating";
     public static string Assessment = "Assessment";
-    
+
     // Moderator
     public static string Scoreboard = "Scoreboard";
     public static string Participators = "Participators";
     public static string Teams = "Teams";
     public static string Experts = "Experts";
-    
+
     // Superuser
     public static string Moderators = "Moderators";
     public static string HackathonOverview = "ContestOverview";

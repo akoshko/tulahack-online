@@ -40,7 +40,7 @@ public class ValidationMessageStringSource : IStringSource
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
@@ -55,7 +55,7 @@ public class ValidationMessageStringSource : IStringSource
             return false;
         }
 
-        return Equals((ValidationMessageStringSource) obj);
+        return Equals((ValidationMessageStringSource)obj);
     }
 
     /// <inheritdoc />
@@ -72,5 +72,6 @@ public class ValidationMessageStringSource : IStringSource
     /// </summary>
     protected bool Equals(ValidationMessageStringSource other) =>
         Equals(_patternStringSource, other._patternStringSource) &&
+        // ReSharper disable once UsageOfDefaultStructEquality
         _arguments.SequenceEqual(other._arguments);
 }

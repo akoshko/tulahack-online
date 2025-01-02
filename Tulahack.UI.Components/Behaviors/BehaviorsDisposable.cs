@@ -9,13 +9,20 @@ public class BehaviorsDisposable<T> : ISuspendableDisposable
 {
     readonly List<DisposableBehaviorContainer<T>> _disposableBehaviors = new();
 
-    public T TheObjectTheBehaviorsAreAttachedTo =>
-        _disposableBehaviors.LastOrDefault().TheObjectTheBehaviorIsAttachedTo;
+    public T TheObjectTheBehaviorsAreAttachedTo()
+    {
+        if (_disposableBehaviors.LastOrDefault() is null)
+        {
+            return default;
+        }
+
+        return _disposableBehaviors.LastOrDefault()!.TheObjectTheBehaviorIsAttachedTo;
+    }
 
     internal BehaviorsDisposable
     (
         DisposableBehaviorContainer<T> disposableBehaviorToAdd,
-        BehaviorsDisposable<T> previousBehavior = null
+        BehaviorsDisposable<T>? previousBehavior = null
     )
     {
         if (previousBehavior != null)
@@ -28,7 +35,7 @@ public class BehaviorsDisposable<T> : ISuspendableDisposable
 
     public void Reset(bool resetItems = true)
     {
-        foreach (var behaviorContainer in _disposableBehaviors)
+        foreach (DisposableBehaviorContainer<T> behaviorContainer in _disposableBehaviors)
         {
             behaviorContainer.Reset(resetItems);
         }

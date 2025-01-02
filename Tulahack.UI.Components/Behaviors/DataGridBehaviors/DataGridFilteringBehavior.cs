@@ -5,9 +5,10 @@ using Tulahack.UI.Components.Utils;
 
 namespace Tulahack.UI.Components.Behaviors.DataGridBehaviors;
 
-public class DataGridFilteringBehavior
+public static class DataGridFilteringBehavior
 {
     #region ColumnFilterText Attached Avalonia Property
+
     public static string GetColumnFilterText(DataGridColumnHeader obj) =>
         obj.GetValue(ColumnFilterTextProperty);
 
@@ -19,10 +20,12 @@ public class DataGridFilteringBehavior
         (
             "ColumnFilterText"
         );
+
     #endregion ColumnFilterText Attached Avalonia Property
 
 
     #region FilterPropName Attached Avalonia Property
+
     public static string GetFilterPropName(DataGridColumn obj) =>
         obj.GetValue(FilterPropNameProperty);
 
@@ -34,10 +37,12 @@ public class DataGridFilteringBehavior
         (
             "FilterPropName"
         );
+
     #endregion FilterPropName Attached Avalonia Property
 
 
     #region ColumnPropGetter Attached Avalonia Property
+
     public static Func<object, object>? GetColumnPropGetter(DataGridColumn obj) =>
         obj.GetValue(ColumnPropGetterProperty);
 
@@ -49,10 +54,12 @@ public class DataGridFilteringBehavior
         (
             "ColumnPropGetter"
         );
+
     #endregion ColumnPropGetter Attached Avalonia Property
 
 
     #region RowDataType Attached Avalonia Property
+
     public static Type GetRowDataType(DataGrid obj) =>
         obj.GetValue(RowDataTypeProperty);
 
@@ -64,10 +71,12 @@ public class DataGridFilteringBehavior
         (
             "RowDataType"
         );
+
     #endregion RowDataType Attached Avalonia Property
 
 
     #region HasFilters Attached Avalonia Property
+
     public static bool GetHasFilters(DataGrid obj) =>
         obj.GetValue(HasFiltersProperty);
 
@@ -80,30 +89,30 @@ public class DataGridFilteringBehavior
             "HasFilters",
             true
         );
+
     #endregion HasFilters Attached Avalonia Property
 
 
     static DataGridFilteringBehavior()
     {
-        ColumnFilterTextProperty.Changed.Subscribe(OnColumnFilterTextChanged);
-        FilterPropNameProperty.Changed.Subscribe(OnFilterPropNameChanged);
-        RowDataTypeProperty.Changed.Subscribe(OnRowDataTypeChanged);
+        _ = ColumnFilterTextProperty.Changed.Subscribe(OnColumnFilterTextChanged);
+        _ = FilterPropNameProperty.Changed.Subscribe(OnFilterPropNameChanged);
+        _ = RowDataTypeProperty.Changed.Subscribe(OnRowDataTypeChanged);
     }
 
     private static void OnRowDataTypeChanged(AvaloniaPropertyChangedEventArgs<Type> obj)
     {
-        DataGrid dataGrid = (DataGrid) obj.Sender;
-
+        var dataGrid = (DataGrid)obj.Sender;
         dataGrid.Columns.CollectionChanged += Columns_CollectionChanged;
-
         SetColumnPropGettersFromPropNames(dataGrid);
     }
 
-    private static void Columns_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+    private static void Columns_CollectionChanged(object? sender,
+        System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
     {
         if (e.NewItems != null)
         {
-            foreach(var col in e.NewItems.Cast<DataGridColumn>())
+            foreach (DataGridColumn col in e.NewItems.Cast<DataGridColumn>())
             {
                 SetColumnPropGetterFromPropName(col, GetFilterPropName(col));
             }
@@ -120,14 +129,14 @@ public class DataGridFilteringBehavior
 
     private static void OnFilterPropNameChanged(AvaloniaPropertyChangedEventArgs<string> obj)
     {
-        DataGridColumn col = (DataGridColumn) obj.Sender;
+        var col = (DataGridColumn)obj.Sender;
 
-        string propName = obj.NewValue.Value;
+        var propName = obj.NewValue.Value;
 
         SetColumnPropGetterFromPropName(col, propName);
     }
 
-    public static void SetColumnPropGetterFromPropName(DataGridColumn col, string propName)
+    public static void SetColumnPropGetterFromPropName(DataGridColumn col, string? propName)
     {
         if (propName == null)
         {
@@ -137,6 +146,7 @@ public class DataGridFilteringBehavior
         {
             DataGrid dataGrid = col.GetPropValue<DataGrid>("OwningGrid", true);
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (dataGrid == null)
             {
                 return;
@@ -144,6 +154,7 @@ public class DataGridFilteringBehavior
 
             Type rowType = GetRowDataType(dataGrid);
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (rowType == null)
             {
                 return;
@@ -157,9 +168,9 @@ public class DataGridFilteringBehavior
 
     private static void OnColumnFilterTextChanged(AvaloniaPropertyChangedEventArgs<string> args)
     {
-        DataGridColumnHeader header = (DataGridColumnHeader)args.Sender;
+        var header = (DataGridColumnHeader)args.Sender;
 
-        DataGrid dataGrid = (DataGrid)header.GetPropValue("OwningGrid", true);
+        var dataGrid = (DataGrid)header.GetPropValue("OwningGrid", true);
 
         BuildFilter(dataGrid);
     }
@@ -167,11 +178,11 @@ public class DataGridFilteringBehavior
 
     public static void BuildFilter(DataGrid dataGrid)
     {
-        DataGridCollectionView collectionView = (DataGridCollectionView)dataGrid.ItemsSource;
+        var collectionView = (DataGridCollectionView)dataGrid.ItemsSource;
 
-        List<Func<object, bool>> colFilters = new List<Func<object, bool>>();
+        var colFilters = new List<Func<object, bool>>();
 
-        foreach(DataGridColumn column in dataGrid.Columns)
+        foreach (DataGridColumn column in dataGrid.Columns)
         {
             Func<object, object> columnPropGetter = GetColumnPropGetter(column);
 
@@ -183,7 +194,7 @@ public class DataGridFilteringBehavior
             DataGridColumnHeader columnHeader =
                 column.GetPropValue<DataGridColumnHeader>("HeaderCell", true);
 
-            string filterVal = GetColumnFilterText(columnHeader);
+            var filterVal = GetColumnFilterText(columnHeader);
 
             if (string.IsNullOrEmpty(filterVal))
             {
@@ -191,22 +202,17 @@ public class DataGridFilteringBehavior
             }
 
             Func<object, bool> colFilter =
-                (object obj) => columnPropGetter(obj).ToString().Contains(filterVal, StringComparison.OrdinalIgnoreCase);
+                obj => columnPropGetter(obj).ToString()?.Contains(filterVal, StringComparison.OrdinalIgnoreCase) ??
+                       false;
 
             colFilters.Add(colFilter);
         }
 
-        if (colFilters.Count == 0)
-        {
-            collectionView.Filter = null;
-        }
-        else
-        {
-            collectionView.Filter = (obj) => colFilters.All(f => f(obj));
-        }
+        collectionView.Filter = colFilters.Count == 0 ? null : obj => colFilters.All(f => f(obj));
     }
 
     #region DataGridFilterTextBoxClasses Attached Avalonia Property
+
     public static string GetDataGridFilterTextBoxClasses(DataGrid obj) =>
         obj.GetValue(DataGridFilterTextBoxClassesProperty);
 
@@ -218,5 +224,6 @@ public class DataGridFilteringBehavior
         (
             "DataGridFilterTextBoxClasses"
         );
+
     #endregion DataGridFilterTextBoxClasses Attached Avalonia Property
 }

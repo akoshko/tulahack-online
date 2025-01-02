@@ -12,7 +12,7 @@ namespace Tulahack.UI.Validation.RuleBuilders;
 /// Builder which allow create validation rules for properties.
 /// </summary>
 /// <typeparam name="TObject">Validatable object.</typeparam>
-public interface IValidationBuilder <TObject>
+public interface IValidationBuilder<TObject>
     where TObject : IValidatableObject
 {
     /// <summary>

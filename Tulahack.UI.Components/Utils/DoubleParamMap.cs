@@ -1,22 +1,22 @@
 ﻿namespace Tulahack.UI.Components.Utils;
 
-public class DoubleParamMap<OuterKeyType, InnerKeyType, InfoType>
+public class DoubleParamMap<TOuterKeyType, TInnerKeyType, TInfoType>
+    where TOuterKeyType : notnull
+    where TInnerKeyType : notnull
+    where TInfoType : notnull
 {
-    Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>> _dictionary =
-        new Dictionary<OuterKeyType, Dictionary<InnerKeyType, InfoType>>();
+    readonly Dictionary<TOuterKeyType, Dictionary<TInnerKeyType, TInfoType>> _dictionary = new();
 
     public void AddKeyValue
     (
-        OuterKeyType outerKey,
-        InnerKeyType innerKey,
-        InfoType infoData
+        TOuterKeyType outerKey,
+        TInnerKeyType innerKey,
+        TInfoType infoData
     )
     {
-        Dictionary<InnerKeyType, InfoType> innerDictionary;
-
-        if (!_dictionary.TryGetValue(outerKey, out innerDictionary))
+        if (!_dictionary.TryGetValue(outerKey, out Dictionary<TInnerKeyType, TInfoType> innerDictionary))
         {
-            innerDictionary = new Dictionary<InnerKeyType, InfoType>();
+            innerDictionary = new Dictionary<TInnerKeyType, TInfoType>();
 
             _dictionary[outerKey] = innerDictionary;
         }
@@ -26,16 +26,16 @@ public class DoubleParamMap<OuterKeyType, InnerKeyType, InfoType>
 
     public bool TryGetValue
     (
-        OuterKeyType outerKey,
-        InnerKeyType innerKey,
-        out InfoType infoData
+        TOuterKeyType outerKey,
+        TInnerKeyType innerKey,
+        out TInfoType? infoData
     )
     {
-        infoData = default(InfoType);
-        Dictionary<InnerKeyType, InfoType> innerDictionary;
+        infoData = default;
 
         if (
-            (!_dictionary.TryGetValue(outerKey, out innerDictionary)) ||
+            (!_dictionary.TryGetValue(outerKey, out Dictionary<TInnerKeyType, TInfoType> innerDictionary)) ||
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             (innerDictionary == null)
         )
         {
@@ -48,23 +48,17 @@ public class DoubleParamMap<OuterKeyType, InnerKeyType, InfoType>
 
     public bool ContainsKeys
     (
-        OuterKeyType outerKey,
-        InnerKeyType innerKey
-    )
-    {
-        InfoType infoData;
+        TOuterKeyType outerKey,
+        TInnerKeyType innerKey
+    ) => TryGetValue(outerKey, innerKey, out TInfoType? _);
 
-        return this.TryGetValue(outerKey, innerKey, out infoData);
-    }
-
-    public InfoType GetValue
+    public TInfoType GetValue
     (
-        OuterKeyType outerKey,
-        InnerKeyType innerKey
+        TOuterKeyType outerKey,
+        TInnerKeyType innerKey
     )
     {
-        InfoType result = default(InfoType);
-        if (!TryGetValue(outerKey, innerKey, out result))
+        if (!TryGetValue(outerKey, innerKey, out TInfoType result))
         {
             throw new Exception("There is no value in dictionary");
         }

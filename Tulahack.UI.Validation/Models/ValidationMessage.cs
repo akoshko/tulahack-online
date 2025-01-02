@@ -24,13 +24,13 @@ public class ValidationMessage : BaseNotifyPropertyChanged
     /// Create new validation message with static message.
     /// </summary>
     public ValidationMessage(string message, ValidationMessageType validationMessageType = ValidationMessageType.Error)
-        : this(new StaticStringSource(message), validationMessageType)
-    { }
+        : this(new StaticStringSource(message), validationMessageType) { }
 
     /// <summary>
     /// Create new validation message with localized message.
     /// </summary>
-    public ValidationMessage(IStringSource stringSource, ValidationMessageType validationMessageType = ValidationMessageType.Error)
+    public ValidationMessage(IStringSource stringSource,
+        ValidationMessageType validationMessageType = ValidationMessageType.Error)
     {
         _stringSource = stringSource;
 
@@ -56,7 +56,7 @@ public class ValidationMessage : BaseNotifyPropertyChanged
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
@@ -71,7 +71,7 @@ public class ValidationMessage : BaseNotifyPropertyChanged
             return false;
         }
 
-        return Equals((ValidationMessage) obj);
+        return Equals((ValidationMessage)obj);
     }
 
     /// <inheritdoc />
@@ -79,7 +79,7 @@ public class ValidationMessage : BaseNotifyPropertyChanged
     {
         unchecked
         {
-            return (_stringSource.GetHashCode() * 397) ^ (int) ValidationMessageType;
+            return (_stringSource.GetHashCode() * 397) ^ (int)ValidationMessageType;
         }
     }
 

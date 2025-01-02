@@ -42,7 +42,7 @@
                         Width="300"
                         th:FormItem.Label="Цветовая тема"
                         EnumType="models:UserPreferredThemeSelector"
-                        Value="{Binding SelectedTheme, Converter={StaticResource EnumToDtoConverter}}"
+                        EnumValue="{Binding SelectedTheme, Converter={StaticResource EnumToDtoConverter}}"
                         DisplayDescription="True" />
                 </th:FormGroup>
 

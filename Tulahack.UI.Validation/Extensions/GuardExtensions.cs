@@ -23,7 +23,7 @@ internal static class GuardExtensions
     /// <summary>
     /// Check and throw exception if value is null.
     /// </summary>
-    public static void GuardNotNull([NotNull]this object? o, string message)
+    public static void GuardNotNull([NotNull] this object? o, string message)
     {
         if (o == null)
         {

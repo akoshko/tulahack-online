@@ -4,10 +4,12 @@ namespace Tulahack.UI.Components.Utils.Helpers;
 
 public static class LogicalHelpers
 {
-    public static int CalculateDistanceFromLogicalParent<T>(this ILogical? logical, int @default = -1) where T: ILogical
+    public static int CalculateDistanceFromLogicalParent<T>(this ILogical? logical, int @default = -1)
+        where T : ILogical
     {
-        int distance = 0;
+        var distance = 0;
         ILogical? parent = logical;
+
         while (parent is not null)
         {
             if (parent is T)
@@ -18,6 +20,7 @@ public static class LogicalHelpers
             parent = parent.LogicalParent;
             distance++;
         }
+
         return @default;
     }
 }

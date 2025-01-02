@@ -34,7 +34,7 @@ internal class ObjectObserver<TObject> : IDisposable
             s => s.Key,
             s => CreateObservingProperty(s.Key, s.Value));
 
-        foreach (var observingProperty in _observingProperties)
+        foreach (KeyValuePair<string, ObservingProperty> observingProperty in _observingProperties)
         {
             SubscribePropertyValue(observingProperty.Value);
         }
@@ -77,10 +77,7 @@ internal class ObjectObserver<TObject> : IDisposable
         }
 
         // Raise event when some of internal property of value changed.
-        void OnPropertyInternalValueChanged(object? sender, EventArgs args)
-        {
-            OnPropertyChanged(propertyName);
-        }
+        void OnPropertyInternalValueChanged(object? sender, EventArgs args) => OnPropertyChanged(propertyName);
 
         return observingProperty;
     }
@@ -102,7 +99,7 @@ internal class ObjectObserver<TObject> : IDisposable
     {
         var propertyName = observingProperty.PropertyName;
         var propertyValue = ReactiveValidationHelper.GetPropertyValue<object?>(_instance, propertyName);
-        var settings = observingProperty.Settings;
+        ObservingPropertySettings settings = observingProperty.Settings;
         observingProperty.PreviousValue = propertyValue;
 
         if (propertyValue == null)
@@ -112,31 +109,33 @@ internal class ObjectObserver<TObject> : IDisposable
 
         if (settings.TrackValueChanged)
         {
-            var notifyPropertyChanged = (INotifyPropertyChanged) propertyValue;
+            var notifyPropertyChanged = (INotifyPropertyChanged)propertyValue;
             notifyPropertyChanged.PropertyChanged += observingProperty.ValueChangedAction;
         }
 
         if (settings.TrackValueErrorsChanged)
         {
-            var validatableObject = (INotifyDataErrorInfo) propertyValue;
+            var validatableObject = (INotifyDataErrorInfo)propertyValue;
             validatableObject.ErrorsChanged += observingProperty.ErrorsChangedAction;
         }
 
         if (settings.PropertyValueFactoryMethod != null)
         {
-            var validatableObject = (IValidatableObject) propertyValue;
+            var validatableObject = (IValidatableObject)propertyValue;
             validatableObject.Validator = settings.PropertyValueFactoryMethod.Invoke(validatableObject);
         }
 
         if (settings.TrackCollectionChanged)
         {
-            var notifyCollectionChanged = (INotifyCollectionChanged) propertyValue;
+            var notifyCollectionChanged = (INotifyCollectionChanged)propertyValue;
             notifyCollectionChanged.CollectionChanged += observingProperty.CollectionChangedAction;
         }
 
-        if (settings.TrackCollectionItemChanged || settings.TrackCollectionItemErrorsChanged || settings.CollectionItemFactoryMethod != null)
+        if (settings.TrackCollectionItemChanged ||
+            settings.TrackCollectionItemErrorsChanged ||
+            settings.CollectionItemFactoryMethod != null)
         {
-            foreach (var item in (IEnumerable) propertyValue)
+            foreach (var item in (IEnumerable)propertyValue)
             {
                 SubscribeCollectionItem(item, observingProperty);
             }
@@ -150,15 +149,17 @@ internal class ObjectObserver<TObject> : IDisposable
     private static void UnsubscribePropertyValue(ObservingProperty observingProperty)
     {
         var propertyValue = observingProperty.PreviousValue;
+
         if (propertyValue == null)
         {
             return;
         }
 
-        var settings = observingProperty.Settings;
+        ObservingPropertySettings settings = observingProperty.Settings;
+
         if (settings.TrackValueChanged)
         {
-            var notifyPropertyChanged = (INotifyPropertyChanged) propertyValue;
+            var notifyPropertyChanged = (INotifyPropertyChanged)propertyValue;
             notifyPropertyChanged.PropertyChanged -= observingProperty.ValueChangedAction;
         }
 
@@ -170,19 +171,21 @@ internal class ObjectObserver<TObject> : IDisposable
 
         if (settings.PropertyValueFactoryMethod != null)
         {
-            var validatableObject = (IValidatableObject) propertyValue;
+            var validatableObject = (IValidatableObject)propertyValue;
             validatableObject.Validator = null;
         }
 
         if (settings.TrackCollectionChanged)
         {
-            var notifyCollectionChanged = (INotifyCollectionChanged) propertyValue;
+            var notifyCollectionChanged = (INotifyCollectionChanged)propertyValue;
             notifyCollectionChanged.CollectionChanged -= observingProperty.CollectionChangedAction;
         }
 
-        if (settings.TrackCollectionItemChanged || settings.TrackCollectionItemErrorsChanged || settings.CollectionItemFactoryMethod != null)
+        if (settings.TrackCollectionItemChanged ||
+            settings.TrackCollectionItemErrorsChanged ||
+            settings.CollectionItemFactoryMethod != null)
         {
-            foreach (var item in (IEnumerable) propertyValue)
+            foreach (var item in (IEnumerable)propertyValue)
             {
                 UnsubscribeCollectionItem(item, observingProperty);
             }
@@ -199,14 +202,14 @@ internal class ObjectObserver<TObject> : IDisposable
         // If propertyName is empty, it's mean that all properties are changed.
         if (string.IsNullOrEmpty(propertyName))
         {
-            foreach (var observingProperty in _observingProperties.Values)
+            foreach (ObservingProperty observingProperty in _observingProperties.Values)
             {
                 ResubscribePropertyValue(observingProperty);
             }
         }
         else
         {
-            if (_observingProperties.TryGetValue(propertyName, out var observingProperty))
+            if (_observingProperties.TryGetValue(propertyName, out ObservingProperty? observingProperty))
             {
                 ResubscribePropertyValue(observingProperty);
             }
@@ -227,7 +230,7 @@ internal class ObjectObserver<TObject> : IDisposable
     /// </summary>
     private void OnCollectionChanged(string propertyName, NotifyCollectionChangedEventArgs args)
     {
-        var observingProperty = _observingProperties[propertyName];
+        ObservingProperty observingProperty = _observingProperties[propertyName];
 
         // Unsubscribe from removed items.
         if (args.OldItems?.Count > 0)
@@ -260,22 +263,23 @@ internal class ObjectObserver<TObject> : IDisposable
             return;
         }
 
-        var settings = observingProperty.Settings;
+        ObservingPropertySettings settings = observingProperty.Settings;
+
         if (settings.TrackCollectionItemChanged)
         {
-            var notifyPropertyChanged = (INotifyPropertyChanged) item;
+            var notifyPropertyChanged = (INotifyPropertyChanged)item;
             notifyPropertyChanged.PropertyChanged += observingProperty.ValueChangedAction;
         }
 
         if (settings.TrackCollectionItemErrorsChanged)
         {
-            var validatableObject = (INotifyDataErrorInfo) item;
+            var validatableObject = (INotifyDataErrorInfo)item;
             validatableObject.ErrorsChanged += observingProperty.ErrorsChangedAction;
         }
 
         if (settings.CollectionItemFactoryMethod != null)
         {
-            var validatableObject = (IValidatableObject) item;
+            var validatableObject = (IValidatableObject)item;
             validatableObject.Validator = settings.CollectionItemFactoryMethod.Invoke(validatableObject);
         }
     }
@@ -290,7 +294,8 @@ internal class ObjectObserver<TObject> : IDisposable
             return;
         }
 
-        var settings = observingProperty.Settings;
+        ObservingPropertySettings settings = observingProperty.Settings;
+
         if (settings.TrackCollectionItemChanged)
         {
             var notifyPropertyChanged = (INotifyPropertyChanged)item;
@@ -322,7 +327,7 @@ internal class ObjectObserver<TObject> : IDisposable
 
         _instance.PropertyChanged -= OnInstancePropertyChanged;
 
-        foreach (var observingProperty in _observingProperties)
+        foreach (KeyValuePair<string, ObservingProperty> observingProperty in _observingProperties)
         {
             UnsubscribePropertyValue(observingProperty.Value);
         }

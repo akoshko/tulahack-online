@@ -13,245 +13,172 @@ namespace Tulahack.UI.Extensions;
 [RequiresUnreferencedCode("T should be specified in TulahackJsonContext as [JsonSerializable(typeof(T))]")]
 public static class HttpClientExtensions
 {
+    //
+    // GET methods
+    //
     public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
-        JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        Uri requestUri,
+        JsonSerializerOptions serializerOptions)
+        where T : class?
     {
-        try
-        {
-            var response = await client.GetAsync(requestUri);
-            response.EnsureSuccessStatusCode();
+        HttpResponseMessage response = await client.GetAsync(requestUri);
+        _ = response.EnsureSuccessStatusCode();
 
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
-
-        return null;
+        var json = await response.Content.ReadAsStringAsync();
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
     }
 
     public async static Task<T?> GetAndHandleAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, 
+        Uri requestUri,
+        HttpCompletionOption completionOption,
+        JsonSerializerOptions serializerOptions)
+        where T : class?
+    {
+        HttpResponseMessage response = await client.GetAsync(requestUri, completionOption);
+        _ = response.EnsureSuccessStatusCode();
+
+        var json = await response.Content.ReadAsStringAsync();
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
+    }
+
+    public async static Task<T?> GetAndHandleAsync<T>(
+        this HttpClient client,
+        Uri requestUri,
+        JsonSerializerOptions serializerOptions,
+        CancellationToken cancellationToken)
+        where T : class?
+    {
+        HttpResponseMessage response = await client.GetAsync(requestUri, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
+
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
+    }
+
+    public async static Task<T?> GetAndHandleAsync<T>(
+        this HttpClient client,
+        Uri requestUri,
         HttpCompletionOption completionOption,
         JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        CancellationToken cancellationToken)
+        where T : class?
     {
-        try
-        {
-            var response = await client.GetAsync(requestUri, completionOption);
-            response.EnsureSuccessStatusCode();
+        HttpResponseMessage response = await client.GetAsync(requestUri, completionOption, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
 
-            var json = await response.Content.ReadAsStringAsync();
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
-
-        return null;
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
     }
-
-    public async static Task<T?> GetAndHandleAsync<T>(
+    //
+    // POST methods
+    //
+    public async static Task<T> PostAndHandleAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
-        CancellationToken cancellationToken,
+        Uri requestUri,
+        object content,
         JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        CancellationToken cancellationToken)
     {
-        try
-        {
-            var response = await client.GetAsync(requestUri, cancellationToken);
-            response.EnsureSuccessStatusCode();
+        using var body = JsonContent.Create(
+            content,
+            new MediaTypeHeaderValue("application/json"),
+            serializerOptions);
+        HttpResponseMessage response = await client.PostAsync(requestUri, body, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
 
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
-
-        return null;
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
     }
 
-    public async static Task<T?> GetAndHandleAsync<T>(
-        this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri, 
-        HttpCompletionOption completionOption,
-        CancellationToken cancellationToken,
-        JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
-    {
-        try
-        {
-            var response = await client.GetAsync(requestUri, completionOption, cancellationToken);
-            response.EnsureSuccessStatusCode();
-            
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
-
-        return null;
-    }
-    
     public async static Task<T?> PostAndHandleAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
+        Uri requestUri,
         HttpContent? content,
-        CancellationToken cancellationToken,
         JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        CancellationToken cancellationToken)
+        where T : class?
     {
-        try
-        {
-            var response = await client.PostAsync(requestUri, content, cancellationToken);
-            response.EnsureSuccessStatusCode();
-            
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
+        HttpResponseMessage response = await client.PostAsync(requestUri, content, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
 
-        return null;
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
     }
-    
-    public async static Task PostAsJsonAsync<T>(
+
+    public async static Task<HttpResponseMessage> PostJsonAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
+        Uri requestUri,
         T content,
-        CancellationToken cancellationToken,
         JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        CancellationToken cancellationToken)
+        where T : class?
     {
-        try
-        {
-            var json = JsonContent.Create(
-                content, 
-                mediaType: new MediaTypeHeaderValue("application/json"),
-                options: serializerOptions);
-            var response = await client.PostAsync(requestUri, json, cancellationToken);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
+        using var json = JsonContent.Create(
+            content,
+            new MediaTypeHeaderValue("application/json"),
+            serializerOptions);
+        HttpResponseMessage response = await client.PostAsync(requestUri, json, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
+        return response;
     }
-    
-    public async static Task PostAndHandleAsync(
+
+    public async static Task<HttpResponseMessage> PostJsonAsync(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
-        HttpContent? content,
-        CancellationToken cancellationToken,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
+        Uri requestUri,
+        object content,
+        JsonSerializerOptions serializerOptions,
+        CancellationToken cancellationToken)
     {
-        try
-        {
-            var response = await client.PostAsync(requestUri, content, cancellationToken);
-            response.EnsureSuccessStatusCode();
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
+        using var json = JsonContent.Create(
+            content,
+            new MediaTypeHeaderValue("application/json"),
+            serializerOptions);
+        HttpResponseMessage response = await client.PostAsync(requestUri, json, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
+        return response;
     }
-    
+    //
+    // PATCH methods
+    //
     public async static Task<T?> PatchAndHandleAsync<T>(
         this HttpClient client,
-        [StringSyntax(StringSyntaxAttribute.Uri)] string? requestUri,
+        Uri requestUri,
         HttpContent? content,
-        CancellationToken cancellationToken,
         JsonSerializerOptions serializerOptions,
-        INotificationsService? notificationsService = default,
-        string? networkErrorMessage = default,
-        string? criticalErrorMessage = default)
-        where T : class
+        CancellationToken cancellationToken)
+        where T : class?
     {
-        try
-        {
-            var response = await client.PatchAsync(requestUri, content, cancellationToken);
-            response.EnsureSuccessStatusCode();
-            
-            var json = await response.Content.ReadAsStringAsync(cancellationToken);
-            var result = JsonSerializer.Deserialize<T>(json, serializerOptions);
-            return result;
-        }
-        catch (HttpRequestException e)
-        {
-            notificationsService?.ShowError(networkErrorMessage ?? e.Message);
-        }
-        catch (Exception e)
-        {
-            notificationsService?.ShowError(criticalErrorMessage ?? e.Message);
-        }
+        HttpResponseMessage response = await client.PatchAsync(requestUri, content, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
 
-        return null;
+        var json = await response.Content.ReadAsStringAsync(cancellationToken);
+        T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+        return result;
+    }
+
+    public async static Task<HttpResponseMessage> PatchAndHandleAsync<T>(
+        this HttpClient client,
+        Uri requestUri,
+        T content,
+        JsonSerializerOptions serializerOptions,
+        CancellationToken cancellationToken)
+        where T : class?
+    {
+        using var json = JsonContent.Create(
+            content,
+            new MediaTypeHeaderValue("application/json"),
+            serializerOptions);
+        HttpResponseMessage response = await client.PatchAsync(requestUri, json, cancellationToken);
+        _ = response.EnsureSuccessStatusCode();
+        return response;
     }
 }
+

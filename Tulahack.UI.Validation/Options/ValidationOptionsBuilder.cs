@@ -47,10 +47,7 @@ public class ValidationOptionsBuilder
     /// <param name="stringProvider">String provider.</param>
     public ValidationOptionsBuilder UseStringProvider(IStringProvider stringProvider)
     {
-        if (stringProvider == null)
-        {
-            throw new ArgumentNullException(nameof(stringProvider));
-        }
+        ArgumentNullException.ThrowIfNull(stringProvider);
 
         if (_isUseStringProviderCalled)
         {
@@ -86,10 +83,7 @@ public class ValidationOptionsBuilder
     /// <param name="displayNameResolver">Custom display name resolver.</param>
     public ValidationOptionsBuilder UseCustomDisplayNameResolver(IDisplayNameResolver displayNameResolver)
     {
-        if (displayNameResolver == null)
-        {
-            throw new ArgumentNullException(nameof(displayNameResolver));
-        }
+        ArgumentNullException.ThrowIfNull(displayNameResolver);
 
         if (_isUseCustomDisplayNameResolverCalled)
         {
@@ -108,10 +102,7 @@ public class ValidationOptionsBuilder
     /// <param name="validatorFactory">Custom validator factory.</param>
     public ValidationOptionsBuilder UseCustomValidatorFactory(IValidatorFactory validatorFactory)
     {
-        if (validatorFactory == null)
-        {
-            throw new ArgumentNullException(nameof(validatorFactory));
-        }
+        ArgumentNullException.ThrowIfNull(validatorFactory);
 
         if (_isUseCustomValidatorFactoryCalled)
         {
@@ -120,7 +111,8 @@ public class ValidationOptionsBuilder
 
         if (_isUsedDefaultValidatorFactory)
         {
-            throw new MethodAlreadyCalledException("Already was called methods for setup of default validation factory");
+            throw new MethodAlreadyCalledException(
+                "Already was called methods for setup of default validation factory");
         }
 
         ValidationOptions.ValidatorFactory = validatorFactory;
@@ -135,12 +127,9 @@ public class ValidationOptionsBuilder
     /// <param name="creator">Creator of object validator builder.</param>
     public ValidationOptionsBuilder RegisterForValidatorFactory(IObjectValidatorBuilderCreator creator)
     {
-        if (creator == null)
-        {
-            throw new ArgumentNullException(nameof(creator));
-        }
+        ArgumentNullException.ThrowIfNull(creator);
 
-        var factory = GetDefaultValidatorFactory();
+        DefaultValidatorFactory factory = GetDefaultValidatorFactory();
         factory.Register(creator);
 
         _isUsedDefaultValidatorFactory = true;
@@ -153,13 +142,11 @@ public class ValidationOptionsBuilder
     /// <param name="creators">Creators of object validator builders.</param>
     public ValidationOptionsBuilder RegisterForValidatorFactory(IEnumerable<IObjectValidatorBuilderCreator> creators)
     {
-        if (creators == null)
-        {
-            throw new ArgumentNullException(nameof(creators));
-        }
+        ArgumentNullException.ThrowIfNull(creators);
 
-        var factory = GetDefaultValidatorFactory();
-        foreach (var creator in creators)
+        DefaultValidatorFactory factory = GetDefaultValidatorFactory();
+
+        foreach (IObjectValidatorBuilderCreator creator in creators)
         {
             if (creator == null)
             {
@@ -181,14 +168,12 @@ public class ValidationOptionsBuilder
     /// Method, which allows get creator by its type.
     /// This can be DI method.
     /// </param>
-    public ValidationOptionsBuilder RegisterForValidatorFactory(Assembly assembly, Func<Type, IObjectValidatorBuilderCreator>? factoryMethod = null)
+    public ValidationOptionsBuilder RegisterForValidatorFactory(Assembly assembly,
+        Func<Type, IObjectValidatorBuilderCreator>? factoryMethod = null)
     {
-        if (assembly == null)
-        {
-            throw new ArgumentNullException(nameof(assembly));
-        }
+        ArgumentNullException.ThrowIfNull(assembly);
 
-        var factory = GetDefaultValidatorFactory();
+        DefaultValidatorFactory factory = GetDefaultValidatorFactory();
         factory.Register(assembly, factoryMethod);
 
         _isUsedDefaultValidatorFactory = true;
@@ -203,15 +188,14 @@ public class ValidationOptionsBuilder
     /// Method, which allows get creator by its type.
     /// This can be DI method.
     /// </param>
-    public ValidationOptionsBuilder RegisterForValidatorFactory(IEnumerable<Assembly> assemblies, Func<Type, IObjectValidatorBuilderCreator>? factoryMethod = null)
+    public ValidationOptionsBuilder RegisterForValidatorFactory(IEnumerable<Assembly> assemblies,
+        Func<Type, IObjectValidatorBuilderCreator>? factoryMethod = null)
     {
-        if (assemblies == null)
-        {
-            throw new ArgumentNullException(nameof(assemblies));
-        }
+        ArgumentNullException.ThrowIfNull(assemblies);
 
-        var factory = GetDefaultValidatorFactory();
-        foreach (var assembly in assemblies)
+        DefaultValidatorFactory factory = GetDefaultValidatorFactory();
+
+        foreach (Assembly assembly in assemblies)
         {
             if (assembly == null)
             {
@@ -235,6 +219,6 @@ public class ValidationOptionsBuilder
             throw new MethodAlreadyCalledException("Cannot set register creator for custom validation factory");
         }
 
-        return (DefaultValidatorFactory) ValidationOptions.ValidatorFactory;
+        return (DefaultValidatorFactory)ValidationOptions.ValidatorFactory;
     }
 }

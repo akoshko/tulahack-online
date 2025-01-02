@@ -31,7 +31,7 @@ public class NavigationService : INavigationService
     private readonly IAuthContextProvider _authContextProvider;
     private readonly ILogger<INavigationService> _logger;
 
-    private readonly IEnumerable<PageContextModel> _pages = new List<PageContextModel>()
+    public readonly IEnumerable<PageContextModel> _pages = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
         new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel)),
@@ -114,7 +114,7 @@ public class NavigationService : INavigationService
     public IEnumerable<PageContextModel> GetApplicationMenu()
     {
         var role = _authContextProvider.GetGroup();
-        _logger.LogWarning($"Claim role: {role}");
+        _logger.LogWarning(@"Claim role: {Role}", role);
 
         if (role == Groups.Public)
         {
@@ -156,13 +156,11 @@ public class NavigationService : INavigationService
 
     public bool CanGoBack => true;
 
-    public void GoBack()
-    {
-    }
+    public void GoBack() { }
 
     public void Navigate<T>() where T : IPageContext =>
         _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs { ContextType = typeof(T) }));
 
     public void Navigate<T>(NavigationArgs args) where T : IPageContext =>
-        _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs { ContextType = typeof(T), NavigationArgs = args}));
+        _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs { ContextType = typeof(T), NavigationArgs = args }));
 }

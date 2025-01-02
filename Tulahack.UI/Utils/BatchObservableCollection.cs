@@ -69,7 +69,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                         OnPropertyChanged(new PropertyChangedEventArgs(PC_CountString));
                         OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
                     };
-                    _fireIndexerChanged = delegate { OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName)); };
+                    _fireIndexerChanged = delegate
+                    {
+                        OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
+                    };
                 }
 
                 PropertyChanged += value;
@@ -88,8 +91,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
                 if (null == PropertyChanged)
                 {
-                    _fireCountAndIndexerChanged = delegate { };
-                    _fireIndexerChanged = delegate { };
+                    _fireCountAndIndexerChanged = delegate
+                        { };
+                    _fireIndexerChanged = delegate
+                        { };
                 }
             }
             else if (_notifyInfo.RootCollection != null)
@@ -111,6 +116,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                 }
 
                 CollectionChanged += value;
+
                 if (CollectionChanged != null)
                 {
                     _disableReentry = CollectionChanged.GetInvocationList().Length > 1;
@@ -144,7 +150,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
     public void AddRange(IEnumerable<T> items)
     {
-        foreach (var item in items)
+        foreach (T? item in items)
         {
             Add(item);
         }
@@ -172,7 +178,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
     protected override void RemoveItem(int index)
     {
         CheckReentrancy();
-        var removedItem = this[index];
+        T removedItem = this[index];
 
         base.RemoveItem(index);
 
@@ -195,7 +201,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
     {
         CheckReentrancy();
 
-        var originalItem = this[index];
+        T originalItem = this[index];
         base.SetItem(index, item);
 
         _fireIndexerChanged();
@@ -207,7 +213,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
     {
         CheckReentrancy();
 
-        var removedItem = this[oldIndex];
+        T removedItem = this[oldIndex];
         base.RemoveItem(oldIndex);
         base.InsertItem(newIndex, removedItem);
 
@@ -228,7 +234,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
         }
     }
 
-    private IDisposable BlockReentrancy() =>
+    private ReentryMonitor BlockReentrancy() =>
         _monitor.Enter();
 
     private void CheckReentrancy()
@@ -264,11 +270,11 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
         using (_notifyInfo.RootCollection?.BlockReentrancy())
         {
-            var args = _notifyInfo.EventArgs;
+            NotifyCollectionChangedEventArgs? args = _notifyInfo.EventArgs;
 
-            foreach (var delegateItem in _notifyInfo.RootCollection!.CollectionChanged.GetInvocationList())
+            foreach (Delegate delegateItem in _notifyInfo.RootCollection!.CollectionChanged.GetInvocationList())
             {
-                delegateItem.DynamicInvoke(_notifyInfo.RootCollection, args);
+                _ = delegateItem.DynamicInvoke(_notifyInfo.RootCollection, args);
             }
         }
 
@@ -279,7 +285,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
     {
         private int _referenceCount;
 
-        public IDisposable Enter()
+        public ReentryMonitor Enter()
         {
             ++_referenceCount;
 
@@ -322,9 +328,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                     case NotifyCollectionChangedAction.Add:
                         _newItems = new List<T>();
                         IsCountChanged = true;
-                        wrapper.CollectionChanged = (_, e) =>
+                        wrapper.CollectionChanged = (__, e) =>
                         {
                             AssertActionType(e);
+
                             if (e.NewItems == null)
                             {
                                 return;
@@ -332,7 +339,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
                             foreach (T item in e.NewItems)
                             {
-                                _newItems.Add(item);
+                                _ = _newItems.Add(item);
                             }
                         };
                         wrapper.CollectionChanged(sender, args);
@@ -341,9 +348,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                     case NotifyCollectionChangedAction.Remove:
                         _oldItems = new List<T>();
                         IsCountChanged = true;
-                        wrapper.CollectionChanged = (_, e) =>
+                        wrapper.CollectionChanged = (__, e) =>
                         {
                             AssertActionType(e);
+
                             if (e.OldItems == null)
                             {
                                 return;
@@ -351,7 +359,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
                             foreach (T item in e.OldItems)
                             {
-                                _oldItems.Add(item);
+                                _ = _oldItems.Add(item);
                             }
                         };
                         wrapper.CollectionChanged(sender, args);
@@ -360,14 +368,15 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                     case NotifyCollectionChangedAction.Replace:
                         _newItems = new List<T>();
                         _oldItems = new List<T>();
-                        wrapper.CollectionChanged = (_, e) =>
+                        wrapper.CollectionChanged = (__, e) =>
                         {
                             AssertActionType(e);
+
                             if (e.NewItems != null)
                             {
                                 foreach (T item in e.NewItems)
                                 {
-                                    _newItems.Add(item);
+                                    _ = _newItems.Add(item);
                                 }
                             }
 
@@ -375,7 +384,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                             {
                                 foreach (T item in e.OldItems)
                                 {
-                                    _oldItems.Add(item);
+                                    _ = _oldItems.Add(item);
                                 }
                             }
                         };
@@ -387,11 +396,8 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                         _newItems = args.NewItems;
                         _oldIndex = args.OldStartingIndex;
                         _oldItems = args.OldItems;
-                        wrapper.CollectionChanged = (_, _) =>
-                        {
-                            throw new InvalidOperationException(
-                                "Due to design of NotifyCollectionChangedEventArgs combination of multiple Move operations is not possible");
-                        };
+                        wrapper.CollectionChanged = (_, _) => throw new InvalidOperationException(
+                            "Due to design of NotifyCollectionChangedEventArgs combination of multiple Move operations is not possible");
                         break;
 
                     case NotifyCollectionChangedAction.Reset:
@@ -402,7 +408,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             };
         }
 
-        public BatchObservableCollection<T>? RootCollection { get; set; }
+        public BatchObservableCollection<T>? RootCollection { get; init; }
 
         public bool IsCountChanged { get; private set; }
 
@@ -447,9 +453,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             if (e.Action != _action)
             {
                 throw new InvalidOperationException(
-                    string.Format(
-                        "Attempting to perform {0} during {1}. Mixed actions on the same delayed interface are not allowed.",
-                        e.Action, _action));
+                    $"Attempting to perform {e.Action} during {_action}. Mixed actions on the same delayed interface are not allowed.");
             }
         }
     }

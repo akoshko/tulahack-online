@@ -18,8 +18,8 @@ public class TaskCard : TemplatedControl
     {
         get => GetValue(ThumbnailUrlProperty);
         set => SetValue(ThumbnailUrlProperty, value);
-    }    
-    
+    }
+
     /// <summary>
     /// Defines the <see cref="CardTitle"/> property.
     /// </summary>
@@ -34,7 +34,7 @@ public class TaskCard : TemplatedControl
         get => GetValue(CardTitleProperty);
         set => SetValue(CardTitleProperty, value);
     }
-    
+
     /// <summary>
     /// Defines the <see cref="CardContent"/> property.
     /// </summary>

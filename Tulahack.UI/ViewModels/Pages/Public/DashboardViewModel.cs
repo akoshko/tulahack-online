@@ -17,7 +17,8 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty] private List<TimelineItemViewModel> _timelineSource;
 
     // AvaloniaUI Designer hack
-    public DashboardViewModel() : this(new DesignDashboardService()) {}
+    public DashboardViewModel() : this(new DesignDashboardService()) { }
+
     public DashboardViewModel(IDashboardService dashboardService)
     {
         _dashboardService = dashboardService;
@@ -31,11 +32,10 @@ public partial class DashboardViewModel : ViewModelBase
             .Select(item => new TimelineItemViewModel
             {
                 Description = item.Message,
-                TimeFormat="dd.MM.yyy",
+                TimeFormat = "dd.MM.yyy",
                 Time = item.Start,
                 Header = item.Label,
                 ItemType = item.ItemType.ConvertToControlType()
-
             })
             .ToList();
     }

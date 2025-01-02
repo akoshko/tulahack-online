@@ -22,7 +22,7 @@ public partial class CountdownTile : UserControl
         get => GetValue(DeadlineProperty);
         set => SetValue(DeadlineProperty, value);
     }
-    
+
     /// <summary>
     /// Defines the <see cref="Interval"/> property.
     /// </summary>
@@ -37,7 +37,7 @@ public partial class CountdownTile : UserControl
         get => GetValue(IntervalProperty);
         set => SetValue(IntervalProperty, value);
     }
-    
+
     private DispatcherTimer? _timer;
     private TimeSpan _time;
 
@@ -49,8 +49,8 @@ public partial class CountdownTile : UserControl
                               $"--- hours\n" +
                               $"--- minutes\n" +
                               $"and --- seconds";
-        
-        DeadlineProperty.Changed.Subscribe(_ => SetupTimer());
+
+        _ = DeadlineProperty.Changed.Subscribe(_ => SetupTimer());
     }
 
     private void SetupTimer()
@@ -63,7 +63,8 @@ public partial class CountdownTile : UserControl
                                   $"{_time:hh} hours\n" +
                                   $"{_time:mm} minutes\n" +
                                   $"and {_time:ss} seconds";
-            if (_time == TimeSpan.Zero) _timer?.Stop();
+            if (_time == TimeSpan.Zero)
+                _timer?.Stop();
             _time = _time.Add(TimeSpan.FromMilliseconds(-interval));
         });
 

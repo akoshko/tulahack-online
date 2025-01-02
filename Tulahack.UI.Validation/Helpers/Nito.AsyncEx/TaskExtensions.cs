@@ -20,10 +20,7 @@ internal static class TaskExtensions
     /// <param name="task">The task. May not be <c>null</c>.</param>
     public static void WaitAndUnwrapException(this Task task)
     {
-        if (task == null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
+        ArgumentNullException.ThrowIfNull(task);
 
         task.GetAwaiter().GetResult();
     }
@@ -36,10 +33,7 @@ internal static class TaskExtensions
     /// <exception cref="OperationCanceledException">The <paramref name="cancellationToken"/> was cancelled before the <paramref name="task"/> completed, or the <paramref name="task"/> raised an <see cref="OperationCanceledException"/>.</exception>
     public static void WaitAndUnwrapException(this Task task, CancellationToken cancellationToken)
     {
-        if (task == null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
+        ArgumentNullException.ThrowIfNull(task);
 
         try
         {
@@ -59,10 +53,7 @@ internal static class TaskExtensions
     /// <returns>The result of the task.</returns>
     public static TResult WaitAndUnwrapException<TResult>(this Task<TResult> task)
     {
-        if (task == null)
-        {
-            throw new ArgumentNullException(nameof(task));
-        }
+        ArgumentNullException.ThrowIfNull(task);
 
         return task.GetAwaiter().GetResult();
     }
@@ -74,10 +65,7 @@ internal static class TaskExtensions
     /// <param name="cancellationToken">The cancellation token that cancels the wait.</param>
     public static Task WaitAsync(this Task @this, CancellationToken cancellationToken)
     {
-        if (@this == null)
-        {
-            throw new ArgumentNullException(nameof(@this));
-        }
+        ArgumentNullException.ThrowIfNull(@this);
 
         if (!cancellationToken.CanBeCanceled)
         {
@@ -94,10 +82,9 @@ internal static class TaskExtensions
 
     private async static Task DoWaitAsync(Task task, CancellationToken cancellationToken)
     {
-        using (var cancelTaskSource = new CancellationTokenTaskSource<object>(cancellationToken))
-        {
-            await (await Task.WhenAny(task, cancelTaskSource.Task).ConfigureAwait(false)).ConfigureAwait(false);
-        }
+        using var cancelTaskSource = new CancellationTokenTaskSource<object>(cancellationToken);
+
+        await (await Task.WhenAny(task, cancelTaskSource.Task).ConfigureAwait(false)).ConfigureAwait(false);
     }
 
     /// <summary>
@@ -108,10 +95,7 @@ internal static class TaskExtensions
     /// <param name="cancellationToken">The cancellation token that cancels the wait.</param>
     public static Task<TResult> WaitAsync<TResult>(this Task<TResult> @this, CancellationToken cancellationToken)
     {
-        if (@this == null)
-        {
-            throw new ArgumentNullException(nameof(@this));
-        }
+        ArgumentNullException.ThrowIfNull(@this);
 
         if (!cancellationToken.CanBeCanceled)
         {
@@ -128,10 +112,8 @@ internal static class TaskExtensions
 
     private async static Task<TResult> DoWaitAsync<TResult>(Task<TResult> task, CancellationToken cancellationToken)
     {
-        using (var cancelTaskSource = new CancellationTokenTaskSource<TResult>(cancellationToken))
-        {
-            return await (await Task.WhenAny(task, cancelTaskSource.Task).ConfigureAwait(false)).ConfigureAwait(false);
-        }
-    }
+        using var cancelTaskSource = new CancellationTokenTaskSource<TResult>(cancellationToken);
 
+        return await (await Task.WhenAny(task, cancelTaskSource.Task).ConfigureAwait(false)).ConfigureAwait(false);
+    }
 }

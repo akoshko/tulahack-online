@@ -3,7 +3,7 @@ using Avalonia.Media;
 
 namespace Tulahack.UI.Components.Controls.CodeBehind;
 
-public class PureRing: PureCircle
+public class PureRing : PureCircle
 {
     public static readonly StyledProperty<double> InnerDiameterProperty = AvaloniaProperty.Register<PureRing, double>(
         nameof(InnerDiameter));
@@ -21,9 +21,9 @@ public class PureRing: PureCircle
 
     public override void Render(DrawingContext context)
     {
-        double outer = Diameter / 2;
-        double inner = InnerDiameter / 2;
-        double thickness = outer - inner;
+        var outer = Diameter / 2;
+        var inner = InnerDiameter / 2;
+        var thickness = outer - inner;
         context.DrawEllipse(null,
             new Pen(Background, outer - inner),
             new Point(outer, outer),

@@ -116,7 +116,7 @@
                         form:FormItem.Label="Форма участия"
                         DisplayDescription="True"
                         EnumType="models:FormOfParticipationSelector"
-                        Value="{Binding FormOfParticipation, Converter={StaticResource EnumToDtoConverter}}" />
+                        EnumValue="{Binding FormOfParticipation, Converter={StaticResource EnumToDtoConverter}}" />
                     <TextBox
                         Width="300"
                         form:FormItem.IsRequired="False"

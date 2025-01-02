@@ -7,8 +7,9 @@ using Tulahack.UI.Components.Common;
 namespace Tulahack.UI.Components.Controls.CodeBehind.Form;
 
 [PseudoClasses(PC_FixedWidth)]
-public class Form: ItemsControl
+public class Form : ItemsControl
 {
+    // ReSharper disable once InconsistentNaming
     public const string PC_FixedWidth = ":fixed-width";
 
     public static readonly StyledProperty<GridLength> LabelWidthProperty = AvaloniaProperty.Register<Form, GridLength>(
@@ -35,8 +36,9 @@ public class Form: ItemsControl
         set => SetValue(LabelPositionProperty, value);
     }
 
-    public static readonly StyledProperty<HorizontalAlignment> LabelAlignmentProperty = AvaloniaProperty.Register<Form, HorizontalAlignment>(
-        nameof(LabelAlignment), defaultValue: HorizontalAlignment.Left);
+    public static readonly StyledProperty<HorizontalAlignment> LabelAlignmentProperty =
+        AvaloniaProperty.Register<Form, HorizontalAlignment>(
+            nameof(LabelAlignment), defaultValue: HorizontalAlignment.Left);
 
     public HorizontalAlignment LabelAlignment
     {
@@ -46,13 +48,13 @@ public class Form: ItemsControl
 
     static Form()
     {
-        LabelWidthProperty.Changed.AddClassHandler<Form, GridLength>((x, args) => x.LabelWidthChanged(args));
+        _ = LabelWidthProperty.Changed.AddClassHandler<Form, GridLength>((x, args) => x.LabelWidthChanged(args));
     }
 
     private void LabelWidthChanged(AvaloniaPropertyChangedEventArgs<GridLength> args)
     {
-        var newValue = args.NewValue.Value;
-        bool isFixed = newValue.IsStar || newValue.IsAbsolute;
+        GridLength newValue = args.NewValue.Value;
+        var isFixed = newValue.IsStar || newValue.IsAbsolute;
         PseudoClasses.Set(PC_FixedWidth, isFixed);
     }
 

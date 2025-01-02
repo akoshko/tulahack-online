@@ -107,7 +107,7 @@ public sealed class LanguageManager
         {
             lock (_cultureEventLock)
             {
-                _cultureChangedCollection.Remove(value);
+                _ = _cultureChangedCollection.Remove(value);
             }
         }
     }
@@ -119,6 +119,7 @@ public sealed class LanguageManager
     public string GetString(string key, string? resource = null)
     {
         var code = Culture.Name;
+
         if (!Culture.IsNeutralCulture && !_languages.ContainsKey(code))
         {
             code = Culture.Parent.Name;
@@ -157,9 +158,9 @@ public sealed class LanguageManager
             : StringProvider?.GetString(resource, key, culture);
 
         // If empty - trying get from languages.
-        if (string.IsNullOrEmpty(message) && _languages.ContainsKey(languageCode))
+        if (string.IsNullOrEmpty(message) && _languages.TryGetValue(languageCode, out ILanguage? language))
         {
-            message = _languages[languageCode].GetTranslation(key);
+            message = language.GetTranslation(key);
         }
 
         return message;
@@ -173,7 +174,8 @@ public sealed class LanguageManager
         lock (_cultureEventLock)
         {
             var eventArgs = new CultureChangedEventArgs(Culture);
-            foreach (var eventHandler in _cultureChangedCollection.GetLiveItems())
+
+            foreach (EventHandler<CultureChangedEventArgs> eventHandler in _cultureChangedCollection.GetLiveItems())
             {
                 eventHandler(this, eventArgs);
             }

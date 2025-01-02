@@ -41,22 +41,27 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
     {
         if (previousPage is not null)
         {
-            WeakReferenceMessenger.Default.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs
-                { ContextType = previousPage.GetType() }));
+            _ = WeakReferenceMessenger.Default.Send(
+                new SelectedPageContextChanged(new SelectedPageChangedArgs
+                {
+                    ContextType = previousPage.GetType()
+                }));
         }
 
         if (NavigationArgs?.Sender is not null)
         {
-            WeakReferenceMessenger.Default.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs
-                { ContextType = NavigationArgs.Sender.GetType() }));
+            _ = WeakReferenceMessenger.Default.Send(
+                new SelectedPageContextChanged(new SelectedPageChangedArgs
+                {
+                    ContextType = NavigationArgs.Sender.GetType()
+                }));
         }
     }
 
     [RelayCommand]
     public void OpenUrl(object urlObj)
     {
-        var url = urlObj as string;
-        if (url is null)
+        if (urlObj is not string url)
         {
             return;
         }
@@ -72,14 +77,14 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
             using var proc = new Process();
             proc.StartInfo.UseShellExecute = true;
             proc.StartInfo.FileName = url;
-            proc.Start();
+            _ = proc.Start();
 
             return;
         }
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
         {
-            Process.Start("x-www-browser", url);
+            _ = Process.Start("x-www-browser", url);
             return;
         }
 
@@ -94,6 +99,6 @@ public abstract partial class ViewModelBase() : ObservableRecipient(WeakReferenc
             throw new ArgumentException("invalid url: " + url);
         }
 
-        Process.Start("open", url);
+        _ = Process.Start("open", url);
     }
 }

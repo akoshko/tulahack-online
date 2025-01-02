@@ -113,7 +113,7 @@ public class ValidationContextFactory<TObject>
     /// </summary>
     /// <typeparam name="TProp">Type of validatable property.</typeparam>
     public ValidationContext<TObject, TProp> CreateContext<TProp>() =>
-        new(ValidatableObject, ValidationContextCache, PropertyName, DisplayNameSource, (TProp) PropertyValue!);
+        new(ValidatableObject, ValidationContextCache, PropertyName, DisplayNameSource, (TProp)PropertyValue!);
 
     /// <summary>
     /// Create new validation context factory with transformed property value.
@@ -121,7 +121,8 @@ public class ValidationContextFactory<TObject>
     /// <typeparam name="TProp">The new type of property value.</typeparam>
     /// <param name="valueTransformer">Property value transformer.</param>
     /// <returns>New validation context factory with transformed property value.</returns>
-    public ValidationContextFactory<TObject> GetTransformedContextFactory<TProp>(IValueTransformer<TObject, TProp> valueTransformer)
+    public ValidationContextFactory<TObject> GetTransformedContextFactory<TProp>(
+        IValueTransformer<TObject, TProp> valueTransformer)
     {
         if (!ValidationContextCache.TryGetValue(valueTransformer, out var transformedPropertyValue))
         {
@@ -145,10 +146,7 @@ public class ValidationContextFactory<TObject>
     /// </summary>
     public void RegisterValidationCondition(IValidationCondition<TObject> condition)
     {
-        if (condition == null)
-        {
-            throw new ArgumentNullException(nameof(condition));
-        }
+        ArgumentNullException.ThrowIfNull(condition);
 
         _conditions.Add(condition);
     }
@@ -158,10 +156,7 @@ public class ValidationContextFactory<TObject>
     /// </summary>
     public void RegisterPropertiesThrottle(IPropertiesThrottle throttle)
     {
-        if (throttle == null)
-        {
-            throw new ArgumentNullException(nameof(throttle));
-        }
+        ArgumentNullException.ThrowIfNull(throttle);
 
         _throttles.Add(throttle);
     }
@@ -171,7 +166,7 @@ public class ValidationContextFactory<TObject>
     /// </summary>
     public bool ShouldIgnoreValidation()
     {
-        foreach (var condition in _conditions)
+        foreach (IValidationCondition<TObject> condition in _conditions)
         {
             if (condition.ShouldIgnoreValidation(this))
             {
@@ -187,7 +182,7 @@ public class ValidationContextFactory<TObject>
     /// </summary>
     public async Task ThrottleAsync(CancellationToken cancellationToken)
     {
-        foreach (var throttle in _throttles)
+        foreach (IPropertiesThrottle throttle in _throttles)
         {
             await throttle
                 .DelayAsync(this, cancellationToken)

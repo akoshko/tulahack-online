@@ -9,12 +9,12 @@ namespace Tulahack.UI.Validation.Attributes;
 /// Display name will be used in validation messages.
 /// </summary>
 [AttributeUsage(AttributeTargets.Property)]
-public class DisplayNameAttribute : Attribute
+public sealed class DisplayNameAttribute : Attribute
 {
     /// <summary>
     /// Display name for property.
     /// </summary>
-    public string? DisplayName { get; set; }
+    public string? Name { get; set; } = string.Empty;
 
     /// <summary>
     /// Key of display name for <see cref="IStringProvider" /> in <see cref="ValidationOptions.LanguageManager" />.
@@ -38,6 +38,6 @@ public class DisplayNameAttribute : Attribute
             return ValidationOptions.LanguageManager.GetString(DisplayNameKey!, DisplayNameResource);
         }
 
-        return DisplayName ?? string.Empty;
+        return Name ?? string.Empty;
     }
 }

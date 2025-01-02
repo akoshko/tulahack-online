@@ -18,9 +18,9 @@ internal static class IdManager<TTag>
     /// <summary>
     /// The last id generated for this type. This is 0 if no ids have been generated.
     /// </summary>
-// ReSharper disable StaticFieldInGenericType
+    // ReSharper disable StaticFieldInGenericType
     private static int _lastId;
-// ReSharper restore StaticFieldInGenericType
+    // ReSharper restore StaticFieldInGenericType
 
     /// <summary>
     /// Returns the id, allocating it if necessary.
@@ -46,7 +46,7 @@ internal static class IdManager<TTag>
         } while (newId == 0);
 
         // Update the Id unless another thread already updated it.
-        Interlocked.CompareExchange(ref id, newId, 0);
+        _ = Interlocked.CompareExchange(ref id, newId, 0);
 
         // Return the current Id, regardless of whether it's our new Id or a new Id from another thread.
         return id;

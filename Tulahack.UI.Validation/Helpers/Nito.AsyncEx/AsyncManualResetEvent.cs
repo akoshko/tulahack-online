@@ -22,7 +22,7 @@ internal sealed class AsyncManualResetEvent
     /// <summary>
     /// The current state of the event.
     /// </summary>
-    private TaskCompletionSource<object> _tcs;
+    private TaskCompletionSource<object?> _tcs;
 
     /// <summary>
     /// The semi-unique identifier for this instance. This is 0 if the id has not yet been created.
@@ -30,6 +30,7 @@ internal sealed class AsyncManualResetEvent
     private int _id;
 
     [DebuggerNonUserCode]
+    // ReSharper disable once InconsistentlySynchronizedField
     private bool GetStateForDebugger => _tcs.Task.IsCompleted;
 
     /// <summary>
@@ -39,10 +40,11 @@ internal sealed class AsyncManualResetEvent
     public AsyncManualResetEvent(bool set)
     {
         _mutex = new object();
-        _tcs = TaskCompletionSourceExtensions.CreateAsyncTaskSource<object>();
+        _tcs = TaskCompletionSourceExtensions.CreateAsyncTaskSource<object?>();
+
         if (set)
         {
-            _tcs.TrySetResult(null);
+            _ = _tcs.TrySetResult(null);
         }
     }
 
@@ -50,9 +52,7 @@ internal sealed class AsyncManualResetEvent
     /// Creates an async-compatible manual-reset event that is initially unset.
     /// </summary>
     public AsyncManualResetEvent()
-        : this(false)
-    {
-    }
+        : this(false) { }
 
     /// <summary>
     /// Gets a semi-unique identifier for this asynchronous manual-reset event.
@@ -64,7 +64,9 @@ internal sealed class AsyncManualResetEvent
     /// </summary>
     public bool IsSet
     {
-        get { lock (_mutex)
+        get
+        {
+            lock (_mutex)
             {
                 return _tcs.Task.IsCompleted;
             }
@@ -88,7 +90,8 @@ internal sealed class AsyncManualResetEvent
     /// <param name="cancellationToken">The cancellation token used to cancel the wait. If this token is already canceled, this method will first check whether the event is set.</param>
     public Task WaitAsync(CancellationToken cancellationToken)
     {
-        var waitTask = WaitAsync();
+        Task waitTask = WaitAsync();
+
         if (waitTask.IsCompleted)
         {
             return waitTask;
@@ -109,7 +112,8 @@ internal sealed class AsyncManualResetEvent
     /// <param name="cancellationToken">The cancellation token used to cancel the wait. If this token is already canceled, this method will first check whether the event is set.</param>
     public void Wait(CancellationToken cancellationToken)
     {
-        var ret = WaitAsync(CancellationToken.None);
+        Task ret = WaitAsync(CancellationToken.None);
+
         if (ret.IsCompleted)
         {
             return;
@@ -127,7 +131,7 @@ internal sealed class AsyncManualResetEvent
     {
         lock (_mutex)
         {
-            _tcs.TrySetResult(null);
+            _ = _tcs.TrySetResult(null);
         }
     }
 
@@ -140,7 +144,7 @@ internal sealed class AsyncManualResetEvent
         {
             if (_tcs.Task.IsCompleted)
             {
-                _tcs = TaskCompletionSourceExtensions.CreateAsyncTaskSource<object>();
+                _tcs = TaskCompletionSourceExtensions.CreateAsyncTaskSource<object?>();
             }
         }
     }

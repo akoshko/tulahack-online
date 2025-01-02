@@ -22,26 +22,16 @@ public static class TransformExtensions
     /// <typeparam name="TPropTransformed">The target type of validatable property.</typeparam>
     /// <returns>Single property validator for <typeparamref name="TPropTransformed" /> type.</returns>
     /// <exception cref="ArgumentNullException">If <see paramref="builder" /> or <see paramref="property" /> or <see paramref="transformer" /> is null.</exception>
-    public static ISinglePropertyRuleBuilderInitial<TObject, TPropTransformed> Transform<TObject, TProp, TPropTransformed>(
+    public static ISinglePropertyRuleBuilderInitial<TObject, TPropTransformed> Transform<TObject, TProp,
+        TPropTransformed>(
         this IValidationBuilder<TObject> builder,
         Expression<Func<TObject, TProp>> property,
         Func<TObject, TProp, TPropTransformed> transformer)
         where TObject : IValidatableObject
     {
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
-
-        if (property == null)
-        {
-            throw new ArgumentNullException(nameof(property));
-        }
-
-        if (transformer == null)
-        {
-            throw new ArgumentNullException(nameof(transformer));
-        }
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(transformer);
 
         return builder.Transform(property, new FuncValueTransformer<TObject, TProp, TPropTransformed>(transformer));
     }
@@ -57,28 +47,19 @@ public static class TransformExtensions
     /// <typeparam name="TPropTransformed">The target type of validatable property.</typeparam>
     /// <returns>Single property validator for <typeparamref name="TPropTransformed" /> type.</returns>
     /// <exception cref="ArgumentNullException">If <see paramref="builder" /> or <see paramref="property" /> or <see paramref="transformer" /> is null.</exception>
-    public static ISinglePropertyRuleBuilderInitial<TObject, TPropTransformed> Transform<TObject, TProp, TPropTransformed>(
+    public static ISinglePropertyRuleBuilderInitial<TObject, TPropTransformed> Transform<TObject, TProp,
+        TPropTransformed>(
         this IValidationBuilder<TObject> builder,
         Expression<Func<TObject, TProp>> property,
         Func<TProp, TPropTransformed> transformer)
         where TObject : IValidatableObject
     {
-        if (builder == null)
-        {
-            throw new ArgumentNullException(nameof(builder));
-        }
+        ArgumentNullException.ThrowIfNull(builder);
+        ArgumentNullException.ThrowIfNull(property);
+        ArgumentNullException.ThrowIfNull(transformer);
 
-        if (property == null)
-        {
-            throw new ArgumentNullException(nameof(property));
-        }
-
-        if (transformer == null)
-        {
-            throw new ArgumentNullException(nameof(transformer));
-        }
-
-        return builder.Transform(property, new FuncValueTransformer<TObject, TProp, TPropTransformed>((_, prop) => transformer.Invoke(prop)));
+        return builder.Transform(property,
+            new FuncValueTransformer<TObject, TProp, TPropTransformed>((_, prop) => transformer.Invoke(prop)));
     }
 
     #region Tranform from string to numeric types

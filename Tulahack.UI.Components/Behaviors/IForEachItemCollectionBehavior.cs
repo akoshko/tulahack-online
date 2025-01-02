@@ -7,7 +7,7 @@ namespace Tulahack.UI.Components.Behaviors;
 public interface IForEachItemCollectionBehavior<TCollItem> :
     ICollectionStatelessBehavior<TCollItem>
 {
-    private void SetItems(IEnumerable items)
+    private void SetItems(IEnumerable? items)
     {
         if (items == null)
         {
@@ -16,23 +16,23 @@ public interface IForEachItemCollectionBehavior<TCollItem> :
 
         foreach (TCollItem item in items)
         {
-            if (item is TCollItem behaviorItem)
+            if (item is { } behaviorItem)
             {
                 OnItemAdded(behaviorItem);
             }
         }
     }
 
-    private void UnsetItems(IEnumerable items)
+    private void UnsetItems(IEnumerable? items)
     {
         if (items == null)
         {
             return;
         }
 
-        foreach (TCollItem item in items)
+        foreach (TCollItem? item in items)
         {
-            if (item is TCollItem behaviorItem)
+            if (item is { } behaviorItem)
             {
                 OnItemRemoved(behaviorItem);
             }
@@ -40,23 +40,27 @@ public interface IForEachItemCollectionBehavior<TCollItem> :
     }
 
 
-    private void Collection_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+    private void Collection_CollectionChanged(object? sender, NotifyCollectionChangedEventArgs e)
     {
-        UnsetItems(e.OldItems);
-        SetItems(e.NewItems);
+        if (e.OldItems != null)
+        {
+            UnsetItems(e.OldItems);
+        }
+
+        if (e.NewItems != null)
+        {
+            SetItems(e.NewItems);
+        }
     }
 
-    void DetachImpl(IEnumerable<TCollItem> collection, bool unsetItems = true)
+    void DetachImpl(IEnumerable<TCollItem>? collection, bool unsetItems = true)
     {
         if (collection == null)
         {
             return;
         }
 
-        INotifyCollectionChanged notifiableCollection =
-            collection as INotifyCollectionChanged;
-
-        if (notifiableCollection != null)
+        if (collection is INotifyCollectionChanged notifiableCollection)
         {
             notifiableCollection.CollectionChanged -= Collection_CollectionChanged;
         }
@@ -67,10 +71,10 @@ public interface IForEachItemCollectionBehavior<TCollItem> :
         }
     }
 
-    void IStatelessBehavior<IEnumerable<TCollItem>>.Detach(IEnumerable<TCollItem> collection, bool unsetItems = true) =>
+    public new void Detach(IEnumerable<TCollItem> collection, bool unsetItems) =>
         DetachImpl(collection, unsetItems);
 
-    void AttachImpl(IEnumerable<TCollItem> collection, bool setItems = true)
+    void AttachImpl(IEnumerable<TCollItem>? collection, bool setItems = true)
     {
         if (collection == null)
         {
@@ -82,15 +86,13 @@ public interface IForEachItemCollectionBehavior<TCollItem> :
             SetItems(collection);
         }
 
-        INotifyCollectionChanged notifiableCollection =
-            collection as INotifyCollectionChanged;
 
-        if (notifiableCollection != null)
+        if (collection is INotifyCollectionChanged notifiableCollection)
         {
             notifiableCollection.CollectionChanged += Collection_CollectionChanged;
         }
     }
 
-    void IStatelessBehavior<IEnumerable<TCollItem>>.Attach(IEnumerable<TCollItem> collection, bool setItems = true) =>
+    public new void Attach(IEnumerable<TCollItem> collection, bool setItems) =>
         AttachImpl(collection, setItems);
 }

@@ -44,16 +44,18 @@ public abstract class AbstractComparisonValidator<TObject, TProp, TParam> : Base
     /// <inheritdoc />
     protected sealed override bool IsValid(ValidationContext<TObject, TProp> context)
     {
-        var propertyValue = context.PropertyValue;
+        TProp? propertyValue = context.PropertyValue;
+
         if (propertyValue == null)
         {
             return true;
         }
 
-        var paramValue = context.GetParamValue(_valueToCompare);
+        TParam? paramValue = context.GetParamValue(_valueToCompare);
         var comparisonResult = _comparer.Compare(propertyValue, paramValue);
 
-        if (IsValid(comparisonResult) == false) {
+        if (IsValid(comparisonResult) == false)
+        {
             context.RegisterMessageArgument("ValueToCompare", _valueToCompare, paramValue);
             return false;
         }

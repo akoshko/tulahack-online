@@ -36,7 +36,8 @@ public partial class NavigationViewModel : ViewModelBase
         DesignerMocks.TitleViewModelMock,
         new DesignNavigationService(),
         WeakReferenceMessenger.Default,
-        DesignerMocks.LoggerMock<NavigationViewModel>().Object) {}
+        DesignerMocks.LoggerMock<NavigationViewModel>().Object)
+    { }
 
     public NavigationViewModel(
         ContentViewModel contentViewModel,
@@ -52,7 +53,8 @@ public partial class NavigationViewModel : ViewModelBase
         // navigationService and messenger are registered as singletons
         messenger.Register<SelectedPageContextChanged>(this, (_, m) =>
         {
-            var page = navigationService.Pages.First(item => item.ViewModelType == m.Value.ContextType);
+            PageContextModel page = navigationService.Pages.First(item => item.ViewModelType == m.Value.ContextType);
+
             if (m.Value.NavigationArgs is null)
             {
                 NavigateToPage(page);
@@ -61,7 +63,7 @@ public partial class NavigationViewModel : ViewModelBase
             NavigateToPage(page, m.Value.NavigationArgs);
         });
 
-        var menu = navigationService.GetApplicationMenu();
+        System.Collections.Generic.IEnumerable<PageContextModel> menu = navigationService.GetApplicationMenu();
         NavigationItems = new ObservableCollection<PageContextModel>(menu);
 
         SelectedListItem = NavigationItems.First(item => item.ViewModelType == typeof(DashboardViewModel));
@@ -71,15 +73,15 @@ public partial class NavigationViewModel : ViewModelBase
     {
         if (context is null)
         {
-            _logger.LogWarning($"Cannot perform navigation: {context?.Label ?? "Unknown"} page context is null!");
+            _logger.LogWarning(@"Cannot perform navigation: page context context is null!");
             return;
         }
 
-        _logger.LogWarning($"Navigating to {context.Label} page");
-        var pageContext = Ioc.Default.GetService(context.ViewModelType) as ViewModelBase;
-        if (pageContext is null)
+        _logger.LogWarning(@"Navigating to {Page} page", context.Label);
+
+        if (Ioc.Default.GetService(context.ViewModelType) is not ViewModelBase pageContext)
         {
-            _logger.LogWarning($"Cannot perform navigation: not found {context.Label} page ViewModel in DI container!");
+            _logger.LogWarning(@"Cannot perform navigation: not found {Page} page ViewModel in DI container!", context.Label);
             return;
         }
 

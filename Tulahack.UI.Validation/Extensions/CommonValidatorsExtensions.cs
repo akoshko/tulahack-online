@@ -45,7 +45,8 @@ public static class CommonValidatorsExtensions
             throw new ArgumentException("'To' should be larger than 'From' in BetweenValidator");
         }
 
-        return ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp>(_ => from, _ => to, comparer, validationMessageType));
+        return ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp>(_ => from, _ => to, comparer, validationMessageType));
     }
 
     /// <summary>
@@ -75,7 +76,8 @@ public static class CommonValidatorsExtensions
             throw new ArgumentException("'To' should be larger than 'From' in BetweenValidator");
         }
 
-        return ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp?, TProp>(_ => from, _ => to, comparer, validationMessageType));
+        return ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp?, TProp>(_ => from, _ => to, comparer, validationMessageType));
     }
 
     /// <summary>
@@ -99,7 +101,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp>(fromExpression, _ => to, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp>(fromExpression, _ => to, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'inclusive between' on the current rule builder, but only for properties of types that implement IComparable.
@@ -122,7 +125,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp?, TProp>(fromExpression, _ => to, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp?, TProp>(fromExpression, _ => to, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'inclusive between' on the current rule builder, but only for properties of types that implement IComparable.
@@ -145,7 +149,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp>(_ => from, toExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp>(_ => from, toExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'inclusive between' on the current rule builder, but only for properties of types that implement IComparable.
@@ -168,7 +173,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp?, TProp>(_ => from, toExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp?, TProp>(_ => from, toExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'inclusive between' on the current rule builder, but only for properties of types that implement IComparable.
@@ -191,7 +197,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp>(fromExpression, toExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new BetweenValidator<TObject, TProp>(fromExpression, toExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'inclusive between' on the current rule builder, but only for properties of types that implement IComparable.
@@ -214,7 +221,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp?, TProp>(fromExpression, toExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(new BetweenValidator<TObject, TProp?, TProp>(fromExpression, toExpression, comparer,
+            validationMessageType));
 
     /// <summary>
     /// Defines an 'equals' validator on the current rule builder.
@@ -234,7 +242,8 @@ public static class CommonValidatorsExtensions
         ValidationMessageType validationMessageType = ValidationMessageType.SimpleError)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
-        ruleBuilder.SetValidator(new EqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new EqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'equals' validator on the current rule builder.
@@ -255,7 +264,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct =>
-        ruleBuilder.SetValidator(new EqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new EqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'equals' validator on the current rule builder.
@@ -275,7 +285,8 @@ public static class CommonValidatorsExtensions
         ValidationMessageType validationMessageType = ValidationMessageType.SimpleError)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
-        ruleBuilder.SetValidator(new EqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new EqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than or equal' validator on the current rule builder.
@@ -297,7 +308,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanOrEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanOrEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than or equal' validator on the current rule builder.
@@ -319,7 +331,9 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanOrEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanOrEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer,
+                validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than or equal' validator on the current rule builder.
@@ -341,7 +355,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanOrEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanOrEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than' validator on the current rule builder.
@@ -363,7 +378,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than' validator on the current rule builder.
@@ -385,7 +401,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'greater than or equal' validator on the current rule builder.
@@ -407,7 +424,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new GreaterThanValidator<TObject, TProp> (valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new GreaterThanValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
 
     /// <summary>
@@ -430,7 +448,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanOrEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanOrEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'less than or equal' validator on the current rule builder.
@@ -452,7 +471,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanOrEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanOrEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'less than or equal' validator on the current rule builder.
@@ -474,7 +494,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanOrEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanOrEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'less than' validator on the current rule builder.
@@ -496,7 +517,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'less than' validator on the current rule builder.
@@ -518,7 +540,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct, IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'less than' validator on the current rule builder.
@@ -540,7 +563,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject
         where TProp : IComparable<TProp> =>
-        ruleBuilder.SetValidator(new LessThanValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new LessThanValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines a 'model is valid' validator on the current rule builder. Only for IValidatableObject properties.
@@ -579,7 +603,8 @@ public static class CommonValidatorsExtensions
         ValidationMessageType validationMessageType = ValidationMessageType.SimpleError)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
-        ruleBuilder.SetValidator(new NotEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new NotEqualValidator<TObject, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'not equal' validator on the current rule builder.
@@ -600,7 +625,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp?, TNext>
         where TObject : IValidatableObject
         where TProp : struct =>
-        ruleBuilder.SetValidator(new NotEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new NotEqualValidator<TObject, TProp?, TProp>(_ => valueToCompare, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'not equal' validator on the current rule builder.
@@ -620,7 +646,8 @@ public static class CommonValidatorsExtensions
         ValidationMessageType validationMessageType = ValidationMessageType.SimpleError)
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
-        ruleBuilder.SetValidator(new NotEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
+        ruleBuilder.SetValidator(
+            new NotEqualValidator<TObject, TProp>(valueToCompareExpression, comparer, validationMessageType));
 
     /// <summary>
     /// Defines an 'not null' validator on the current rule builder.
@@ -693,7 +720,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
         ruleBuilder.SetValidator(
-            new PredicateValidator<TObject, TProp>(context => predicate.Invoke(context.PropertyName, context.PropertyValue!), validationMessageType));
+            new PredicateValidator<TObject, TProp>(
+                context => predicate.Invoke(context.PropertyName, context.PropertyValue!), validationMessageType));
 
     /// <summary>
     /// Defines a predicate validator on the current rule builder using a lambda expression to specify the predicate.
@@ -753,7 +781,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
         ruleBuilder.SetValidator(
-            new AsyncPredicateValidator<TObject, TProp>((context, token) => predicate.Invoke(context.PropertyValue!, token),
+            new AsyncPredicateValidator<TObject, TProp>(
+                (context, token) => predicate.Invoke(context.PropertyValue!, token),
                 validationMessageType));
 
     /// <summary>
@@ -774,7 +803,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
         ruleBuilder.SetValidator(
-            new AsyncPredicateValidator<TObject, TProp>((context, _) => predicate.Invoke(context.PropertyName, context.PropertyValue!),
+            new AsyncPredicateValidator<TObject, TProp>(
+                (context, _) => predicate.Invoke(context.PropertyName, context.PropertyValue!),
                 validationMessageType));
 
     /// <summary>
@@ -795,7 +825,8 @@ public static class CommonValidatorsExtensions
         where TNext : IRuleBuilder<TObject, TProp, TNext>
         where TObject : IValidatableObject =>
         ruleBuilder.SetValidator(
-            new AsyncPredicateValidator<TObject, TProp>((context, token) => predicate.Invoke(context.PropertyName, context.PropertyValue!, token),
+            new AsyncPredicateValidator<TObject, TProp>(
+                (context, token) => predicate.Invoke(context.PropertyName, context.PropertyValue!, token),
                 validationMessageType));
 
     /// <summary>

@@ -38,16 +38,17 @@ public static class DataGridColumnManipulationBehavior
 
     static DataGridColumnManipulationBehavior()
     {
-        IsOnProperty.Changed.Subscribe(OnIsOnChanged);
+        _ = IsOnProperty.Changed.Subscribe(OnIsOnChanged);
     }
 
     private static void OnIsOnChanged(AvaloniaPropertyChangedEventArgs<bool> args)
     {
-        DataGrid dataGrid = (DataGrid)args.Sender;
+        var dataGrid = (DataGrid)args.Sender;
 
         if (args.NewValue.Value)
         {
-            SetColumnManipulationBehavior(dataGrid, dataGrid.Columns.AddBehavior(OnColumnAdded));
+            using BehaviorsDisposable<IEnumerable<DataGridColumn>> behavior = dataGrid.Columns.AddBehavior(OnColumnAdded);
+            SetColumnManipulationBehavior(dataGrid, behavior);
         }
     }
 

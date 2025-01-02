@@ -7,6 +7,7 @@ namespace Tulahack.UI.Components.Behaviors.DataGridBehaviors;
 public static class AddClassesToDataGridColumnHeaderBehavior
 {
     #region TheClassesToAdd Attached Avalonia Property
+
     public static string GetTheClassesToAdd(DataGrid obj) =>
         obj.GetValue(TheClassesToAddProperty);
 
@@ -18,15 +19,17 @@ public static class AddClassesToDataGridColumnHeaderBehavior
         (
             "TheClassesToAdd"
         );
+
     #endregion TheClassesToAdd Attached Avalonia Property
 
     static AddClassesToDataGridColumnHeaderBehavior()
     {
-        TheClassesToAddProperty.Changed.Subscribe(OnClassesToAddChanged);
+        _ = TheClassesToAddProperty.Changed.Subscribe(OnClassesToAddChanged);
     }
 
 
     #region TheBehavior Attached Avalonia Property
+
     private static BehaviorsDisposable<IEnumerable<DataGridColumn>> GetTheBehavior(DataGrid obj) =>
         obj.GetValue(TheBehaviorProperty);
 
@@ -38,14 +41,16 @@ public static class AddClassesToDataGridColumnHeaderBehavior
         (
             "TheBehavior"
         );
+
     #endregion TheBehavior Attached Avalonia Property
 
 
     private static void OnClassesToAddChanged(AvaloniaPropertyChangedEventArgs<string> args)
     {
-        DataGrid dataGrid = (DataGrid)args.Sender;
+        var dataGrid = (DataGrid)args.Sender;
 
-        SetTheBehavior(dataGrid, dataGrid.Columns.AddBehavior(OnColumnAdded));
+        using BehaviorsDisposable<IEnumerable<DataGridColumn>> behavior = dataGrid.Columns.AddBehavior(OnColumnAdded);
+        SetTheBehavior(dataGrid, behavior);
     }
 
     private static void OnColumnAdded(DataGridColumn col)
@@ -53,7 +58,7 @@ public static class AddClassesToDataGridColumnHeaderBehavior
         DataGrid dataGrid = col.GetPropValue<DataGrid>("OwningGrid", true);
         DataGridColumnHeader header = col.GetPropValue<DataGridColumnHeader>("HeaderCell", true);
 
-        string classesToAdd = GetTheClassesToAdd(dataGrid);
+        var classesToAdd = GetTheClassesToAdd(dataGrid);
 
         if (!string.IsNullOrEmpty(classesToAdd))
         {

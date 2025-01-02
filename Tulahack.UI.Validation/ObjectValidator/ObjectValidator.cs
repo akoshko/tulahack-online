@@ -36,7 +36,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     private readonly IReadOnlyDictionary<string, IStringSource?> _displayNamesSources;
 
     private readonly ObjectObserver<TObject> _observer;
-    private readonly IDictionary<string, ValidatableProperty<TObject>> _validatableProperties;
+    private readonly Dictionary<string, ValidatableProperty<TObject>> _validatableProperties;
 
     private readonly object _lock = new();
     private readonly AsyncManualResetEvent _asyncValidationWaiter = new(true);
@@ -107,6 +107,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
         private set
         {
             var isValueChanged = _asyncValidationWaiter.IsSet == value;
+
             if (!isValueChanged)
             {
                 return;
@@ -143,12 +144,12 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
         lock (_lock)
         {
-            if (!_validatableProperties.ContainsKey(propertyName))
+            if (!_validatableProperties.TryGetValue(propertyName, out ValidatableProperty<TObject>? property))
             {
-                return Array.Empty<ValidationMessage>();
+                return [];
             }
 
-            return _validatableProperties[propertyName].ValidationMessages;
+            return property.ValidationMessages;
         }
     }
 
@@ -205,10 +206,11 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
             // Cancel all async tasks.
             // We don't need to wait them, because they won't affect on anything.
-            var asyncTokenSources = _validatableProperties
+            IEnumerable<CancellationTokenSource?> asyncTokenSources = _validatableProperties
                 .Values
                 .SelectMany(p => p.AsyncValidatorCancellationTokenSources.Values);
-            foreach (var tokenSource in asyncTokenSources)
+
+            foreach (CancellationTokenSource? tokenSource in asyncTokenSources)
             {
                 tokenSource?.Cancel();
             }
@@ -234,7 +236,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     private void OnPropertyChanged(object? sender, PropertyChangedEventArgs args)
     {
         Debug.Assert(args.PropertyName != null, "args.PropertyName != null");
-        _propertyChangedStopwatches.AddOrUpdate(
+        _ = _propertyChangedStopwatches.AddOrUpdate(
             args.PropertyName,
             _ => new PropertyChangedStopwatch(),
             (_, stopwatch) => stopwatch.Restart());
@@ -253,14 +255,16 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     {
         lock (_lock)
         {
-            var aggregatedValidationContext = new AggregatedValidationContext<TObject>(_instance, _displayNamesSources, _propertyChangedStopwatches);
+            var aggregatedValidationContext =
+                new AggregatedValidationContext<TObject>(_instance, _displayNamesSources, _propertyChangedStopwatches);
             var changedProperties = new List<string>();
             var propertiesAsyncValidators = new Dictionary<string, List<IPropertyValidator<TObject>>>();
 
-            foreach (var validatableProperty in _validatableProperties)
+            foreach (KeyValuePair<string, ValidatableProperty<TObject>> validatableProperty in _validatableProperties)
             {
-                var info = validatableProperty.Value;
+                ValidatableProperty<TObject> info = validatableProperty.Value;
                 var isTarget = string.IsNullOrEmpty(propertyName) || info.PropertyName == propertyName;
+
                 if (!isTarget && !info.RelatedProperties.Contains(propertyName!))
                 {
                     continue;
@@ -272,7 +276,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
                 var shouldAsyncValidate = false;
                 var asyncValidators = new List<IPropertyValidator<TObject>>();
 
-                foreach (var propertyValidator in info.Validators)
+                foreach (IPropertyValidator<TObject> propertyValidator in info.Validators)
                 {
                     // After first async validator - all others will be validated in ValidateInternalAsync.
                     shouldAsyncValidate |= propertyValidator.IsAsync;
@@ -297,11 +301,12 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
                     // If changed property doesn't affect at property validator then we don't need to revalidate it.
                     var isRelated = propertyValidator.RelatedProperties.Contains(propertyName);
+
                     if (!shouldRevalidateAllFollowing && !isRelated)
                     {
                         shouldIgnoreAllFollowing |=
-                            info.ValidatorsValidationMessages[propertyValidator].Any()
-                            && info.PropertyCascadeMode == CascadeMode.Stop;
+                            info.ValidatorsValidationMessages[propertyValidator].Any() &&
+                            info.PropertyCascadeMode == CascadeMode.Stop;
                         continue;
                     }
 
@@ -322,7 +327,8 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
                         {
                             // Cancel previous execution (if it is running) and create new token source for future execution.
                             info.AsyncValidatorCancellationTokenSources[propertyValidator]?.Cancel();
-                            info.AsyncValidatorCancellationTokenSources[propertyValidator] = new CancellationTokenSource();
+                            info.AsyncValidatorCancellationTokenSources[propertyValidator] =
+                                new CancellationTokenSource();
 
                             asyncValidators.Add(propertyValidator);
                         }
@@ -331,9 +337,10 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
                     }
 
                     // Validate sync validators here.
-                    var contextProvider = aggregatedValidationContext.CreateContextFactory(info.PropertyName);
-                    var messages = ValidatePropertyValidator(propertyValidator, contextProvider);
+                    ValidationContextFactory<TObject> contextProvider = aggregatedValidationContext.CreateContextFactory(info.PropertyName);
+                    IReadOnlyList<ValidationMessage> messages = ValidatePropertyValidator(propertyValidator, contextProvider);
                     shouldIgnoreAllFollowing |= messages.Any() && info.PropertyCascadeMode == CascadeMode.Stop;
+
                     if (messages.SequenceEqual(info.ValidatorsValidationMessages[propertyValidator]))
                     {
                         continue;
@@ -379,9 +386,10 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
         {
             var tasks = new List<Task>();
 
-            foreach (var propertyValidators in propertiesAsyncValidators)
+            foreach (KeyValuePair<string, List<IPropertyValidator<TObject>>> propertyValidators in propertiesAsyncValidators)
             {
-                tasks.Add(ValidatePropertyAsync(aggregatedValidationContext, propertyValidators.Key, propertyValidators.Value));
+                tasks.Add(ValidatePropertyAsync(aggregatedValidationContext, propertyValidators.Key,
+                    propertyValidators.Value));
             }
 
             await Task.WhenAll(tasks)
@@ -407,21 +415,22 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
         string propertyName,
         IReadOnlyList<IPropertyValidator<TObject>> propertyValidators)
     {
-        var info = _validatableProperties[propertyName];
+        ValidatableProperty<TObject> info = _validatableProperties[propertyName];
         var tokenSources = propertyValidators
             .ToDictionary(pv => pv, pv => info.AsyncValidatorCancellationTokenSources[pv]);
 
-        foreach (var propertyValidator in propertyValidators)
+        foreach (IPropertyValidator<TObject> propertyValidator in propertyValidators)
         {
             // Skip this validator because it should be revalidated with new property value.
-            var tokenSource = tokenSources[propertyValidator];
+            CancellationTokenSource? tokenSource = tokenSources[propertyValidator];
+
             if (tokenSource!.IsCancellationRequested)
             {
                 continue;
             }
 
-            var contextProvider = aggregatedValidationContext.CreateContextFactory(info.PropertyName);
-            var messages = await ValidatePropertyValidatorAsync(propertyValidator, contextProvider, tokenSource.Token)
+            ValidationContextFactory<TObject> contextProvider = aggregatedValidationContext.CreateContextFactory(info.PropertyName);
+            IReadOnlyList<ValidationMessage> messages = await ValidatePropertyValidatorAsync(propertyValidator, contextProvider, tokenSource.Token)
                 .ConfigureAwait(false);
 
             if (tokenSource.IsCancellationRequested)
@@ -436,7 +445,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
                     continue;
                 }
 
-                tokenSource.Cancel();
+                tokenSource.CancelAsync();
 
                 // Inside RevalidateInternal we have reset messages.
                 // So we need only check if there are something new.
@@ -449,13 +458,14 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
                     if (info.PropertyCascadeMode == CascadeMode.Stop)
                     {
                         // But we should cancel all tokens for them.
-                        var followingValidators = propertyValidators
+                        IEnumerable<IPropertyValidator<TObject>> followingValidators = propertyValidators
                             .SkipWhile(pv => pv != propertyValidator)
                             .Skip(1);
-                        foreach (var followingValidator in followingValidators)
+
+                        foreach (IPropertyValidator<TObject>? followingValidator in followingValidators)
                         {
-                            var followingTokenSource = info.AsyncValidatorCancellationTokenSources[followingValidator];
-                            followingTokenSource!.Cancel();
+                            CancellationTokenSource? followingTokenSource = info.AsyncValidatorCancellationTokenSources[followingValidator];
+                            followingTokenSource!.CancelAsync();
                         }
 
                         return;
@@ -476,7 +486,8 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     {
         try
         {
-            var messages = propertyValidator.ValidateProperty(contextFactory);
+            IReadOnlyList<ValidationMessage> messages = propertyValidator.ValidateProperty(contextFactory);
+
             if (messages == null)
             {
                 throw new NullReferenceException("Invalid return value of PropertyValidator");
@@ -506,11 +517,12 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     {
         try
         {
-            var messages =  propertyValidator.IsAsync
+            IReadOnlyList<ValidationMessage> messages = propertyValidator.IsAsync
                 ? await propertyValidator.ValidatePropertyAsync(contextFactory, cancellationToken)
                 // ReSharper disable once MethodHasAsyncOverloadWithCancellation
                 // It's not an async validator, so we should use sync method.
                 : propertyValidator.ValidateProperty(contextFactory);
+
             if (messages == null)
             {
                 throw new NullReferenceException("Invalid return value of PropertyValidator");
@@ -561,7 +573,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     /// </summary>
     private void OnCultureChanged(object? sender, CultureChangedEventArgs e)
     {
-        foreach (var validationMessage in ValidationMessages)
+        foreach (ValidationMessage validationMessage in ValidationMessages)
         {
             validationMessage.UpdateMessage();
         }
@@ -570,15 +582,17 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     /// <summary>
     /// Create list of display name for all properties of instance.
     /// </summary>
-    private static IReadOnlyDictionary<string, IStringSource?> GetDisplayNames()
+    private static Dictionary<string, IStringSource?> GetDisplayNames()
     {
         const BindingFlags bindingAttributes = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
 
         var displayNamesSources = new Dictionary<string, IStringSource?>();
-        var properties = typeof(TObject).GetProperties(bindingAttributes);
-        foreach (var property in properties)
+        PropertyInfo[] properties = typeof(TObject).GetProperties(bindingAttributes);
+
+        foreach (PropertyInfo property in properties)
         {
-            displayNamesSources.Add(property.Name, ValidationOptions.DisplayNameResolver.GetPropertyNameSource(property));
+            displayNamesSources.Add(property.Name,
+                ValidationOptions.DisplayNameResolver.GetPropertyNameSource(property));
         }
 
         return displayNamesSources;
@@ -588,22 +602,25 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     /// Get information of validatable properties.
     /// </summary>
     /// <param name="ruleBuilders">Rule builders.</param>
-    private IDictionary<string, ValidatableProperty<TObject>> GetValidatableProperties(IReadOnlyList<IRuleBuilder<TObject>> ruleBuilders)
+    private Dictionary<string, ValidatableProperty<TObject>> GetValidatableProperties(
+        IReadOnlyList<IRuleBuilder<TObject>> ruleBuilders)
     {
         var propertyValidators = new Dictionary<string, List<IPropertyValidator<TObject>>>();
         var propertyCascadeModes = new Dictionary<string, CascadeMode>();
 
-        foreach (var ruleBuilder in ruleBuilders)
+        foreach (IRuleBuilder<TObject> ruleBuilder in ruleBuilders)
         {
-            var validators = ruleBuilder.GetValidators();
+            IReadOnlyList<IPropertyValidator<TObject>> validators = ruleBuilder.GetValidators();
+
             foreach (var validatableProperty in ruleBuilder.ValidatableProperties)
             {
-                if (!propertyValidators.ContainsKey(validatableProperty))
+                if (!propertyValidators.TryGetValue(validatableProperty, out List<IPropertyValidator<TObject>>? value))
                 {
-                    propertyValidators[validatableProperty] = new List<IPropertyValidator<TObject>>();
+                    value = new List<IPropertyValidator<TObject>>();
+                    propertyValidators[validatableProperty] = value;
                 }
 
-                propertyValidators[validatableProperty].AddRange(validators);
+                value.AddRange(validators);
 
                 if (ruleBuilder.PropertyCascadeMode != null)
                 {
@@ -618,19 +635,23 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
         return propertyValidators.ToDictionary(
             pv => pv.Key,
-            pv => new ValidatableProperty<TObject>(pv.Key, _displayNamesSources[pv.Key], propertyCascadeModes[pv.Key], pv.Value));
+            pv => new ValidatableProperty<TObject>(pv.Key, _displayNamesSources[pv.Key], propertyCascadeModes[pv.Key],
+                pv.Value));
     }
 
     /// <summary>
     /// Get information of validatable properties settings.
     /// </summary>
     /// <param name="ruleBuilders">Rule builders.</param>
-    private static Dictionary<string, ObservingPropertySettings> GetPropertySettings(IReadOnlyList<IRuleBuilder<TObject>> ruleBuilders)
+    private static Dictionary<string, ObservingPropertySettings> GetPropertySettings(
+        IReadOnlyList<IRuleBuilder<TObject>> ruleBuilders)
     {
         var propertySettings = new Dictionary<string, ObservingPropertySettings>();
-        foreach (var ruleBuilder in ruleBuilders)
+
+        foreach (IRuleBuilder<TObject> ruleBuilder in ruleBuilders)
         {
-            var settings = ruleBuilder.ObservingPropertiesSettings;
+            ObservingPropertySettings settings = ruleBuilder.ObservingPropertiesSettings;
+
             if (settings.IsDefaultSettings)
             {
                 continue;
@@ -638,7 +659,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
             foreach (var validatableProperty in ruleBuilder.ValidatableProperties)
             {
-                if (!propertySettings.TryGetValue(validatableProperty, out var previousSettings))
+                if (!propertySettings.TryGetValue(validatableProperty, out ObservingPropertySettings? previousSettings))
                 {
                     previousSettings = new ObservingPropertySettings();
                     propertySettings[validatableProperty] = previousSettings;
@@ -646,12 +667,15 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
 
                 if (settings.PropertyValueFactoryMethod != null && previousSettings.PropertyValueFactoryMethod != null)
                 {
-                    throw new MethodAlreadyCalledException($"Validator factory method used twice for {typeof(TObject)}.{validatableProperty}");
+                    throw new MethodAlreadyCalledException(
+                        $"Validator factory method used twice for {typeof(TObject)}.{validatableProperty}");
                 }
 
-                if (settings.CollectionItemFactoryMethod != null && previousSettings.CollectionItemFactoryMethod != null)
+                if (settings.CollectionItemFactoryMethod != null &&
+                    previousSettings.CollectionItemFactoryMethod != null)
                 {
-                    throw new MethodAlreadyCalledException($"Validator item factory method used twice for {typeof(TObject)}.{validatableProperty}");
+                    throw new MethodAlreadyCalledException(
+                        $"Validator item factory method used twice for {typeof(TObject)}.{validatableProperty}");
                 }
 
                 previousSettings.TrackValueChanged |= settings.TrackValueChanged;

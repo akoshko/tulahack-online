@@ -23,7 +23,8 @@ internal class ValidatableProperty<TObject>
     /// <param name="displayNameSource">Source of display name.</param>
     /// <param name="propertyCascadeMode">Property cascade mode.</param>
     /// <param name="validators">List of all property validators.</param>
-    public ValidatableProperty(string propertyName, IStringSource? displayNameSource, CascadeMode propertyCascadeMode, IReadOnlyList<IPropertyValidator<TObject>> validators)
+    public ValidatableProperty(string propertyName, IStringSource? displayNameSource, CascadeMode propertyCascadeMode,
+        IReadOnlyList<IPropertyValidator<TObject>> validators)
     {
         PropertyName = propertyName;
         DisplayNameSource = displayNameSource;
@@ -32,8 +33,9 @@ internal class ValidatableProperty<TObject>
         PropertyCascadeMode = propertyCascadeMode;
         AsyncValidatorCancellationTokenSources = validators
             .SkipWhile(v => !v.IsAsync)
-            .ToDictionary(v => v, _ => (CancellationTokenSource?) null);
-        ValidatorsValidationMessages = Validators.ToDictionary(v => v, _ => (IReadOnlyList<ValidationMessage>) Array.Empty<ValidationMessage>());
+            .ToDictionary(v => v, _ => (CancellationTokenSource?)null);
+        ValidatorsValidationMessages = Validators.ToDictionary(v => v,
+            _ => (IReadOnlyList<ValidationMessage>)[]);
     }
 
 
@@ -65,15 +67,22 @@ internal class ValidatableProperty<TObject>
     /// <summary>
     /// List of <see cref="CancellationTokenSource" /> for all validators which should validate async.
     /// </summary>
-    public Dictionary<IPropertyValidator<TObject>, CancellationTokenSource?> AsyncValidatorCancellationTokenSources { get; }
+    public Dictionary<IPropertyValidator<TObject>, CancellationTokenSource?> AsyncValidatorCancellationTokenSources
+    {
+        get;
+    }
 
     /// <summary>
     /// List of property validators and its current validation messages.
     /// </summary>
-    public IDictionary<IPropertyValidator<TObject>, IReadOnlyList<ValidationMessage>> ValidatorsValidationMessages { get; }
+    public IDictionary<IPropertyValidator<TObject>, IReadOnlyList<ValidationMessage>> ValidatorsValidationMessages
+    {
+        get;
+    }
 
     /// <summary>
     /// Validation messages of property.
     /// </summary>
-    public IReadOnlyList<ValidationMessage> ValidationMessages => ValidatorsValidationMessages.SelectMany(vm => vm.Value).ToList();
+    public IReadOnlyList<ValidationMessage> ValidationMessages =>
+        ValidatorsValidationMessages.SelectMany(vm => vm.Value).ToList();
 }

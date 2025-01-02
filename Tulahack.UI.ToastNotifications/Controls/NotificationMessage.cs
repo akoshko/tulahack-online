@@ -330,9 +330,9 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
         }
 
-        @this.BadgeAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush;
+        @this.BadgeAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush ?? Brushes.Black;
 
-        @this.ButtonAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush;
+        @this.ButtonAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush ?? Brushes.Black;
     }
 
     /// <summary>
@@ -448,10 +448,18 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </summary>
     static NotificationMessage()
     {
-        AccentBrushProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(x => AccentBrushPropertyChangedCallback(x.Sender, x)));
-        BadgeTextProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x => BadgeTextPropertyChangedCallback(x.Sender, x)));
-        MessageProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x => MessagePropertyChangesCallback(x.Sender, x)));
-        HeaderProperty.Changed.Subscribe(new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x => HeaderPropertyChangesCallback(x.Sender, x)));
+        _ = AccentBrushProperty.Changed.Subscribe(
+            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<IBrush>>(x =>
+                AccentBrushPropertyChangedCallback(x.Sender, x)));
+        _ = BadgeTextProperty.Changed.Subscribe(
+            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x =>
+                BadgeTextPropertyChangedCallback(x.Sender, x)));
+        _ = MessageProperty.Changed.Subscribe(
+            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x =>
+                MessagePropertyChangesCallback(x.Sender, x)));
+        _ = HeaderProperty.Changed.Subscribe(
+            new AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>>(x =>
+                HeaderPropertyChangesCallback(x.Sender, x)));
         //TODO what is this
         // DefaultStyleKeyProperty.OverrideMetadata(typeof(NotificationMessage), new FrameworkPropertyMetadata(typeof(NotificationMessage)));
     }

@@ -27,19 +27,12 @@ internal class ValidationMessageTypeToForegroundConverter : IMultiValueConverter
         var validationMessageType = values[0] as ValidationMessageType?;
         var errorBrush = values[1];
         var warningBrush = values[2];
-        
-        switch (validationMessageType)
+
+        return validationMessageType switch
         {
-            case ValidationMessageType.Error:
-            case ValidationMessageType.SimpleError:
-                return errorBrush;
-            
-            case ValidationMessageType.Warning:
-            case ValidationMessageType.SimpleWarning:
-                return warningBrush;
-            
-            default:
-                return errorBrush;
-        }
+            ValidationMessageType.Error or ValidationMessageType.SimpleError => errorBrush,
+            ValidationMessageType.Warning or ValidationMessageType.SimpleWarning => warningBrush,
+            _ => errorBrush,
+        };
     }
 }

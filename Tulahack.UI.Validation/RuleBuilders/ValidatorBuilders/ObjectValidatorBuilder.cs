@@ -23,18 +23,12 @@ internal class ObjectValidatorBuilder<TObject> : IObjectValidatorBuilder
     public Type SupportedType => typeof(TObject);
 
     /// <inheritdoc />
-    public IObjectValidator Build(IValidatableObject instance)
-    {
-        if (instance == null)
+    public IObjectValidator Build(IValidatableObject instance) =>
+        instance switch
         {
-            throw new ArgumentNullException(nameof(instance));
-        }
-
-        if (instance is TObject i)
-        {
-            return new ObjectValidator<TObject>(i, _rulesBuilders);
-        }
-
-        throw new NotSupportedException($"Cannot create validator for type {instance.GetType()}, supported only {typeof(TObject)}");
-    }
+            null => throw new ArgumentNullException(nameof(instance)),
+            TObject i => new ObjectValidator<TObject>(i, _rulesBuilders),
+            _ => throw new NotSupportedException(
+                $"Cannot create validator for type {instance.GetType()}, supported only {typeof(TObject)}")
+        };
 }

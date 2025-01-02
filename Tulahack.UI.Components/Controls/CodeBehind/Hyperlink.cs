@@ -37,15 +37,17 @@ public class Hyperlink : Button
         get => _url;
         set
         {
-            SetAndRaise(UrlProperty, ref _url, value);
+            _ = SetAndRaise(UrlProperty, ref _url, value);
             var textBlock = new TextBlock
             {
                 Text = _url
             };
+
             if (string.IsNullOrEmpty(_alias))
             {
-                Content =  textBlock;
+                Content = textBlock;
             }
+
             if (!string.IsNullOrEmpty(_url))
             {
                 Classes.Add("hyperlink");
@@ -59,7 +61,7 @@ public class Hyperlink : Button
         get => string.IsNullOrEmpty(_alias) ? _url : _alias;
         set
         {
-            SetAndRaise(UrlProperty, ref _alias, value);
+            _ = SetAndRaise(UrlProperty, ref _alias, value);
             var textBlock = new TextBlock
             {
                 Text = string.IsNullOrEmpty(_alias) ? _url : _alias

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -43,10 +44,9 @@ public class UserService : IUserService
             _ => "account"
         };
 
-        var result = await _httpClient.GetAndHandleAsync<T>(
-            url, 
-            _serializerOptions,
-            _notificationsService);
+        T? result = await _httpClient.GetAndHandleAsync<T>(
+            new Uri(url),
+            _serializerOptions);
         return result;
     }
 
@@ -55,10 +55,9 @@ public class UserService : IUserService
         Justification = "ContestantDto is specified in TulahackJsonContext")]
     public async Task<ContestantDto?> GetAccount()
     {
-        var result = await _httpClient.GetAndHandleAsync<ContestantDto>(
-            "account", 
-            _serializerOptions,
-            _notificationsService);
+        ContestantDto? result = await _httpClient.GetAndHandleAsync<ContestantDto>(
+            new Uri("account"),
+            _serializerOptions);
         return result;
     }
 
@@ -66,10 +65,9 @@ public class UserService : IUserService
         "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access",
         Justification = "UserPreferencesDto is specified in TulahackJsonContext")]
     public async Task SaveUserPreferences(UserPreferencesDto preferences) =>
-        await _httpClient.PostAsJsonAsync(
-            "account/preferences", 
+        await _httpClient.PostJsonAsync(
+            new Uri("account/preferences"),
             preferences,
-            default,
-            serializerOptions: _serializerOptions, 
-            notificationsService: _notificationsService);
+            serializerOptions: _serializerOptions,
+            default);
 }

@@ -25,7 +25,7 @@ public class StaticStringSource : IStringSource
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
@@ -40,7 +40,7 @@ public class StaticStringSource : IStringSource
             return false;
         }
 
-        return Equals((StaticStringSource) obj);
+        return Equals((StaticStringSource)obj);
     }
 
     /// <inheritdoc />
@@ -51,5 +51,5 @@ public class StaticStringSource : IStringSource
     /// Check if two sources are equal.
     /// </summary>
     protected bool Equals(StaticStringSource other) =>
-        string.Equals(_message, other._message);
+        string.Equals(_message, other._message, StringComparison.Ordinal);
 }

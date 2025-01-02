@@ -38,7 +38,7 @@ public abstract class ValidationRuleBuilder<TObject> : IValidationBuilder<TObjec
         CreateBuilder().Build(instance);
 
     /// <inheritdoc />
-    IObjectValidatorBuilder IObjectValidatorBuilderCreator.Create() =>
+    public IObjectValidatorBuilder Create() =>
         CreateBuilder();
 
 
@@ -112,11 +112,11 @@ public abstract class ValidationRuleBuilder<TObject> : IValidationBuilder<TObjec
     /// <summary>
     /// Create prepared builder.
     /// </summary>
-    private IObjectValidatorBuilder CreateBuilder()
+    private ObjectValidatorBuilder<TObject> CreateBuilder()
     {
         if (PropertyCascadeMode != null)
         {
-            foreach (var ruleBuilder in _rulesBuilders)
+            foreach (IRuleBuilder<TObject> ruleBuilder in _rulesBuilders)
             {
                 ruleBuilder.PropertyCascadeMode ??= PropertyCascadeMode;
             }
@@ -133,7 +133,7 @@ public abstract class ValidationRuleBuilder<TObject> : IValidationBuilder<TObjec
     /// <returns>Property name.</returns>
     private static string GetPropertyNameForValidator<TProp>(Expression<Func<TObject, TProp>> property)
     {
-        var propertyInfo = ReactiveValidationHelper.GetPropertyInfo(typeof(TObject), property);
+        System.Reflection.PropertyInfo propertyInfo = ReactiveValidationHelper.GetPropertyInfo(typeof(TObject), property);
         return propertyInfo.Name;
     }
 }

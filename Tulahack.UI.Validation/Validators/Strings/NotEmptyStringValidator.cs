@@ -19,8 +19,7 @@ public class NotEmptyStringValidator<TObject> : BaseSyncPropertyValidator<TObjec
     /// </summary>
     /// <param name="validationMessageType">Type of validation message.</param>
     public NotEmptyStringValidator(ValidationMessageType validationMessageType)
-        : base(new LanguageStringSource(ValidatorsNames.NotEmptyStringValidator), validationMessageType)
-    {}
+        : base(new LanguageStringSource(ValidatorsNames.NotEmptyStringValidator), validationMessageType) { }
 
 
     /// <inheritdoc />

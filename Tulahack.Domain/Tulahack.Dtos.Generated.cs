@@ -350,7 +350,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("itemType")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public TimelineItemTypeDto ItemType
         {
             get { return _itemType; }
@@ -640,7 +640,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("formOfParticipation")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public FormOfParticipationTypeDto FormOfParticipation
         {
             get { return _formOfParticipation; }
@@ -996,7 +996,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("complexity")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public ContestCaseComplexityDto Complexity
         {
             get { return _complexity; }
@@ -1347,7 +1347,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("role")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public ContestRoleDto Role
         {
             get { return _role; }
@@ -2058,7 +2058,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("purpose")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public StorageFilePurposeTypeDto Purpose
         {
             get { return _purpose; }
@@ -2230,7 +2230,7 @@ namespace Tulahack.Dtos
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.Never)]
         [System.ComponentModel.DataAnnotations.Required(AllowEmptyStrings = true)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public EventTypeDto Type
         {
             get { return _type; }
@@ -2284,7 +2284,7 @@ namespace Tulahack.Dtos
         [System.Text.Json.Serialization.JsonPropertyName("selectedTheme")]
 
         [System.Text.Json.Serialization.JsonIgnore(Condition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingDefault)]
-        [System.Text.Json.Serialization.JsonConverter(typeof(System.Text.Json.Serialization.JsonStringEnumConverter))]
+
         public UserPreferredThemeDto SelectedTheme
         {
             get { return _selectedTheme; }

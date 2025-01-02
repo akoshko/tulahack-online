@@ -6,47 +6,52 @@ using Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 
 namespace Tulahack.UI.Components.Converters;
 
-public class TimelineItemTypeToIconForegroundConverter: AvaloniaObject, IMultiValueConverter
+public class TimelineItemTypeToIconForegroundConverter : AvaloniaObject, IMultiValueConverter
 {
-    public static readonly StyledProperty<IBrush> DefaultBrushProperty = AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
-        nameof(DefaultBrush));
+    public static readonly StyledProperty<IBrush> DefaultBrushProperty =
+        AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
+            nameof(DefaultBrush));
 
     public IBrush DefaultBrush
     {
         get => GetValue(DefaultBrushProperty);
         set => SetValue(DefaultBrushProperty, value);
     }
-    
-    public static readonly StyledProperty<IBrush> OngoingBrushProperty = AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
-        nameof(OngoingBrush));
-    
+
+    public static readonly StyledProperty<IBrush> OngoingBrushProperty =
+        AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
+            nameof(OngoingBrush));
+
     public IBrush OngoingBrush
     {
         get => GetValue(OngoingBrushProperty);
         set => SetValue(OngoingBrushProperty, value);
     }
-    
-    public static readonly StyledProperty<IBrush> SuccessBrushProperty = AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
-        nameof(SuccessBrush));
+
+    public static readonly StyledProperty<IBrush> SuccessBrushProperty =
+        AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
+            nameof(SuccessBrush));
 
     public IBrush SuccessBrush
     {
         get => GetValue(SuccessBrushProperty);
         set => SetValue(SuccessBrushProperty, value);
     }
-    
-    public static readonly StyledProperty<IBrush> WarningBrushProperty = AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
-        nameof(WarningBrush));
-    
+
+    public static readonly StyledProperty<IBrush> WarningBrushProperty =
+        AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
+            nameof(WarningBrush));
+
     public IBrush WarningBrush
     {
         get => GetValue(WarningBrushProperty);
         set => SetValue(WarningBrushProperty, value);
     }
-    
-    public static readonly StyledProperty<IBrush> ErrorBrushProperty = AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
-        nameof(ErrorBrush));
-    
+
+    public static readonly StyledProperty<IBrush> ErrorBrushProperty =
+        AvaloniaProperty.Register<TimelineItemTypeToIconForegroundConverter, IBrush>(
+            nameof(ErrorBrush));
+
     public IBrush ErrorBrush
     {
         get => GetValue(ErrorBrushProperty);
@@ -73,9 +78,11 @@ public class TimelineItemTypeToIconForegroundConverter: AvaloniaObject, IMultiVa
                     {
                         return brush;
                     }
+
                     return DefaultBrush;
             }
         }
+
         return AvaloniaProperty.UnsetValue;
     }
 }

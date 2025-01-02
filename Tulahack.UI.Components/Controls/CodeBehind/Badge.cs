@@ -10,16 +10,20 @@ using Tulahack.UI.Components.Common;
 namespace Tulahack.UI.Components.Controls.CodeBehind;
 
 [TemplatePart(PART_BadgeContainer, typeof(Border))]
-public class Badge: HeaderedContentControl
+public class Badge : HeaderedContentControl
 {
+    // ReSharper disable once InconsistentNaming
     public const string PART_ContentPresenter = "PART_ContentPresenter";
+    // ReSharper disable once InconsistentNaming
     public const string PART_BadgeContainer = "PART_BadgeContainer";
+    // ReSharper disable once InconsistentNaming
     public const string PART_HeaderPresenter = "PART_HeaderPresenter";
 
     private Border? _badgeContainer;
 
-    public static readonly StyledProperty<ControlTheme> BadgeThemeProperty = AvaloniaProperty.Register<Badge, ControlTheme>(
-        nameof(BadgeTheme));
+    public static readonly StyledProperty<ControlTheme> BadgeThemeProperty =
+        AvaloniaProperty.Register<Badge, ControlTheme>(
+            nameof(BadgeTheme));
     public ControlTheme BadgeTheme
     {
         get => GetValue(BadgeThemeProperty);
@@ -34,8 +38,9 @@ public class Badge: HeaderedContentControl
         set => SetValue(DotProperty, value);
     }
 
-    public static readonly StyledProperty<CornerPosition> CornerPositionProperty = AvaloniaProperty.Register<Badge, CornerPosition>(
-        nameof(CornerPosition));
+    public static readonly StyledProperty<CornerPosition> CornerPositionProperty =
+        AvaloniaProperty.Register<Badge, CornerPosition>(
+            nameof(CornerPosition));
     public CornerPosition CornerPosition
     {
         get => GetValue(CornerPositionProperty);
@@ -61,7 +66,7 @@ public class Badge: HeaderedContentControl
 
     static Badge()
     {
-        HeaderProperty.Changed.AddClassHandler<Badge>((badge, args) => badge.UpdateBadgePosition());
+        _ = HeaderProperty.Changed.AddClassHandler<Badge>((badge, args) => badge.UpdateBadgePosition());
     }
 
     protected override void OnApplyTemplate(TemplateAppliedEventArgs e)
@@ -86,14 +91,16 @@ public class Badge: HeaderedContentControl
     {
         var vertical = CornerPosition is CornerPosition.BottomLeft or CornerPosition.BottomRight ? 1 : -1;
         var horizontal = CornerPosition is CornerPosition.TopRight or CornerPosition.BottomRight ? 1 : -1;
+
         if (_badgeContainer is not null && base.Presenter?.Child is not null)
         {
             _badgeContainer.RenderTransform = new TransformGroup()
             {
-                Children = new Transforms()
-                {
-                    new TranslateTransform(horizontal*_badgeContainer.Bounds.Width/2,vertical*_badgeContainer.Bounds.Height/2)
-                }
+                Children =
+                [
+                    new TranslateTransform(horizontal * _badgeContainer.Bounds.Width / 2,
+                        vertical * _badgeContainer.Bounds.Height / 2)
+                ]
             };
         }
     }

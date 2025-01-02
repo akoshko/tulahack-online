@@ -7,12 +7,13 @@ using Avalonia.Metadata;
 
 namespace Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 
-public class Timeline: ItemsControl
+public class Timeline : ItemsControl
 {
     private static readonly FuncTemplate<Panel?> DefaultPanel = new((Func<Panel>)(() => new TimelinePanel()));
 
-    public static readonly StyledProperty<IBinding?> IconMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
-        nameof(IconMemberBinding));
+    public static readonly StyledProperty<IBinding?> IconMemberBindingProperty =
+        AvaloniaProperty.Register<Timeline, IBinding?>(
+            nameof(IconMemberBinding));
 
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(ItemsSource))]
@@ -22,8 +23,9 @@ public class Timeline: ItemsControl
         set => SetValue(IconMemberBindingProperty, value);
     }
 
-    public static readonly StyledProperty<IBinding?> HeaderMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
-        nameof(HeaderMemberBinding));
+    public static readonly StyledProperty<IBinding?> HeaderMemberBindingProperty =
+        AvaloniaProperty.Register<Timeline, IBinding?>(
+            nameof(HeaderMemberBinding));
 
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(ItemsSource))]
@@ -33,8 +35,9 @@ public class Timeline: ItemsControl
         set => SetValue(HeaderMemberBindingProperty, value);
     }
 
-    public static readonly StyledProperty<IBinding?> ContentMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
-        nameof(ContentMemberBinding));
+    public static readonly StyledProperty<IBinding?> ContentMemberBindingProperty =
+        AvaloniaProperty.Register<Timeline, IBinding?>(
+            nameof(ContentMemberBinding));
 
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(ItemsSource))]
@@ -45,8 +48,9 @@ public class Timeline: ItemsControl
     }
 
 
-    public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty = AvaloniaProperty.Register<Timeline, IDataTemplate?>(
-        nameof(IconTemplate));
+    public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty =
+        AvaloniaProperty.Register<Timeline, IDataTemplate?>(
+            nameof(IconTemplate));
 
     [InheritDataTypeFromItems(nameof(ItemsSource))]
     public IDataTemplate? IconTemplate
@@ -55,8 +59,9 @@ public class Timeline: ItemsControl
         set => SetValue(IconTemplateProperty, value);
     }
 
-    public static readonly StyledProperty<IDataTemplate?> DescriptionTemplateProperty = AvaloniaProperty.Register<Timeline, IDataTemplate?>(
-        nameof(DescriptionTemplate));
+    public static readonly StyledProperty<IDataTemplate?> DescriptionTemplateProperty =
+        AvaloniaProperty.Register<Timeline, IDataTemplate?>(
+            nameof(DescriptionTemplate));
 
     [InheritDataTypeFromItems(nameof(ItemsSource))]
     public IDataTemplate? DescriptionTemplate
@@ -65,8 +70,9 @@ public class Timeline: ItemsControl
         set => SetValue(DescriptionTemplateProperty, value);
     }
 
-    public static readonly StyledProperty<IBinding?> TimeMemberBindingProperty = AvaloniaProperty.Register<Timeline, IBinding?>(
-        nameof(TimeMemberBinding));
+    public static readonly StyledProperty<IBinding?> TimeMemberBindingProperty =
+        AvaloniaProperty.Register<Timeline, IBinding?>(
+            nameof(TimeMemberBinding));
 
     [AssignBinding]
     [InheritDataTypeFromItems(nameof(ItemsSource))]
@@ -77,7 +83,7 @@ public class Timeline: ItemsControl
     }
 
     public static readonly StyledProperty<string?> TimeFormatProperty = AvaloniaProperty.Register<Timeline, string?>(
-        nameof(TimeFormat), defaultValue:"yyyy-MM-dd HH:mm:ss");
+        nameof(TimeFormat), defaultValue: "yyyy-MM-dd HH:mm:ss");
 
     public string? TimeFormat
     {
@@ -86,8 +92,9 @@ public class Timeline: ItemsControl
     }
 
 
-    public static readonly StyledProperty<TimelineDisplayMode> ModeProperty = AvaloniaProperty.Register<Timeline, TimelineDisplayMode>(
-        nameof(Mode));
+    public static readonly StyledProperty<TimelineDisplayMode> ModeProperty =
+        AvaloniaProperty.Register<Timeline, TimelineDisplayMode>(
+            nameof(Mode));
 
     public TimelineDisplayMode Mode
     {
@@ -98,7 +105,7 @@ public class Timeline: ItemsControl
     static Timeline()
     {
         ItemsPanelProperty.OverrideDefaultValue<Timeline>(DefaultPanel);
-        ModeProperty.Changed.AddClassHandler<Timeline, TimelineDisplayMode>((t, e) => { t.OnDisplayModeChanged(e); });
+        _ = ModeProperty.Changed.AddClassHandler<Timeline, TimelineDisplayMode>((t, e) => { t.OnDisplayModeChanged(e); });
     }
 
     private void OnDisplayModeChanged(AvaloniaPropertyChangedEventArgs<TimelineDisplayMode> e)
@@ -129,26 +136,31 @@ public class Timeline: ItemsControl
     protected override void PrepareContainerForItemOverride(Control container, object? item, int index)
     {
         base.PrepareContainerForItemOverride(container, item, index);
+
         if (container is TimelineItem t)
         {
-            bool start = index == 0;
-            bool end = index == ItemCount - 1;
+            var start = index == 0;
+            var end = index == ItemCount - 1;
             t.SetEnd(start, end);
+
             if (IconMemberBinding is not null)
             {
-                t.Bind(TimelineItem.IconProperty, IconMemberBinding);
+                _ = t.Bind(TimelineItem.IconProperty, IconMemberBinding);
             }
+
             if (HeaderMemberBinding != null)
             {
-                t.Bind(HeaderedContentControl.HeaderProperty, HeaderMemberBinding);
+                _ = t.Bind(HeaderedContentControl.HeaderProperty, HeaderMemberBinding);
             }
+
             if (ContentMemberBinding != null)
             {
-                t.Bind(ContentControl.ContentProperty, ContentMemberBinding);
+                _ = t.Bind(ContentControl.ContentProperty, ContentMemberBinding);
             }
+
             if (TimeMemberBinding != null)
             {
-                t.Bind(TimelineItem.TimeProperty, TimeMemberBinding);
+                _ = t.Bind(TimelineItem.TimeProperty, TimeMemberBinding);
             }
 
             t.SetIfUnset(TimelineItem.TimeFormatProperty, TimeFormat);
@@ -156,15 +168,13 @@ public class Timeline: ItemsControl
             t.SetIfUnset(HeaderedContentControl.HeaderTemplateProperty, ItemTemplate);
             t.SetIfUnset(ContentControl.ContentTemplateProperty, DescriptionTemplate);
         }
-
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
-        var panel = this.ItemsPanelRoot as TimelinePanel;
-        if (panel != null)
+        if (ItemsPanelRoot is TimelinePanel panel)
         {
-            panel.Mode = this.Mode;
+            panel.Mode = Mode;
         }
 
         SetItemMode();
@@ -175,32 +185,34 @@ public class Timeline: ItemsControl
     {
         if (ItemsPanelRoot is TimelinePanel panel)
         {
-            var items = panel.Children.OfType<TimelineItem>();
+            IEnumerable<TimelineItem> items = panel.Children.OfType<TimelineItem>();
+
             if (Mode == TimelineDisplayMode.Left)
             {
-                foreach (var item in items)
+                foreach (TimelineItem item in items)
                 {
                     SetIfUnset(item, TimelineItem.PositionProperty, TimelineItemPosition.Left);
                 }
             }
             else if (Mode == TimelineDisplayMode.Right)
             {
-                foreach (var item in items)
+                foreach (TimelineItem item in items)
                 {
                     SetIfUnset(item, TimelineItem.PositionProperty, TimelineItemPosition.Right);
                 }
             }
             else if (Mode == TimelineDisplayMode.Center)
             {
-                foreach (var item in items)
+                foreach (TimelineItem item in items)
                 {
                     SetIfUnset(item, TimelineItem.PositionProperty, TimelineItemPosition.Separate);
                 }
             }
             else if (Mode == TimelineDisplayMode.Alternate)
             {
-                bool left = false;
-                foreach (var item in items)
+                var left = false;
+
+                foreach (TimelineItem item in items)
                 {
                     if (left)
                     {
@@ -210,6 +222,7 @@ public class Timeline: ItemsControl
                     {
                         SetIfUnset(item, TimelineItem.PositionProperty, TimelineItemPosition.Right);
                     }
+
                     left = !left;
                 }
             }

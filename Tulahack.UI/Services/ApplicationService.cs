@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading;
@@ -11,15 +12,15 @@ namespace Tulahack.UI.Services;
 public interface IApplicationService
 {
     Task SubmitApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default);
-    
+
     Task ApproveApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default);
-    
+
     Task DeclineApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default);
 }
 
@@ -44,31 +45,30 @@ public class ApplicationService : IApplicationService
         Justification = "ContestApplicationDto is specified in TulahackJsonContext")]
     public async Task SubmitApplicationAsync(ContestApplicationDto dto, CancellationToken cancellationToken = default)
     {
-        await _httpClient.PostAsJsonAsync(
-            "application", 
+        _ = await _httpClient.PostJsonAsync(
+            new Uri("application"),
             dto,
-            cancellationToken,
             _serializerOptions,
-            _notificationsService);
-        
-        _notificationsService.ShowSuccess();
+            cancellationToken);
+
+        _ = _notificationsService.ShowSuccess();
     }
 
     [UnconditionalSuppressMessage("Trimming",
         "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access",
         Justification = "ContestApplicationDto is specified in TulahackJsonContext")]
     public async Task ApproveApplicationAsync(
-        ContestApplicationDto dto, 
+        ContestApplicationDto dto,
         CancellationToken cancellationToken = default)
     {
-        await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
-            $"application/{dto.Id}/approve", 
-            new StringContent(dto.StatusJustification),
-            cancellationToken,
+        using var content = new StringContent(dto.StatusJustification);
+        _ = await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
+            new Uri($"application/{dto.Id}/approve"),
+            content,
             _serializerOptions,
-            _notificationsService);
-        
-        _notificationsService.ShowSuccess();
+            cancellationToken);
+
+        _ = _notificationsService.ShowSuccess();
     }
 
     [UnconditionalSuppressMessage("Trimming",
@@ -78,13 +78,13 @@ public class ApplicationService : IApplicationService
         ContestApplicationDto dto,
         CancellationToken cancellationToken = default)
     {
-        await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
-            $"application/{dto.Id}/decline", 
-            new StringContent(dto.StatusJustification),
-            cancellationToken,
+        using var content = new StringContent(dto.StatusJustification);
+        _ = await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
+            new Uri($"application/{dto.Id}/decline"),
+            content,
             _serializerOptions,
-            _notificationsService);
-        
-        _notificationsService.ShowSuccess();
+            cancellationToken);
+
+        _ = _notificationsService.ShowSuccess();
     }
 }

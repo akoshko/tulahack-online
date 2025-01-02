@@ -9,6 +9,7 @@ public static class ClassesBehavior
     public static readonly char[] WHITESPACE_CHARS = { ' ', '\n', '\t', '\r' };
 
     #region TheClasses Attached Avalonia Property
+
     public static string GetTheClasses(AvaloniaObject obj) =>
         obj.GetValue(TheClassesProperty);
 
@@ -20,10 +21,12 @@ public static class ClassesBehavior
         (
             "TheClasses"
         );
+
     #endregion TheClasses Attached Avalonia Property
 
 
     #region InsertClasses Attached Avalonia Property
+
     public static string GetInsertClasses(AvaloniaObject obj) =>
         obj.GetValue(InsertClassesProperty);
 
@@ -36,16 +39,18 @@ public static class ClassesBehavior
             "InsertClasses"
         );
 
-    private static readonly AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>> OnClassesChangedObserver = new (OnClassesChanged);
-    private static readonly AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>> OnInsertClassesChangedObserver = new (OnInsertClassesChanged);
+    private static readonly AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>> OnClassesChangedObserver =
+        new(OnClassesChanged);
+    private static readonly AnonymousObserver<AvaloniaPropertyChangedEventArgs<string>> OnInsertClassesChangedObserver =
+        new(OnInsertClassesChanged);
 
     #endregion InsertClasses Attached Avalonia Property
 
 
     static ClassesBehavior()
     {
-        TheClassesProperty.Changed.Subscribe(OnClassesChangedObserver);
-        InsertClassesProperty.Changed.Subscribe(OnInsertClassesChangedObserver);
+        _ = TheClassesProperty.Changed.Subscribe(OnClassesChangedObserver);
+        _ = InsertClassesProperty.Changed.Subscribe(OnInsertClassesChangedObserver);
     }
 
     internal static string[] GetClasses(this string classesStr) =>
@@ -53,40 +58,41 @@ public static class ClassesBehavior
 
     private static void OnInsertClassesChanged(AvaloniaPropertyChangedEventArgs<string> change)
     {
-        string oldClassesStr = change.OldValue.Value;
+        var oldClassesStr = change.OldValue.Value;
+        var sender = change.Sender as StyledElement;
 
-        StyledElement sender = change.Sender as StyledElement;
-
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (oldClassesStr != null)
         {
             var oldClasses = oldClassesStr.GetClasses();
-            sender.Classes.RemoveAll(oldClasses);
+            sender?.Classes.RemoveAll(oldClasses);
         }
 
-        string newClassesStr = change.NewValue.Value;
+        var newClassesStr = change.NewValue.Value;
 
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (newClassesStr != null)
         {
             var newClasses = newClassesStr.GetClasses();
-            sender.Classes.InsertRange(0, newClasses);
+            sender?.Classes.InsertRange(0, newClasses);
         }
     }
 
     private static void OnClassesChanged(AvaloniaPropertyChangedEventArgs<string> change)
     {
-        StyledElement sender = change.Sender as StyledElement;
+        var sender = change.Sender as StyledElement;
 
-        string classesStr = change.NewValue.Value;
+        var classesStr = change.NewValue.Value;
 
-        if (classesStr != null)
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        var classes = classesStr?.GetClasses();
+
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        if (classes == null)
         {
-            var classes = classesStr.GetClasses();
-
-            if (classes != null)
-            {
-                sender.Classes.Replace(classes);
-                return;
-            }
+            return;
         }
+
+        sender?.Classes.Replace(classes);
     }
 }

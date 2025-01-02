@@ -10,17 +10,18 @@ namespace Tulahack.UI.Utils;
 public class ContentViewSelector : IDataTemplate
 {
     [Content]
-    public Dictionary<string, IDataTemplate> AvailableTemplates { get; } = new ();
+    public Dictionary<string, IDataTemplate> AvailableTemplates { get; } = new();
 
     public Control? Build(object? param)
     {
         if (param is not PageContextModel tab)
         {
-            throw new ArgumentException("Selected page type doesn't match any available ContentView.axaml data template");
+            throw new ArgumentException(
+                "Selected page type doesn't match any available ContentView.axaml data template");
         }
 
         var key = tab.Label;
-        
+
         if (key is null)
         {
             throw new ArgumentNullException(nameof(param));

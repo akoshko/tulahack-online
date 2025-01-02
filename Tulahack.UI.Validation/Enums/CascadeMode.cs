@@ -9,7 +9,7 @@ public enum CascadeMode
     /// When a rule/validator fails, execution continues to the next rule/validator.
     /// </summary>
     Continue = 0,
-    
+
     /// <summary>
     /// When a rule/validator fails, validation is stopped for the current rule/validator.
     /// </summary>

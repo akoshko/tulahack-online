@@ -26,7 +26,7 @@ public class DisplayNamePropertySource : IStringSource
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        if (ReferenceEquals(null, obj))
+        if (obj is null)
         {
             return false;
         }
@@ -41,7 +41,7 @@ public class DisplayNamePropertySource : IStringSource
             return false;
         }
 
-        return Equals((DisplayNamePropertySource) obj);
+        return Equals((DisplayNamePropertySource)obj);
     }
 
     /// <inheritdoc />

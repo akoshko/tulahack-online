@@ -6,9 +6,9 @@ namespace Tulahack.UI.Components.Converters;
 
 public class LastNonDefaultValueConverter<T> : IMultiValueConverter
 {
-    public T? DefaultValue { get; set; } = default(T);
+    public T? DefaultValue { get; set; }
 
-    public object? Convert(IList<object> values, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(IList<object?>? values, Type targetType, object? parameter, CultureInfo culture)
     {
         if (values == null)
         {

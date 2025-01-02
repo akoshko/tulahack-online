@@ -13,26 +13,37 @@ namespace Tulahack.UI.Components.Controls.CodeBehind.Timeline;
 [TemplatePart(PART_Content, typeof(ContentPresenter))]
 [TemplatePart(PART_Time, typeof(TextBlock))]
 [TemplatePart(PART_RootGrid, typeof(Grid))]
-public class TimelineItem: HeaderedContentControl
+public class TimelineItem : HeaderedContentControl
 {
+    // ReSharper disable once InconsistentNaming
     public const string PC_First = ":first";
+    // ReSharper disable once InconsistentNaming
     public const string PC_Last = ":last";
+    // ReSharper disable once InconsistentNaming
     public const string PC_EmptyIcon = ":empty-icon";
-    public const string PC_AllLeft=":all-left"; 
-    public const string PC_AllRight=":all-right";
+    // ReSharper disable once InconsistentNaming
+    public const string PC_AllLeft = ":all-left";
+    // ReSharper disable once InconsistentNaming
+    public const string PC_AllRight = ":all-right";
+    // ReSharper disable once InconsistentNaming
     public const string PC_Separate = ":separate";
+    // ReSharper disable once InconsistentNaming
     public const string PART_Header = "PART_Header";
+    // ReSharper disable once InconsistentNaming
     public const string PART_Icon = "PART_Icon";
+    // ReSharper disable once InconsistentNaming
     public const string PART_Content = "PART_Content";
+    // ReSharper disable once InconsistentNaming
     public const string PART_Time = "PART_Time";
+    // ReSharper disable once InconsistentNaming
     public const string PART_RootGrid = "PART_RootGrid";
-    
+
     private ContentPresenter? _headerPresenter;
     private Panel? _iconPresenter;
     private ContentPresenter? _contentPresenter;
     private TextBlock? _timePresenter;
     private Grid? _rootGrid;
-    
+
     public static readonly StyledProperty<object?> IconProperty = AvaloniaProperty.Register<TimelineItem, object?>(
         nameof(Icon));
 
@@ -42,8 +53,9 @@ public class TimelineItem: HeaderedContentControl
         set => SetValue(IconProperty, value);
     }
 
-    public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty = AvaloniaProperty.Register<TimelineItem, IDataTemplate?>(
-        nameof(IconTemplate));
+    public static readonly StyledProperty<IDataTemplate?> IconTemplateProperty =
+        AvaloniaProperty.Register<TimelineItem, IDataTemplate?>(
+            nameof(IconTemplate));
 
     public IDataTemplate? IconTemplate
     {
@@ -51,8 +63,9 @@ public class TimelineItem: HeaderedContentControl
         set => SetValue(IconTemplateProperty, value);
     }
 
-    public static readonly StyledProperty<TimelineItemType> TypeProperty = AvaloniaProperty.Register<TimelineItem, TimelineItemType>(
-        nameof(Type));
+    public static readonly StyledProperty<TimelineItemType> TypeProperty =
+        AvaloniaProperty.Register<TimelineItem, TimelineItemType>(
+            nameof(Type));
 
     public TimelineItemType Type
     {
@@ -60,35 +73,39 @@ public class TimelineItem: HeaderedContentControl
         set => SetValue(TypeProperty, value);
     }
 
-    public static readonly StyledProperty<TimelineItemPosition> PositionProperty = AvaloniaProperty.Register<TimelineItem, TimelineItemPosition>(
-        nameof(Position), defaultValue: TimelineItemPosition.Right);
+    public static readonly StyledProperty<TimelineItemPosition> PositionProperty =
+        AvaloniaProperty.Register<TimelineItem, TimelineItemPosition>(
+            nameof(Position), defaultValue: TimelineItemPosition.Right);
 
     public TimelineItemPosition Position
     {
         get => GetValue(PositionProperty);
         set => SetValue(PositionProperty, value);
     }
-    
-    public static readonly DirectProperty<TimelineItem, double> LeftWidthProperty = AvaloniaProperty.RegisterDirect<TimelineItem, double>(
-        nameof(LeftWidth), o => o.LeftWidth, (o, v) => o.LeftWidth = v);
+
+    public static readonly DirectProperty<TimelineItem, double> LeftWidthProperty =
+        AvaloniaProperty.RegisterDirect<TimelineItem, double>(
+            nameof(LeftWidth), o => o.LeftWidth, (o, v) => o.LeftWidth = v);
     private double _leftWidth;
     public double LeftWidth
     {
         get => _leftWidth;
         set => SetAndRaise(LeftWidthProperty, ref _leftWidth, value);
     }
-    
-    public static readonly DirectProperty<TimelineItem, double> IconWidthProperty = AvaloniaProperty.RegisterDirect<TimelineItem, double>(
-        nameof(IconWidth), o => o.IconWidth, (o, v) => o.IconWidth = v);
+
+    public static readonly DirectProperty<TimelineItem, double> IconWidthProperty =
+        AvaloniaProperty.RegisterDirect<TimelineItem, double>(
+            nameof(IconWidth), o => o.IconWidth, (o, v) => o.IconWidth = v);
     private double _iconWidth;
     public double IconWidth
     {
         get => _iconWidth;
         set => SetAndRaise(IconWidthProperty, ref _iconWidth, value);
     }
-    
-    public static readonly DirectProperty<TimelineItem, double> RightWidthProperty = AvaloniaProperty.RegisterDirect<TimelineItem, double>(
-        nameof(RightWidth), o => o.RightWidth, (o, v) => o.RightWidth = v);
+
+    public static readonly DirectProperty<TimelineItem, double> RightWidthProperty =
+        AvaloniaProperty.RegisterDirect<TimelineItem, double>(
+            nameof(RightWidth), o => o.RightWidth, (o, v) => o.RightWidth = v);
     private double _rightWidth;
     public double RightWidth
     {
@@ -105,8 +122,9 @@ public class TimelineItem: HeaderedContentControl
         set => SetValue(TimeProperty, value);
     }
 
-    public static readonly StyledProperty<string?> TimeFormatProperty = AvaloniaProperty.Register<TimelineItem, string?>(
-        nameof(TimeFormat));
+    public static readonly StyledProperty<string?> TimeFormatProperty =
+        AvaloniaProperty.Register<TimelineItem, string?>(
+            nameof(TimeFormat));
 
     public string? TimeFormat
     {
@@ -116,8 +134,11 @@ public class TimelineItem: HeaderedContentControl
 
     static TimelineItem()
     {
-        IconProperty.Changed.AddClassHandler<TimelineItem, object?>((item, args) => { item.OnIconChanged(args); });
-        PositionProperty.Changed.AddClassHandler<TimelineItem, TimelineItemPosition>((item, args) => { item.OnModeChanged(args); });
+        _ = IconProperty.Changed.AddClassHandler<TimelineItem, object?>((item, args) => { item.OnIconChanged(args); });
+        _ = PositionProperty.Changed.AddClassHandler<TimelineItem, TimelineItemPosition>((item, args) =>
+        {
+            item.OnModeChanged(args);
+        });
         AffectsMeasure<TimelineItem>(LeftWidthProperty, RightWidthProperty, IconWidthProperty);
     }
 
@@ -159,25 +180,29 @@ public class TimelineItem: HeaderedContentControl
             return new ValueTuple<double, double, double>(0, 0, 0);
         }
 
-        double header = _headerPresenter?.DesiredSize.Width ?? 0;
-        double icon = _iconPresenter?.DesiredSize.Width ?? 0;
-        double content = _contentPresenter?.DesiredSize.Width ?? 0;
-        double time = _timePresenter?.DesiredSize.Width ?? 0;
-        double max = Math.Max(header, content);
+        var header = _headerPresenter.DesiredSize.Width;
+        var icon = _iconPresenter?.DesiredSize.Width ?? 0;
+        var content = _contentPresenter?.DesiredSize.Width ?? 0;
+        var time = _timePresenter?.DesiredSize.Width ?? 0;
+        var max = Math.Max(header, content);
+
         if (Position == TimelineItemPosition.Left)
         {
             max = Math.Max(max, time);
             return (0, icon, max);
         }
+
         if (Position == TimelineItemPosition.Right)
         {
             max = Math.Max(max, time);
-            return (max    , icon, 0);
+            return (max, icon, 0);
         }
+
         if (Position == TimelineItemPosition.Separate)
         {
             return (time, icon, max);
         }
+
         return new ValueTuple<double, double, double>(0, 0, 0);
     }
 
@@ -188,9 +213,9 @@ public class TimelineItem: HeaderedContentControl
             return;
         }
 
-        _rootGrid.ColumnDefinitions[0].Width = new GridLength(left??0);
-        _rootGrid.ColumnDefinitions[1].Width = new GridLength(mid??0);
-        _rootGrid.ColumnDefinitions[2].Width = new GridLength(right??0);
+        _rootGrid.ColumnDefinitions[0].Width = new GridLength(left ?? 0);
+        _rootGrid.ColumnDefinitions[1].Width = new GridLength(mid ?? 0);
+        _rootGrid.ColumnDefinitions[2].Width = new GridLength(right ?? 0);
     }
 
     internal void SetIfUnset<T>(AvaloniaProperty<T> property, T value)

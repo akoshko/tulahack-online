@@ -9,12 +9,12 @@ public static class TokenExtensions
 {
     public static string GetGroup(this string token)
     {
-        var jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
+        JwtSecurityToken jwt = new JwtSecurityTokenHandler().ReadJwtToken(token);
         var claims = jwt.Claims
             .Where(claim => claim.Type == "group")
             .Select(claim => claim.Value)
             .ToList();
-        
+
         if (claims.Count == 0)
         {
             return Groups.Public;

@@ -12,8 +12,7 @@ public class ValidatableObject : BaseNotifyPropertyChanged, IValidatableObject
     private IObjectValidator? _objectValidator;
 
     /// <inheritdoc />
-    public ValidatableObject()
-    {}
+    public ValidatableObject() { }
 
 
     /// <inheritdoc />
@@ -36,13 +35,15 @@ public class ValidatableObject : BaseNotifyPropertyChanged, IValidatableObject
     #region INotifyDataErrorInfo
 
     /// <inheritdoc />
+#pragma warning disable CA1033
     bool INotifyDataErrorInfo.HasErrors => Validator?.IsValid == false || Validator?.HasWarnings == true;
+#pragma warning restore CA1033
 
     /// <inheritdoc />
     public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
 
     /// <inheritdoc />
-    IEnumerable INotifyDataErrorInfo.GetErrors(string? propertyName)
+    public IEnumerable GetErrors(string? propertyName)
     {
         if (Validator == null)
         {

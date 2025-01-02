@@ -48,9 +48,8 @@ public class TeamService : ITeamService
     public async Task<TeamDto?> GetTeam()
     {
         TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            "teams",
-            _serializerOptions,
-            _notificationsService);
+            new Uri("teams"),
+            _serializerOptions);
         return result;
     }
 
@@ -58,27 +57,24 @@ public class TeamService : ITeamService
     public async Task<TeamDto?> GetTeamById(Guid teamId)
     {
         TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            $"teams/{teamId}",
-            _serializerOptions,
-            _notificationsService);
+            new Uri($"teams/{teamId}"),
+            _serializerOptions);
         return result;
     }
 
     public async Task<List<StorageFileDto>> GetStorageFiles()
     {
         List<StorageFileDto>? result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            "storage/files",
-            _serializerOptions,
-            _notificationsService);
+            new Uri("storage/files"),
+            _serializerOptions);
         return result;
     }
 
     public async Task<List<StorageFileDto>> GetStorageFiles(Guid teamId)
     {
-        var result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            $"storage/{teamId}/files",
-            _serializerOptions,
-            _notificationsService);
+        List<StorageFileDto>? result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
+            new Uri($"storage/{teamId}/files"),
+            _serializerOptions);
         return result;
     }
 
@@ -91,10 +87,11 @@ public class TeamService : ITeamService
         {
             { streamContent, "files", file.Name }
         };
-        await _httpClient
-            .PostAndHandleAsync(
-                "storage?purposeType=SolutionTeaser",
-                content,
+        _ = await _httpClient
+            .PostAndHandleAsync<object>(
+                requestUri: new Uri("storage?purposeType=SolutionTeaser"),
+                content: content,
+                serializerOptions: _serializerOptions,
                 cancellationToken: default);
         _ = _notificationsService.ShowSuccess($"Тизер успешно загружен!");
         _logger.LogInformation("Successfully uploaded teaser file");
@@ -102,9 +99,9 @@ public class TeamService : ITeamService
 
     public async Task JoinTeam(ContestApplicationDto application)
     {
-        await _httpClient
-            .PostAsJsonAsync(
-                "teams/join",
+        _ = await _httpClient
+            .PostJsonAsync(
+                new Uri("teams/join"),
                 application,
                 cancellationToken: default,
                 serializerOptions: _serializerOptions);
@@ -113,9 +110,9 @@ public class TeamService : ITeamService
 
     public async Task CreateTeam(ContestApplicationDto application)
     {
-        await _httpClient
-            .PostAsJsonAsync(
-                "teams/create",
+        _ = await _httpClient
+            .PostJsonAsync(
+                new Uri("teams/create"),
                 application,
                 cancellationToken: default,
                 serializerOptions: _serializerOptions);

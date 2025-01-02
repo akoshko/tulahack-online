@@ -38,7 +38,8 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// </summary>
     /// <param name="validatableProperties">List of properties names which validating by this rules.</param>
     /// <param name="valueTransformer">Property value transformer.</param>
-    protected BaseRuleBuilder(IReadOnlyList<string> validatableProperties, IValueTransformer<TObject, TProp>? valueTransformer = null)
+    protected BaseRuleBuilder(IReadOnlyList<string> validatableProperties,
+        IValueTransformer<TObject, TProp>? valueTransformer = null)
     {
         _valueTransformer = valueTransformer;
         _propertyValidators = new List<IPropertyValidator<TObject>>();
@@ -66,17 +67,15 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
         }
 
         return _propertyValidators
-            .Select(pv => new WrappingValidator<TObject, TProp>(pv, _commonCondition, _valueTransformer, _commonThrottle))
+            .Select(pv =>
+                new WrappingValidator<TObject, TProp>(pv, _commonCondition, _valueTransformer, _commonThrottle))
             .ToList();
     }
 
     /// <inheritdoc />
     public TBuilder SetValidator(IPropertyValidator<TObject> validator)
     {
-        if (validator == null)
-        {
-            throw new ArgumentNullException(nameof(validator));
-        }
+        ArgumentNullException.ThrowIfNull(validator);
 
         _propertyValidators.Add(validator);
         _currentValidator = validator;
@@ -88,10 +87,7 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// <inheritdoc />
     public TBuilder When(IValidationCondition<TObject> condition)
     {
-        if (condition == null)
-        {
-            throw new ArgumentNullException(nameof(condition));
-        }
+        ArgumentNullException.ThrowIfNull(condition);
 
         _currentValidator.GuardNotNull("Current validator hasn't set");
         _currentValidator.ValidateWhen(condition);
@@ -102,10 +98,7 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// <inheritdoc />
     public TBuilder WithMessageSource(IStringSource stringSource)
     {
-        if (stringSource == null)
-        {
-            throw new ArgumentNullException(nameof(stringSource));
-        }
+        ArgumentNullException.ThrowIfNull(stringSource);
 
         _currentValidator.GuardNotNull("Current validator hasn't set");
         _currentValidator.SetStringSource(stringSource);
@@ -116,10 +109,7 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// <inheritdoc />
     public TBuilder Throttle(IPropertiesThrottle propertiesThrottle)
     {
-        if (propertiesThrottle == null)
-        {
-            throw new ArgumentNullException(nameof(propertiesThrottle));
-        }
+        ArgumentNullException.ThrowIfNull(propertiesThrottle);
 
         _currentValidator.GuardNotNull("Current validator hasn't set");
         _currentValidator.Throttle(propertiesThrottle);
@@ -130,10 +120,7 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// <inheritdoc />
     public IRuleBuilderOption<TObject, TProp> AllWhen(IValidationCondition<TObject> validationCondition)
     {
-        if (validationCondition == null)
-        {
-            throw new ArgumentNullException(nameof(validationCondition));
-        }
+        ArgumentNullException.ThrowIfNull(validationCondition);
 
         _commonCondition.GuardNotCallTwice("Method 'AllWhen' has already been called");
         _commonCondition = validationCondition;
@@ -144,10 +131,7 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     /// <inheritdoc />
     public IRuleBuilderOption<TObject, TProp> CommonThrottle(IPropertiesThrottle propertiesThrottle)
     {
-        if (propertiesThrottle == null)
-        {
-            throw new ArgumentNullException(nameof(propertiesThrottle));
-        }
+        ArgumentNullException.ThrowIfNull(propertiesThrottle);
 
         _commonThrottle.GuardNotCallTwice("Method 'CommonThrottle' has already been called");
         _commonThrottle = propertiesThrottle;
@@ -162,7 +146,6 @@ internal abstract class BaseRuleBuilder<TObject, TProp, TBuilder> :
     protected abstract TBuilder This { get; }
 }
 
-
 /// <summary>
 /// Rule builder for single property.
 /// </summary>
@@ -174,14 +157,14 @@ internal class SinglePropertyRuleBuilder<TObject, TProp> :
     where TObject : IValidatableObject
 {
     /// <inheritdoc />
-    public SinglePropertyRuleBuilder(string validatablePropertyName, IValueTransformer<TObject, TProp>? valueTransformer = null) : base(new []{ validatablePropertyName }, valueTransformer)
-    {
-    }
+    public SinglePropertyRuleBuilder(string validatablePropertyName,
+        IValueTransformer<TObject, TProp>? valueTransformer = null) : base(new[] { validatablePropertyName },
+        valueTransformer)
+    { }
 
     /// <inheritdoc />
     protected override ISinglePropertyRuleBuilder<TObject, TProp> This => this;
 }
-
 
 /// <summary>
 /// Rule builder for several properties.
@@ -193,14 +176,11 @@ internal class PropertiesRuleBuilder<TObject> :
     where TObject : IValidatableObject
 {
     /// <inheritdoc />
-    public PropertiesRuleBuilder(IReadOnlyList<string> validatableProperties) : base(validatableProperties)
-    {
-    }
+    public PropertiesRuleBuilder(IReadOnlyList<string> validatableProperties) : base(validatableProperties) { }
 
     /// <inheritdoc />
     protected override IPropertiesRuleBuilder<TObject> This => this;
 }
-
 
 /// <summary>
 /// Rule builder for property of collection type.
@@ -215,9 +195,7 @@ internal class CollectionPropertyRuleBuilder<TObject, TCollection, TItem> :
     where TCollection : IEnumerable<TItem>
 {
     /// <inheritdoc />
-    public CollectionPropertyRuleBuilder(string validatablePropertyName) : base(new[] { validatablePropertyName })
-    {
-    }
+    public CollectionPropertyRuleBuilder(string validatablePropertyName) : base(new[] { validatablePropertyName }) { }
 
     /// <inheritdoc />
     protected override ICollectionRuleBuilder<TObject, TCollection, TItem> This => this;

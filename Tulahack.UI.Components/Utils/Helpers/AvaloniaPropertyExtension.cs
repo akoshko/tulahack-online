@@ -11,9 +11,9 @@ public static class AvaloniaPropertyExtension
         T value,
         params AvaloniaObject?[] objects)
     {
-        foreach (var obj in objects)
+        foreach (AvaloniaObject? obj in objects)
         {
-            obj?.SetValue(property, value);
+            _ = obj?.SetValue(property, value);
         }
     }
 
@@ -21,11 +21,11 @@ public static class AvaloniaPropertyExtension
         this AvaloniaProperty<T> property,
         T value,
         IEnumerable<TControl?> objects)
-        where TControl: AvaloniaObject
+        where TControl : AvaloniaObject
     {
-        foreach (var obj in objects)
+        foreach (TControl? obj in objects)
         {
-            obj?.SetValue(property, value);
+            _ = obj?.SetValue(property, value);
         }
     }
 
@@ -33,18 +33,22 @@ public static class AvaloniaPropertyExtension
         this AvaloniaProperty<bool> property,
         string pseudoClass,
         RoutedEvent<RoutedEventArgs>? routedEvent = null)
-        where TControl: Control =>
-        property.Changed.AddClassHandler<TControl, bool>((control, args) => {OnPropertyChanged(control, args, pseudoClass, routedEvent); });
+        where TControl : Control =>
+        property.Changed.AddClassHandler<TControl, bool>((control, args) =>
+        {
+            OnPropertyChanged(control, args, pseudoClass, routedEvent);
+        });
 
     private static void OnPropertyChanged<TControl, TArgs>(
         TControl control,
         AvaloniaPropertyChangedEventArgs<bool> args,
         string pseudoClass,
         RoutedEvent<TArgs>? routedEvent)
-        where TControl: Control
-        where TArgs: RoutedEventArgs, new()
+        where TControl : Control
+        where TArgs : RoutedEventArgs, new()
     {
         PseudolassesExtensions.Set(control.Classes, pseudoClass, args.NewValue.Value);
+
         if (routedEvent is not null)
         {
             control.RaiseEvent(new TArgs() { RoutedEvent = routedEvent });
@@ -55,7 +59,10 @@ public static class AvaloniaPropertyExtension
         this AvaloniaProperty<bool> property,
         string pseudoClass,
         RoutedEvent<TArgs>? routedEvent = null)
-        where TControl: Control
-        where TArgs: RoutedEventArgs, new() =>
-        property.Changed.AddClassHandler<TControl, bool>((control, args)=> {OnPropertyChanged(control, args, pseudoClass, routedEvent); });
+        where TControl : Control
+        where TArgs : RoutedEventArgs, new() =>
+        property.Changed.AddClassHandler<TControl, bool>((control, args) =>
+        {
+            OnPropertyChanged(control, args, pseudoClass, routedEvent);
+        });
 }

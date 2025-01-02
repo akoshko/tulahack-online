@@ -125,7 +125,7 @@ public static class ReflectionUtils
         if (hasNewConstraint)
         {
             ConstructorInfo constrInfo =
-                concreteType.GetConstructor(new Type[] { });
+                concreteType.GetConstructor([]);
 
             if (constrInfo == null)
             {
@@ -154,7 +154,7 @@ public static class ReflectionUtils
 
     public static Type GetGenericMatchingSuperType(this Type typeToScan, Type typeToCompare)
     {
-        var matchingSuperType =
+        Type? matchingSuperType =
             typeToScan.GetSelfSuperTypesAndInterfaces()
                 .Distinct()
                 .Where(arg => arg.IsGenericType)
@@ -199,9 +199,7 @@ public static class ReflectionUtils
         {
             if (!resolveTypesFromSourceToTarget)
             {
-                var saveTargetArgType = targetArgType;
-                targetArgType = sourceArgType;
-                sourceArgType = saveTargetArgType;
+                (targetArgType, sourceArgType) = (sourceArgType, targetArgType);
             }
 
             IGenericParamInfo foundParamInfo =
@@ -219,7 +217,7 @@ public static class ReflectionUtils
         }
         else if (targetArgType.IsGenericType)
         {
-            var matchingSuperType =
+            Type matchingSuperType =
                 sourceArgType.GetGenericMatchingSuperType(targetArgType);
 
             if (matchingSuperType == null)
@@ -246,20 +244,12 @@ public static class ReflectionUtils
         return targetArgType.IsAssignableFrom(sourceArgType);
     }
 
-    public static MethodInfo GetMethod(this object obj, string methodName, bool includeNonPublic, bool isStatic, params Type[] argTypes)
+    public static MethodInfo GetMethod(this object obj, string methodName, bool includeNonPublic, bool isStatic,
+        params Type[] argTypes)
     {
         BindingFlags bindingFlags = GetBindingFlags(includeNonPublic, isStatic);
 
-        Type? type = null;
-
-        if (obj is Type t)
-        {
-            type = t;
-        }
-        else
-        {
-            type = obj.GetType();
-        }
+        Type? type = obj is Type t ? t : obj.GetType();
 
         var methodInfos = type.GetMember(methodName, bindingFlags).OfType<MethodInfo>().ToList();
 
@@ -326,10 +316,11 @@ public static class ReflectionUtils
         {
             Type elementType = type.GetElementType();
 
-            foreach (var genericSubTypeParam in elementType.GetAllGenericTypeParams())
-            {
-                yield return genericSubTypeParam;
-            }
+            if (elementType is not null)
+                foreach (Type genericSubTypeParam in elementType.GetAllGenericTypeParams())
+                {
+                    yield return genericSubTypeParam;
+                }
         }
     }
 }

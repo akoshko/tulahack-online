@@ -6,12 +6,12 @@ namespace Tulahack.UI.Validation.Exceptions;
 /// <summary>
 /// Exception thrown when <see cref="IValidatorFactory" /> cannot find builder for specified type.
 /// </summary>
-public class ObjectValidatorBuilderNotFound : Exception
+public class ObjectValidatorBuilderNotFoundException : Exception
 {
     /// <summary>
-    /// Initialize a new instance of <see cref="ObjectValidatorBuilderNotFound" /> class.
+    /// Initialize a new instance of <see cref="ObjectValidatorBuilderNotFoundException" /> class.
     /// </summary>
-    public ObjectValidatorBuilderNotFound(Type type) : base($"Object validator builder for type {type} not found")
+    public ObjectValidatorBuilderNotFoundException(Type type) : base($"Object validator builder for type {type} not found")
     {
     }
 }

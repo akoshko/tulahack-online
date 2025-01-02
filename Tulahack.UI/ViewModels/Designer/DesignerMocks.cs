@@ -29,7 +29,7 @@ public class DesignStorageProvider<T> : IRuntimeStorageProvider<T>
 
 public class DesignNavigationService : INavigationService
 {
-    private readonly IEnumerable<PageContextModel> _allPages = new List<PageContextModel>()
+    public readonly IEnumerable<PageContextModel> _allPages = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
         new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel)),
@@ -64,11 +64,9 @@ public class DesignNavigationService : INavigationService
 
     public IEnumerable<PageContextModel> GetApplicationMenu() => _allPages.Skip(3);
 
-    public bool CanGoBack { get; } = false;
+    public bool CanGoBack { get; }
 
-    public void GoBack()
-    {
-    }
+    public void GoBack() { }
 
     public void Navigate<T>() where T : IPageContext =>
         WeakReferenceMessenger.Default
@@ -104,7 +102,11 @@ public class DesignUserService : IUserService
     public Task<T?> GetAccountAs<T>(string entityName) where T : class =>
         Task.FromResult(new ContestantDto { Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid() } as T);
 
-    public Task<ContestantDto?> GetAccount() => Task.FromResult(new ContestantDto { Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid() })!;
+    public Task<ContestantDto?> GetAccount() => Task.FromResult(new ContestantDto
+    {
+        Firstname = "Mock", Lastname = "Mock", Id = Guid.NewGuid()
+    })!;
+
     public Task SaveUserPreferences(UserPreferencesDto preferences) => Task.FromResult(true);
 }
 
@@ -126,12 +128,15 @@ public class DesignApplicationService : IApplicationService
 public class DesignTeamService : ITeamService
 {
     public Task<TeamDto?> GetTeam() => Task.FromResult(new TeamDto { Name = "Mock Team", Id = Guid.NewGuid() })!;
-    public Task<TeamDto?> GetTeamById(Guid teamId) => Task.FromResult(new TeamDto { Name = "Mock Team", Id = Guid.NewGuid() })!;
+
+    public Task<TeamDto?> GetTeamById(Guid teamId) =>
+        Task.FromResult(new TeamDto { Name = "Mock Team", Id = Guid.NewGuid() })!;
+
     public Task UploadTeaser(IStorageFile file) => Task.FromResult(true);
     public Task<List<StorageFileDto>> GetStorageFiles() => Task.FromResult(new List<StorageFileDto>());
     public Task<List<StorageFileDto>> GetStorageFiles(Guid teamId) => Task.FromResult(new List<StorageFileDto>());
     public Task JoinTeam(ContestApplicationDto application) => Task.FromResult(true);
-    public Task CreateTeam(ContestApplicationDto application)=> Task.FromResult(true);
+    public Task CreateTeam(ContestApplicationDto application) => Task.FromResult(true);
 }
 
 public static class DesignerMocks

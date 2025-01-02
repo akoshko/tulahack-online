@@ -51,12 +51,8 @@ public class NotificationMessageBuilder
     /// <param name="button">The button.</param>
     public void AddButton(INotificationMessageButton button)
     {
-        if (button == null)
-        {
-            throw new ArgumentNullException(nameof(button));
-        }
-
-        this.Message.Buttons.Add(button);
+        ArgumentNullException.ThrowIfNull(button);
+        Message.Buttons.Add(button);
     }
 
     /// <summary>
@@ -193,12 +189,13 @@ public class NotificationMessageBuilder
     {
         if (OperatingSystem.IsBrowser())
         {
-            Task.Delay(delay).ContinueWith(
-                context => action(this.Message));
+#pragma warning disable CA2008
+            _ = Task.Delay(delay).ContinueWith(context => action(this.Message));
+#pragma warning restore CA2008
         }
         else
         {
-            Task.Delay(delay).ContinueWith(
+            _ = Task.Delay(delay).ContinueWith(
                 context => action(this.Message),
                 TaskScheduler.FromCurrentSynchronizationContext());
         }

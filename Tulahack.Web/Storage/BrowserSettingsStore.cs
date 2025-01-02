@@ -29,24 +29,25 @@ public partial class BrowserSettingsStore<T> : IRuntimeStorageProvider<T>
     }
 
     /// <inheritdoc />
-    public async Task<T?> LoadObject(string key)
+    public Task<T?> LoadObject(string key)
     {
         try
         {
             var t = GetItem(Identifier + key);
+
             if (string.IsNullOrEmpty(t))
             {
-                return default;
+                return Task.FromResult<T?>(default);
             }
 
             var x = (T?)JsonSerializer.Deserialize(t, typeof(T), TulahackJsonContext.Default);
-            return x ?? default;
+            return Task.FromResult(x ?? default);
         }
         catch (Exception e)
         {
             Debug.WriteLine(e);
         }
 
-        return default;
+        return Task.FromResult<T?>(default);
     }
 }

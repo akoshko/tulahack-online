@@ -14,7 +14,7 @@ namespace Tulahack.UI.Validation.Validators.Collections;
 /// Validator which check length of string.
 /// </summary>
 /// <typeparam name="TObject">Type of validatable object.</typeparam>
-public class LengthValidator <TObject> : BaseSyncPropertyValidator<TObject, string>
+public class LengthValidator<TObject> : BaseSyncPropertyValidator<TObject, string>
     where TObject : IValidatableObject
 {
     private readonly ValidatorParameter<TObject, int> _minLength;
@@ -30,8 +30,9 @@ public class LengthValidator <TObject> : BaseSyncPropertyValidator<TObject, stri
         Expression<Func<TObject, int>> minLengthExpression,
         Expression<Func<TObject, int>> maxLengthExpression,
         ValidationMessageType validationMessageType)
-        : this(new LanguageStringSource(ValidatorsNames.LengthValidator), minLengthExpression, maxLengthExpression, validationMessageType)
-    {}
+        : this(new LanguageStringSource(ValidatorsNames.LengthValidator), minLengthExpression, maxLengthExpression,
+            validationMessageType)
+    { }
 
     /// <summary>
     /// Initialize a new instance of <see cref="LengthValidator{TObject}" /> class.
@@ -59,6 +60,7 @@ public class LengthValidator <TObject> : BaseSyncPropertyValidator<TObject, stri
         var max = context.GetParamValue(_maxLength);
 
         var totalLength = context.PropertyValue?.Length ?? 0;
+
         if (totalLength < min || max < totalLength)
         {
             context.RegisterMessageArgument("MinLength", _minLength, min);
@@ -71,7 +73,6 @@ public class LengthValidator <TObject> : BaseSyncPropertyValidator<TObject, stri
         return true;
     }
 }
-
 
 /// <summary>
 /// Validator which check that length of string is not less than minimum.
@@ -88,10 +89,10 @@ public class MinLengthValidator<TObject> : LengthValidator<TObject>
     public MinLengthValidator(
         Expression<Func<TObject, int>> minLengthExpression,
         ValidationMessageType validationMessageType)
-        : base(new LanguageStringSource(ValidatorsNames.MinLengthValidator), minLengthExpression, _ => int.MaxValue, validationMessageType)
+        : base(new LanguageStringSource(ValidatorsNames.MinLengthValidator), minLengthExpression, _ => int.MaxValue,
+            validationMessageType)
     { }
 }
-
 
 /// <summary>
 /// Validator which check that length of string is not greater than maximum.
@@ -108,10 +109,10 @@ public class MaxLengthValidator<TObject> : LengthValidator<TObject>
     public MaxLengthValidator(
         Expression<Func<TObject, int>> maxLengthExpression,
         ValidationMessageType validationMessageType)
-        : base(new LanguageStringSource(ValidatorsNames.MaxLengthValidator), _ => 0, maxLengthExpression, validationMessageType)
+        : base(new LanguageStringSource(ValidatorsNames.MaxLengthValidator), _ => 0, maxLengthExpression,
+            validationMessageType)
     { }
 }
-
 
 /// <summary>
 /// Validator which check that length of string is equals to specified value.
@@ -128,6 +129,7 @@ public class ExactLengthValidator<TObject> : LengthValidator<TObject>
     public ExactLengthValidator(
         Expression<Func<TObject, int>> lengthExpression,
         ValidationMessageType validationMessageType)
-        : base(new LanguageStringSource(ValidatorsNames.ExactLengthValidator), lengthExpression, lengthExpression, validationMessageType)
+        : base(new LanguageStringSource(ValidatorsNames.ExactLengthValidator), lengthExpression, lengthExpression,
+            validationMessageType)
     { }
 }

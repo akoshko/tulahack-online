@@ -14,7 +14,7 @@ public interface INotificationMessage
     /// <value>
     /// The text brush.
     /// </value>
-    IBrush Foreground { get; set; }
+    IBrush? Foreground { get; set; }
 
     /// <summary>
     /// Gets or sets the background.
@@ -22,7 +22,7 @@ public interface INotificationMessage
     /// <value>
     /// The background.
     /// </value>
-    IBrush Background { get; set; }
+    IBrush? Background { get; set; }
 
     /// <summary>
     /// Gets or sets the accent brush.
