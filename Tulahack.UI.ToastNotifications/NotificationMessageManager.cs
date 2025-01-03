@@ -36,14 +36,14 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// <param name="message">The message.</param>
     public void Queue(INotificationMessage? message)
     {
-        if (message == null || this._queuedMessages.Contains(message))
+        if (message == null || _queuedMessages.Contains(message))
         {
             return;
         }
 
-        this._queuedMessages.Add(message);
+        _queuedMessages.Add(message);
 
-        this.TriggerMessageQueued(message);
+        TriggerMessageQueued(message);
     }
 
     /// <summary>
@@ -51,7 +51,7 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// </summary>
     /// <param name="message">The message.</param>
     private void TriggerMessageQueued(INotificationMessage message) =>
-        OnMessageQueued.Invoke(this, new NotificationMessageManagerEventArgs(message));
+        OnMessageQueued?.Invoke(this, new NotificationMessageManagerEventArgs(message));
 
     /// <summary>
     /// Dismisses the specified message.
@@ -60,7 +60,7 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// <param name="message">The message.</param>
     public void Dismiss(INotificationMessage? message)
     {
-        if (message == null || !this._queuedMessages.Contains(message))
+        if (message == null || !_queuedMessages.Contains(message))
         {
             return;
         }
@@ -82,12 +82,12 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
             }
             else
             {
-                this.TriggerMessageDismissed(message);
+                TriggerMessageDismissed(message);
             }
         }
         else
         {
-            this.TriggerMessageDismissed(message);
+            TriggerMessageDismissed(message);
         }
     }
 

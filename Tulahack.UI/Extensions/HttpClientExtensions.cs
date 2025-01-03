@@ -112,6 +112,17 @@ public static class HttpClientExtensions
         return result;
     }
 
+    public async static Task<bool> PostAndHandleAsync(
+        this HttpClient client,
+        Uri requestUri,
+        HttpContent? content,
+        CancellationToken cancellationToken)
+    {
+        HttpResponseMessage response = await client.PostAsync(requestUri, content, cancellationToken);
+        HttpResponseMessage result = response.EnsureSuccessStatusCode();
+        return result.IsSuccessStatusCode;
+    }
+
     public async static Task<HttpResponseMessage> PostJsonAsync<T>(
         this HttpClient client,
         Uri requestUri,

@@ -25,7 +25,7 @@ public class DashboardService(
 {
     public async Task<DashboardDto> GetDashboardOverview()
     {
-        DashboardDto? result = await httpClient.GetAndHandleAsync<DashboardDto>(new Uri("dashboard"), serializerOptions);
+        DashboardDto? result = await httpClient.GetAndHandleAsync<DashboardDto>(new Uri("dashboard", UriKind.Relative), serializerOptions);
 
         if (result is null)
         {

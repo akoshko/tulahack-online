@@ -46,7 +46,7 @@ public class ApplicationService : IApplicationService
     public async Task SubmitApplicationAsync(ContestApplicationDto dto, CancellationToken cancellationToken = default)
     {
         _ = await _httpClient.PostJsonAsync(
-            new Uri("application"),
+            new Uri("application", UriKind.Relative),
             dto,
             _serializerOptions,
             cancellationToken);
@@ -63,7 +63,7 @@ public class ApplicationService : IApplicationService
     {
         using var content = new StringContent(dto.StatusJustification);
         _ = await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
-            new Uri($"application/{dto.Id}/approve"),
+            new Uri($"application/{dto.Id}/approve", UriKind.Relative),
             content,
             _serializerOptions,
             cancellationToken);
@@ -80,7 +80,7 @@ public class ApplicationService : IApplicationService
     {
         using var content = new StringContent(dto.StatusJustification);
         _ = await _httpClient.PatchAndHandleAsync<ContestApplicationDto>(
-            new Uri($"application/{dto.Id}/decline"),
+            new Uri($"application/{dto.Id}/decline", UriKind.Relative),
             content,
             _serializerOptions,
             cancellationToken);

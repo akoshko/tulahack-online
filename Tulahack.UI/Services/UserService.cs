@@ -42,7 +42,7 @@ public class UserService : IUserService
         };
 
         T? result = await _httpClient.GetAndHandleAsync<T>(
-            new Uri(url),
+            new Uri(url, UriKind.Relative),
             _serializerOptions);
         return result;
     }
@@ -53,7 +53,7 @@ public class UserService : IUserService
     public async Task<ContestantDto?> GetAccount()
     {
         ContestantDto? result = await _httpClient.GetAndHandleAsync<ContestantDto>(
-            new Uri("account"),
+            new Uri("account", UriKind.Relative),
             _serializerOptions);
         return result;
     }
@@ -63,7 +63,7 @@ public class UserService : IUserService
         Justification = "UserPreferencesDto is specified in TulahackJsonContext")]
     public async Task SaveUserPreferences(UserPreferencesDto preferences) =>
         await _httpClient.PostJsonAsync(
-            new Uri("account/preferences"),
+            new Uri("account/preferences", UriKind.Relative),
             preferences,
             serializerOptions: _serializerOptions,
             default);

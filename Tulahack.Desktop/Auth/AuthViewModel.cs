@@ -29,7 +29,7 @@ public class AuthViewModel : ViewModelBase
     {
         // create a redirect URI using an available port on the loopback address.
         // requires the OP to allow random ports on 127.0.0.1 - otherwise set a static port
-        var browser = new SystemBrowser(30080);
+        var browser = new SystemBrowser(30080, string.Empty);
         var redirectUri = $"http://127.0.0.1:{browser.Port}";
 
         var options = new OidcClientOptions
@@ -47,8 +47,9 @@ public class AuthViewModel : ViewModelBase
         var oidcClient = new OidcClient(options);
 
         AuthorizeState authorizeState = await oidcClient.PrepareLoginAsync();
-        BrowserResult browserResult =
-            await browser.InvokeAsync(new BrowserOptions(authorizeState.StartUrl, string.Empty));
+        BrowserResult browserResult = await browser.InvokeAsync(
+            new BrowserOptions(authorizeState.StartUrl, string.Empty)
+        );
 
         using var httpClient = new HttpClient();
         var code = HttpUtility.ParseQueryString($"{redirectUri}{browserResult.Response}").Get("code");

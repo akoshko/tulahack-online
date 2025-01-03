@@ -21,6 +21,6 @@ public class NotificationMessageManagerEventArgs : EventArgs
     /// <param name="message">The message.</param>
     public NotificationMessageManagerEventArgs(INotificationMessage message)
     {
-        this.Message = message;
+        Message = message;
     }
 }

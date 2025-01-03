@@ -34,11 +34,6 @@ public class SystemBrowser : IBrowser
     public async Task<BrowserResult> InvokeAsync(BrowserOptions options,
         CancellationToken cancellationToken = default)
     {
-        if (_path is null)
-        {
-            return new BrowserResult { ResultType = BrowserResultType.UnknownError, Error = "Path is null or empty." };
-        }
-
         using var listener = new LoopbackHttpListener(Port, _path);
 
         OpenBrowser(new Uri(options.StartUrl));
