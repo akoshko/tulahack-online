@@ -49,7 +49,7 @@ public static class NotificationMessageBuilderLinq
     {
         if (new BrushConverter().ConvertFrom(backgroundBrush) is IBrush brush)
         {
-            builder.SetForeground(brush);
+            builder.SetBackground(brush);
         }
 
         return builder;
@@ -82,7 +82,7 @@ public static class NotificationMessageBuilderLinq
     {
         if (new BrushConverter().ConvertFrom(accentBrush) is IBrush brush)
         {
-            builder.SetForeground(brush);
+            builder.SetAccent(brush);
         }
 
         return builder;
