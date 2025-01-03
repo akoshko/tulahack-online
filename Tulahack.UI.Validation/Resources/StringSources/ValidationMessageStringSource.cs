@@ -29,7 +29,7 @@ public class ValidationMessageStringSource : IStringSource
     {
         var messagePattern = new StringBuilder(_patternStringSource.GetString());
 
-        foreach (var messageArgument in _arguments)
+        foreach (KeyValuePair<string, IStringSource> messageArgument in _arguments)
         {
             messagePattern = messagePattern.Replace($"{{{messageArgument.Key}}}", messageArgument.Value.GetString());
         }
@@ -63,7 +63,7 @@ public class ValidationMessageStringSource : IStringSource
     {
         unchecked
         {
-            return (_patternStringSource.GetHashCode() * 397) ^ (_arguments.GetHashCode());
+            return _patternStringSource.GetHashCode() * 397 ^ _arguments.GetHashCode();
         }
     }
 

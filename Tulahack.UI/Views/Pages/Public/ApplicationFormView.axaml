@@ -24,11 +24,13 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <converters:TeamCheckStatusConverter x:Key="TeamCheckStatusConverter" />
         <converters:TeamCheckResultToColorConverter x:Key="TeamCheckResultToColorConverter" />
         <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
 
         <public:ApplicationFormConsentConverter x:Key="ApplicationFormConsentConverter" />
+        <!-- ReSharper restore Xaml.RedundantResource -->
     </UserControl.Resources>
 
     <ScrollViewer>

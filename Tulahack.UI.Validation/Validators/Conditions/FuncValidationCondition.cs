@@ -31,7 +31,7 @@ public class FuncValidationCondition<TObject> : IValidationCondition<TObject>
     /// <inheritdoc />
     public bool ShouldIgnoreValidation(ValidationContextFactory<TObject> validationContextFactory)
     {
-        var validationCache = validationContextFactory.ValidationContextCache;
+        ValidationContextCache validationCache = validationContextFactory.ValidationContextCache;
         if (validationCache.TryGetValue(this, out var shouldIgnoreObject))
         {
             return (bool)shouldIgnoreObject!;

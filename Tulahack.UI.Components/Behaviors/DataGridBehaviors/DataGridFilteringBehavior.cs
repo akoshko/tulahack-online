@@ -121,7 +121,7 @@ public static class DataGridFilteringBehavior
 
     private static void SetColumnPropGettersFromPropNames(DataGrid dataGrid)
     {
-        foreach (var col in dataGrid.Columns)
+        foreach (DataGridColumn? col in dataGrid.Columns)
         {
             SetColumnPropGetterFromPropName(col, GetFilterPropName(col));
         }
@@ -160,7 +160,7 @@ public static class DataGridFilteringBehavior
                 return;
             }
 
-            Func<object, object> propGetter = rowType.GetUntypedCSPropertyGetterByObjType(propName);
+            Func<object, object> propGetter = rowType.GetUntypedCsPropertyGetterByObjType(propName);
 
             SetColumnPropGetter(col, propGetter);
         }

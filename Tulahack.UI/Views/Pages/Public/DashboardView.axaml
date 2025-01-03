@@ -23,9 +23,10 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <ResourceDictionary>
             <converters:IntToStringConverter x:Key="IntToStringConverter" />
-            <th:TimelineIconTemplateSelector x:Key="IconSelector" >
+            <th:TimelineIconTemplateSelector x:Key="IconSelector">
                 <SolidColorBrush x:Key="Default" Color="{DynamicResource TulahackGray6Color}"></SolidColorBrush>
                 <SolidColorBrush x:Key="Ongoing" Color="{DynamicResource TulahackBlue6Color}"></SolidColorBrush>
                 <SolidColorBrush x:Key="Success" Color="{DynamicResource TulahackGreen6Color}"></SolidColorBrush>
@@ -33,6 +34,7 @@
                 <SolidColorBrush x:Key="Error" Color="{DynamicResource TulahackRed6Color}"></SolidColorBrush>
             </th:TimelineIconTemplateSelector>
         </ResourceDictionary>
+        <!-- ReSharper restore Xaml.RedundantResource -->
     </UserControl.Resources>
 
     <ScrollViewer>
@@ -105,7 +107,7 @@
                         IconMemberBinding="{ReflectionBinding ItemType}"
                         IconTemplate="{StaticResource IconSelector}"
                         ItemsSource="{Binding TimelineSource}"
-                        TimeMemberBinding="{ReflectionBinding Time}" >
+                        TimeMemberBinding="{ReflectionBinding Time}">
                     </th:Timeline>
                 </StackPanel>
             </Grid>

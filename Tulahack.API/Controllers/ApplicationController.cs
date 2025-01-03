@@ -17,14 +17,11 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(typeof(Contestant), StatusCodes.Status404NotFound)]
 public class ApplicationController : ControllerBase
 {
-    private readonly ILogger<ApplicationController> _logger;
     private readonly IApplicationService _applicationService;
 
     public ApplicationController(
-        ILogger<ApplicationController> logger,
         IApplicationService applicationService)
     {
-        _logger = logger;
         _applicationService = applicationService;
     }
 

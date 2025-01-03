@@ -83,6 +83,7 @@ public class TeamService : ITeamService
         _logger.LogInformation("Sending teaser file");
         System.IO.Stream stream = await file.OpenReadAsync();
         using var streamContent = new StreamContent(stream);
+        // ReSharper disable once UsingStatementResourceInitialization
         using var content = new MultipartFormDataContent
         {
             { streamContent, "files", file.Name }

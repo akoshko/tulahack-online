@@ -7,6 +7,7 @@ using Avalonia.Reactive;
 
 namespace Tulahack.UI.ToastNotifications.Controls;
 
+// ReSharper disable InvalidXmlDocComment
 /// <summary>
 /// The notification message control.
 /// </summary>
@@ -131,7 +132,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public bool BadgeVisibility
     {
-        get => (bool)GetValue(BadgeVisibilityProperty);
+        get => GetValue(BadgeVisibilityProperty);
         set => SetValue(BadgeVisibilityProperty, value);
     }
 
@@ -155,7 +156,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public string BadgeText
     {
-        get => (string)GetValue(BadgeTextProperty);
+        get => GetValue(BadgeTextProperty);
         set => SetValue(BadgeTextProperty, value);
     }
 
@@ -167,7 +168,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public bool HeaderVisibility
     {
-        get => (bool)GetValue(HeaderVisibilityProperty);
+        get => GetValue(HeaderVisibilityProperty);
         set => SetValue(HeaderVisibilityProperty, value);
     }
 
@@ -179,7 +180,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public string Header
     {
-        get => (string)GetValue(HeaderProperty);
+        get => GetValue(HeaderProperty);
         set => SetValue(HeaderProperty, value);
     }
 
@@ -191,7 +192,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public bool MessageVisibility
     {
-        get => (bool)GetValue(MessageVisibilityProperty);
+        get => GetValue(MessageVisibilityProperty);
         set => SetValue(MessageVisibilityProperty, value);
     }
 
@@ -203,7 +204,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public string Message
     {
-        get => (string)GetValue(MessageProperty);
+        get => GetValue(MessageProperty);
         set => SetValue(MessageProperty, value);
     }
 
@@ -215,7 +216,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public ObservableCollection<object> Buttons
     {
-        get => (ObservableCollection<object>)GetValue(ButtonsProperty);
+        get => GetValue(ButtonsProperty);
         set => SetValue(ButtonsProperty, value);
     }
 
@@ -227,7 +228,7 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </value>
     public bool Animates
     {
-        get => (bool)GetValue(AnimatesProperty);
+        get => GetValue(AnimatesProperty);
         set => SetValue(AnimatesProperty, value);
     }
 
@@ -330,9 +331,10 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
             throw new NullReferenceException("Dependency object is not of valid type " + nameof(NotificationMessage));
         }
 
+        // ReSharper disable NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
         @this.BadgeAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush ?? Brushes.Black;
-
         @this.ButtonAccentBrush ??= dependencyPropertyChangedEventArgs.NewValue as IBrush ?? Brushes.Black;
+        // ReSharper restore NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
     }
 
     /// <summary>
@@ -470,10 +472,11 @@ public class NotificationMessage : TemplatedControl, INotificationMessage, INoti
     /// </summary>
     public NotificationMessage()
     {
-        this.Buttons = new ObservableCollection<object>();
+        Buttons = new ObservableCollection<object>();
         Background = new SolidColorBrush(new Color(100, 0, 0, 0));
 
-        this.Foreground = new BrushConverter().ConvertFromString("#DDDDDD") as IBrush;
-        this.Classes.Add("notificationMessage");
+        Foreground = new BrushConverter().ConvertFromString("#DDDDDD") as IBrush;
+        Classes.Add("notificationMessage");
     }
+    // ReSharper restore InvalidXmlDocComment
 }

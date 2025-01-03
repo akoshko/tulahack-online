@@ -13,7 +13,7 @@ public abstract class AbstractAuthContextProvider : IAuthContextProvider
 
     public ContestRoleDto GetRole()
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(GetAccessToken());
+        JwtSecurityToken token = new JwtSecurityTokenHandler().ReadJwtToken(GetAccessToken());
         var claims = token.Claims
             .Where(claim => claim.Type == "group")
             .Select(claim => claim.Value)
@@ -50,7 +50,7 @@ public abstract class AbstractAuthContextProvider : IAuthContextProvider
 
     public PersonBaseDto GetDefaultAccount()
     {
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(GetAccessToken());
+        JwtSecurityToken token = new JwtSecurityTokenHandler().ReadJwtToken(GetAccessToken());
 
         var id = Guid.Parse(token.Claims
             .Where(claim => claim.Type == "sub")

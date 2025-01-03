@@ -129,7 +129,7 @@ public class EnumSelector : TemplatedControl
                 SetCurrentValue(SelectedValueProperty, null);
             }
 
-            var tuple = Values?.FirstOrDefault(x => Equals(x.Value, newValue));
+            EnumItemTuple? tuple = Values?.FirstOrDefault(x => Equals(x.Value, newValue));
             SetCurrentValue(SelectedValueProperty, tuple);
         }
     }
@@ -139,7 +139,7 @@ public class EnumSelector : TemplatedControl
     private void OnSelectedValueChanged(AvaloniaPropertyChangedEventArgs<EnumItemTuple?> args)
     {
         _updateFromComboBox = true;
-        var newValue = args.NewValue.Value;
+        EnumItemTuple? newValue = args.NewValue.Value;
         SetCurrentValue(ValueProperty, newValue?.Value);
         _updateFromComboBox = false;
     }
@@ -147,7 +147,7 @@ public class EnumSelector : TemplatedControl
     private void OnTypeChanged(AvaloniaPropertyChangedEventArgs<Type?> args)
     {
         Values?.Clear();
-        var newType = args.GetNewValue<Type?>();
+        Type? newType = args.GetNewValue<Type?>();
 
         if (newType is null || !newType.IsEnum)
         {
@@ -166,7 +166,6 @@ public class EnumSelector : TemplatedControl
 
         Array values = Enum.GetValues(EnumType);
         List<EnumItemTuple> list = new();
-        System.Reflection.FieldInfo[] fields = EnumType.GetFields();
 
         foreach (var value in values)
         {

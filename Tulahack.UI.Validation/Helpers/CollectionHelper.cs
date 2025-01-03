@@ -15,12 +15,12 @@ internal static class CollectionHelper
     /// </summary>
     public static bool IsValid(this IReadOnlyList<ValidationMessage> validationMessages) =>
         !validationMessages.Any(vm =>
-            vm?.ValidationMessageType is ValidationMessageType.Error or ValidationMessageType.SimpleError);
+            vm.ValidationMessageType is ValidationMessageType.Error or ValidationMessageType.SimpleError);
 
     /// <summary>
     /// Check if there is at least one warning message in collection.
     /// </summary>
     public static bool HasWarnings(this IReadOnlyList<ValidationMessage> validationMessages) =>
         validationMessages.Any(vm =>
-            vm?.ValidationMessageType is ValidationMessageType.Warning or ValidationMessageType.SimpleWarning);
+            vm.ValidationMessageType is ValidationMessageType.Warning or ValidationMessageType.SimpleWarning);
 }

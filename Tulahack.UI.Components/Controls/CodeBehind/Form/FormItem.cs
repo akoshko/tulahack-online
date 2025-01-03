@@ -87,7 +87,7 @@ public class FormItem : ContentControl
             {
                 PseudoClasses.Set(PC_Horizontal, position == Position.Left);
             }));
-        var alignmentSubscription = form
+        IDisposable alignmentSubscription = form
             .GetObservable(Form.LabelAlignmentProperty)
             .Subscribe(new AnonymousObserver<HorizontalAlignment>(alignment => { LabelAlignment = alignment; }));
         _formSubscriptions.Add(labelSubscription);
@@ -98,8 +98,7 @@ public class FormItem : ContentControl
     protected override void OnDetachedFromVisualTree(VisualTreeAttachmentEventArgs e)
     {
         base.OnDetachedFromVisualTree(e);
-
-        foreach (var subscription in _formSubscriptions)
+        foreach (IDisposable subscription in _formSubscriptions)
         {
             subscription.Dispose();
         }

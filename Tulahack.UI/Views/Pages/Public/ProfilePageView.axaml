@@ -26,6 +26,7 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <!-- ReSharper disable Xaml.RedundantResource -->
         <roleToBoolConverters:ShowForVisitorConverter x:Key="ShowForVisitor" />
         <roleToBoolConverters:ShowForContestantConverter x:Key="ShowForContestant" />
         <roleToBoolConverters:ShowForExpertConverter x:Key="ShowForExpert" />
@@ -39,9 +40,10 @@
         <converters:CountEnumerableConverter x:Key="CountEnumerable" />
         <converters:FilterCasesByCompanyIdConverter x:Key="FilterCasesByCompanyId" />
         <converters:EnumToDtoConverter x:Key="EnumToDtoConverter" />
-        
-        <generic:List x:Key="FallbackTeamDtoArray" x:TypeArguments="dtos:TeamDto"/>
-        <generic:List x:Key="FallbackContestCaseDtoArray" x:TypeArguments="dtos:ContestCaseDto"/>
+
+        <generic:List x:Key="FallbackTeamDtoArray" x:TypeArguments="dtos:TeamDto" />
+        <generic:List x:Key="FallbackContestCaseDtoArray" x:TypeArguments="dtos:ContestCaseDto" />
+        <!-- ReSharper restore Xaml.RedundantResource -->
     </UserControl.Resources>
 
 
@@ -113,7 +115,7 @@
                             Width="300"
                             th:FormItem.IsRequired="True"
                             th:FormItem.Label="Название"
-                            Text="{Binding 
+                            Text="{Binding
                                         Path=((dtos:ContestantDto)DataContext).Team.Name,
                                         FallbackValue='Не указано',
                                         ElementName=TeamFormGroup}" />
@@ -121,8 +123,8 @@
                             Width="300"
                             th:FormItem.IsRequired="True"
                             th:FormItem.Label="Количество участников"
-                            Text="{Binding 
-                                        Path=((dtos:ContestantDto)DataContext).Team.Contestants, 
+                            Text="{Binding
+                                        Path=((dtos:ContestantDto)DataContext).Team.Contestants,
                                         FallbackValue='Не указано',
                                         Converter={StaticResource CountEnumerable},
                                         ElementName=TeamFormGroup}" />
@@ -130,8 +132,8 @@
                             Width="300"
                             th:FormItem.IsRequired="False"
                             th:FormItem.Label="Форма участия"
-                            Text="{Binding 
-                                        Path=((dtos:ContestantDto)DataContext).Team.FormOfParticipation, 
+                            Text="{Binding
+                                        Path=((dtos:ContestantDto)DataContext).Team.FormOfParticipation,
                                         FallbackValue='Не указано',
                                         ElementName=TeamFormGroup}" />
                     </th:FormGroup>

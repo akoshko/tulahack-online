@@ -42,8 +42,8 @@ public class NotEqualValidator<TObject, TProp, TParam> : BaseSyncPropertyValidat
     /// <inheritdoc />
     protected override bool IsValid(ValidationContext<TObject, TProp> context)
     {
-        var propertyValue = context.PropertyValue;
-        var paramValue = context.GetParamValue(_valueToCompare);
+        TProp? propertyValue = context.PropertyValue;
+        TParam paramValue = context.GetParamValue(_valueToCompare);
         var isEquals = _comparer?.Equals(propertyValue, paramValue) ?? Equals(propertyValue, paramValue);
         if (isEquals)
         {

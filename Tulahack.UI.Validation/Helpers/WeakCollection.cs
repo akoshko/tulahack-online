@@ -27,11 +27,11 @@ internal sealed class WeakCollection<T> where T : class
         // This implementation uses logic similar to List<T>.RemoveAll, which always has O(n) time.
         // Some other implementations seen in the wild have O(n*m) time, where m is the number of dead entries.
         // As m approaches n (e.g., mass object extinctions), their running time approaches O(n^2).
-        int writeIndex = 0;
-        for (int readIndex = 0; readIndex != _list.Count; ++readIndex)
+        var writeIndex = 0;
+        for (var readIndex = 0; readIndex != _list.Count; ++readIndex)
         {
             WeakReference<T> weakReference = _list[readIndex];
-            if (!weakReference.TryGetTarget(out var item))
+            if (!weakReference.TryGetTarget(out T? item))
             {
                 continue;
             }
@@ -65,10 +65,10 @@ internal sealed class WeakCollection<T> where T : class
     /// <returns>True if the object was found and removed; false if the object was not found.</returns>
     public bool Remove(T item)
     {
-        for (int i = 0; i != _list.Count; ++i)
+        for (var i = 0; i != _list.Count; ++i)
         {
-            var weakReference = _list[i];
-            if (weakReference.TryGetTarget(out var entry) && entry == item)
+            WeakReference<T> weakReference = _list[i];
+            if (weakReference.TryGetTarget(out T? entry) && entry == item)
             {
                 _list.RemoveAt(i);
                 return true;

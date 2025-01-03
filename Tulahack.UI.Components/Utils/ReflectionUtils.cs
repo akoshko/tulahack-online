@@ -69,7 +69,7 @@ public static class ReflectionUtils
         bool includeNonPublic = false) =>
         (T)obj.GetPropValue(propName, includeNonPublic);
 
-    public static IEnumerable<Type> GetSelfSuperTypesAndInterfaces(this Type type)
+    public static IEnumerable<Type> GetSelfSuperTypesAndInterfaces(this Type? type)
     {
         if (type == null)
         {
@@ -80,15 +80,15 @@ public static class ReflectionUtils
 
         if (type.BaseType != null)
         {
-            foreach (var superType in type.BaseType.GetSelfSuperTypesAndInterfaces())
+            foreach (Type superType in type.BaseType.GetSelfSuperTypesAndInterfaces())
             {
                 yield return superType;
             }
         }
 
-        foreach (var interfaceType in type.GetInterfaces())
+        foreach (Type interfaceType in type.GetInterfaces())
         {
-            foreach (var superInterface in interfaceType.GetSelfSuperTypesAndInterfaces())
+            foreach (Type superInterface in interfaceType.GetSelfSuperTypesAndInterfaces())
             {
                 yield return superInterface;
             }
@@ -98,15 +98,15 @@ public static class ReflectionUtils
     public static bool CheckConcreteTypeSatisfiesGenericParamConstraints(this Type concreteType,
         Type genericParamType)
     {
-        bool hasReferenceTypeConstraint =
+        var hasReferenceTypeConstraint =
             genericParamType.GenericParameterAttributes
                 .HasFlag(GenericParameterAttributes.ReferenceTypeConstraint);
 
-        bool hasNewConstraint =
+        var hasNewConstraint =
             genericParamType.GenericParameterAttributes
                 .HasFlag(GenericParameterAttributes.DefaultConstructorConstraint);
 
-        bool isNonNullable =
+        var isNonNullable =
             genericParamType.GenericParameterAttributes
                 .HasFlag(GenericParameterAttributes.NotNullableValueTypeConstraint);
 
@@ -136,6 +136,7 @@ public static class ReflectionUtils
         Type[] constraintTypes =
             genericParamType.GetGenericParameterConstraints();
 
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (constraintTypes == null)
         {
             return true;
@@ -164,6 +165,7 @@ public static class ReflectionUtils
         return matchingSuperType;
     }
 
+    // ReSharper disable InvalidXmlDocComment
     /// <summary>
     /// Checks if the argToResolveType can be used to resolve a
     /// genericArgType as a parameter in some
@@ -182,10 +184,11 @@ public static class ReflectionUtils
     /// that the genericArgType depends on (for the example above, it will contain 2 entries -
     /// one for TKey and another for TVal).
     /// </summary>
+    // ReSharper restore InvalidXmlDocComment
     public static bool ResolveType
     (
         this Type sourceArgType,
-        Type targetArgType,
+        Type? targetArgType,
         IEnumerable<IGenericParamInfo> genericTypeParamsToConcretize,
         bool resolveTypesFromSourceToTarget = true)
     {
@@ -215,11 +218,11 @@ public static class ReflectionUtils
 
             return true;
         }
-        else if (targetArgType.IsGenericType)
+        if (targetArgType.IsGenericType)
         {
-            Type matchingSuperType =
-                sourceArgType.GetGenericMatchingSuperType(targetArgType);
+            Type matchingSuperType = sourceArgType.GetGenericMatchingSuperType(targetArgType);
 
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (matchingSuperType == null)
             {
                 return false;
@@ -231,6 +234,7 @@ public static class ReflectionUtils
             foreach ((Type sourceArgSubType, Type targetArgSubType) in sourceArgSubTypes.Zip(targetArgSubTypes,
                          (c, g) => (c, g)))
             {
+                // ReSharper disable once PossibleMultipleEnumeration
                 if (!sourceArgSubType.ResolveType(targetArgSubType, genericTypeParamsToConcretize,
                         resolveTypesFromSourceToTarget))
                 {
@@ -249,7 +253,7 @@ public static class ReflectionUtils
     {
         BindingFlags bindingFlags = GetBindingFlags(includeNonPublic, isStatic);
 
-        Type? type = obj is Type t ? t : obj.GetType();
+        Type type = obj is Type t ? t : obj.GetType();
 
         var methodInfos = type.GetMember(methodName, bindingFlags).OfType<MethodInfo>().ToList();
 
@@ -287,10 +291,10 @@ public static class ReflectionUtils
         return methodInfo.Invoke(obj, args);
     }
 
-    public static bool IsConcrete(this Type type) =>
+    public static bool IsConcrete(this Type? type) =>
         (type != null) && !type.GetAllGenericTypeParams().Any();
 
-    public static IEnumerable<Type> GetAllGenericTypeParams(this Type type)
+    public static IEnumerable<Type> GetAllGenericTypeParams(this Type? type)
     {
         if (type == null)
         {
@@ -304,9 +308,9 @@ public static class ReflectionUtils
 
         if (type.IsGenericType)
         {
-            foreach (var genericArg in type.GetGenericArguments())
+            foreach (Type genericArg in type.GetGenericArguments())
             {
-                foreach (var genericSubTypeParam in genericArg.GetAllGenericTypeParams())
+                foreach (Type genericSubTypeParam in genericArg.GetAllGenericTypeParams())
                 {
                     yield return genericSubTypeParam;
                 }
@@ -316,11 +320,15 @@ public static class ReflectionUtils
         {
             Type elementType = type.GetElementType();
 
-            if (elementType is not null)
-                foreach (Type genericSubTypeParam in elementType.GetAllGenericTypeParams())
-                {
-                    yield return genericSubTypeParam;
-                }
+            if (elementType is null)
+            {
+                yield break;
+            }
+
+            foreach (Type genericSubTypeParam in elementType.GetAllGenericTypeParams())
+            {
+                yield return genericSubTypeParam;
+            }
         }
     }
 }

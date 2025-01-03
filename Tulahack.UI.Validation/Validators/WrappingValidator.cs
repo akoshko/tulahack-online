@@ -137,12 +137,12 @@ internal class WrappingValidator<TObject, TProp> : IPropertyValidator<TObject>
         }
 
         var relatedProperties = new HashSet<string>(validatorRelatedProperties);
-        foreach (var expression in conditionRelatedProperties)
+        foreach (LambdaExpression expression in conditionRelatedProperties)
         {
             var propertyName = ReactiveValidationHelper.GetPropertyName(typeof(TObject), expression);
             if (!string.IsNullOrEmpty(propertyName))
             {
-                relatedProperties.Add(propertyName!);
+                _ = relatedProperties.Add(propertyName);
             }
         }
 

@@ -52,7 +52,7 @@ public class ValidatableObject : BaseNotifyPropertyChanged, IValidatableObject
 
         return string.IsNullOrEmpty(propertyName)
             ? Validator.ValidationMessages
-            : Validator.GetMessages(propertyName!);
+            : Validator.GetMessages(propertyName);
     }
 
     #endregion

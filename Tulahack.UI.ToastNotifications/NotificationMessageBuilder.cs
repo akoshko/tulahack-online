@@ -190,13 +190,13 @@ public class NotificationMessageBuilder
         if (OperatingSystem.IsBrowser())
         {
 #pragma warning disable CA2008
-            _ = Task.Delay(delay).ContinueWith(context => action(this.Message));
+            _ = Task.Delay(delay).ContinueWith(_ => action(Message));
 #pragma warning restore CA2008
         }
         else
         {
             _ = Task.Delay(delay).ContinueWith(
-                context => action(this.Message),
+                _ => action(Message),
                 TaskScheduler.FromCurrentSynchronizationContext());
         }
     }

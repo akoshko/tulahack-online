@@ -50,7 +50,7 @@ public class ResourceStringProvider : IStringProvider
             return null;
         }
 
-        if (!_secondaryResourceManagers.TryGetValue(resource, out var resourceManager))
+        if (!_secondaryResourceManagers.TryGetValue(resource, out ResourceManager? resourceManager))
         {
             return null;
         }

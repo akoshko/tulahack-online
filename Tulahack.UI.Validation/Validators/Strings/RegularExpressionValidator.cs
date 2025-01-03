@@ -65,7 +65,7 @@ public class RegularExpressionValidator<TObject> : BaseSyncPropertyValidator<TOb
             return true;
         }
 
-        var regex = _regexOptions == null
+        Regex regex = _regexOptions == null
             ? new Regex(regexPatternValue)
             : new Regex(regexPatternValue, _regexOptions.Value);
         if (regex.IsMatch(context.PropertyValue) == false)

@@ -238,7 +238,7 @@ public static class NotificationMessageBuilderLinq
     private static Action<INotificationMessage> DismissBefore(
         this NotificationMessageBuilder builder,
         Action<INotificationMessage>? callback) =>
-        call =>
+        _ =>
         {
             builder.Manager.Dismiss(builder.Message);
             callback?.Invoke(builder.Message);
@@ -255,7 +255,7 @@ public static class NotificationMessageBuilderLinq
     /// </returns>
     private static Action<INotificationMessageButton> DismissBefore(
         this NotificationMessageBuilder builder,
-        Action<INotificationMessageButton> callback) =>
+        Action<INotificationMessageButton>? callback) =>
         button =>
         {
             builder.Manager.Dismiss(builder.Message);
@@ -330,23 +330,6 @@ public static class NotificationMessageBuilderLinq
 
         return builder;
     }
-
-    //TODO
-    /*/// <summary>
-    /// Sets the foreground brush.
-    /// </summary>
-    /// <param name="builder">The builder.</param>
-    /// <param name="foregroundBrush">The foreground brush.</param>
-    /// <returns>Returns the notification message builder.</returns>
-    public static NotificationMessageBuilder Foreground(
-        this NotificationMessageBuilder builder,
-        string foregroundBrush)
-    {
-        var brush = new BrushConverter().ConvertFrom(foregroundBrush) as Brush;
-        //builder.SetForeground(brush);
-
-        return builder;
-    }*/
 
     /// <summary>
     /// Sets whether or not the message animates.

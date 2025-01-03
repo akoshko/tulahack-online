@@ -165,6 +165,7 @@ public static class CallAction
             return;
         }
 
+        // ReSharper disable once NullCoalescingConditionIsAlwaysNotNullAccordingToAPIContract
         var targetObject = avaloniaObject.GetValue(TargetObjectProperty) ?? avaloniaObject.DataContext;
         if (targetObject == null)
         {
@@ -175,7 +176,7 @@ public static class CallAction
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         var isStatic = staticType != null;
 
-        IEnumerable<object> args = Enumerable.Empty<object>();
+        IEnumerable<object> args = [];
 
         if (isStatic)
         {

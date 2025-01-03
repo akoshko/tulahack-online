@@ -143,11 +143,11 @@ public static class RuleBuilderConditionExtensions
         Expression<Func<TObject, TParam>> property)
         where TObject : IValidatableObject
     {
-        var paramFunc = property.Compile();
+        Func<TObject, TParam> paramFunc = property.Compile();
 
         return new FuncValidationCondition<TObject>(instance =>
         {
-            var param = paramFunc.Invoke(instance);
+            TParam param = paramFunc.Invoke(instance);
             return condition.Invoke(param);
         }, property);
     }
@@ -158,13 +158,13 @@ public static class RuleBuilderConditionExtensions
         Expression<Func<TObject, TParam2>> property2)
         where TObject : IValidatableObject
     {
-        var param1Func = property1.Compile();
-        var param2Func = property2.Compile();
+        Func<TObject, TParam1> param1Func = property1.Compile();
+        Func<TObject, TParam2> param2Func = property2.Compile();
 
         return new FuncValidationCondition<TObject>(instance =>
         {
-            var param1 = param1Func.Invoke(instance);
-            var param2 = param2Func.Invoke(instance);
+            TParam1 param1 = param1Func.Invoke(instance);
+            TParam2 param2 = param2Func.Invoke(instance);
 
             return condition.Invoke(param1, param2);
         }, property1, property2);
@@ -177,15 +177,15 @@ public static class RuleBuilderConditionExtensions
         Expression<Func<TObject, TParam3>> property3)
         where TObject : IValidatableObject
     {
-        var param1Func = property1.Compile();
-        var param2Func = property2.Compile();
-        var param3Func = property3.Compile();
+        Func<TObject, TParam1> param1Func = property1.Compile();
+        Func<TObject, TParam2> param2Func = property2.Compile();
+        Func<TObject, TParam3> param3Func = property3.Compile();
 
         return new FuncValidationCondition<TObject>(instance =>
         {
-            var param1 = param1Func.Invoke(instance);
-            var param2 = param2Func.Invoke(instance);
-            var param3 = param3Func.Invoke(instance);
+            TParam1 param1 = param1Func.Invoke(instance);
+            TParam2 param2 = param2Func.Invoke(instance);
+            TParam3 param3 = param3Func.Invoke(instance);
 
             return condition.Invoke(param1, param2, param3);
         }, property1, property2, property3);

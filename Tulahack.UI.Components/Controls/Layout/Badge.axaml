@@ -31,7 +31,7 @@
             </StackPanel>
         </Border>
     </Design.PreviewWith>
-    
+
     <converters:BadgeContentOverflowConverter x:Key="BadgeContentConverter" />
 
     <ControlTheme x:Key="{x:Type controls:Badge}" TargetType="{x:Type controls:Badge}">
@@ -97,7 +97,7 @@
         </Setter>
 
         <Style Selector="^[Dot=True]">
-            <Setter Property="controls:Badge.Template">
+            <Setter Property="Template">
                 <ControlTemplate TargetType="{x:Type controls:Badge}">
                     <Grid
                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"

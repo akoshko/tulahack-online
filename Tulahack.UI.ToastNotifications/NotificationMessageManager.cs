@@ -8,8 +8,7 @@ namespace Tulahack.UI.ToastNotifications;
 /// <seealso cref="INotificationMessageManager" />
 public class NotificationMessageManager : AvaloniaObject, INotificationMessageManager
 {
-    private readonly List<INotificationMessage> queuedMessages = new List<INotificationMessage>();
-
+    private readonly List<INotificationMessage> _queuedMessages = new();
 
     /// <summary>
     /// Occurs when new notification message is queued.
@@ -35,14 +34,14 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// This will ignore the <c>null</c> message or already queued notification message.
     /// </summary>
     /// <param name="message">The message.</param>
-    public void Queue(INotificationMessage message)
+    public void Queue(INotificationMessage? message)
     {
-        if (message == null || this.queuedMessages.Contains(message))
+        if (message == null || this._queuedMessages.Contains(message))
         {
             return;
         }
 
-        this.queuedMessages.Add(message);
+        this._queuedMessages.Add(message);
 
         this.TriggerMessageQueued(message);
     }
@@ -52,42 +51,34 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// </summary>
     /// <param name="message">The message.</param>
     private void TriggerMessageQueued(INotificationMessage message) =>
-        this.OnMessageQueued?.Invoke(this, new NotificationMessageManagerEventArgs(message));
+        OnMessageQueued.Invoke(this, new NotificationMessageManagerEventArgs(message));
 
     /// <summary>
     /// Dismisses the specified message.
     /// This will ignore the <c>null</c> or not queued notification message.
     /// </summary>
     /// <param name="message">The message.</param>
-    public void Dismiss(INotificationMessage message)
+    public void Dismiss(INotificationMessage? message)
     {
-        if (message == null || !this.queuedMessages.Contains(message))
+        if (message == null || !this._queuedMessages.Contains(message))
         {
             return;
         }
 
-        this.queuedMessages.Remove(message);
+        _ = _queuedMessages.Remove(message);
 
         if (message is INotificationAnimation animatableMessage)
         {
             // var animation = animatableMessage.AnimationOut;
             if (
-                animatableMessage.Animates &&
-                animatableMessage.AnimatableElement != null)
+                animatableMessage is { Animates: true })
             {
                 animatableMessage.AnimatableElement.DismissAnimation = true;
-                if (OperatingSystem.IsBrowser())
-                {
-                    Task.Delay(500).ContinueWith(
-                        context => { this.TriggerMessageDismissed(message); },
-                        TaskScheduler.Current);
-                }
-                else
-                {
-                    Task.Delay(500).ContinueWith(
-                        context => { this.TriggerMessageDismissed(message); },
-                        TaskScheduler.FromCurrentSynchronizationContext());
-                }
+
+                _ = Task.Delay(500).ContinueWith(_ => TriggerMessageDismissed(message),
+                    OperatingSystem.IsBrowser()
+                        ? TaskScheduler.Current
+                        : TaskScheduler.FromCurrentSynchronizationContext());
             }
             else
             {
@@ -105,5 +96,5 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// </summary>
     /// <param name="message">The message.</param>
     private void TriggerMessageDismissed(INotificationMessage message) =>
-        this.OnMessageDismissed?.Invoke(this, new NotificationMessageManagerEventArgs(message));
+        OnMessageDismissed.Invoke(this, new NotificationMessageManagerEventArgs(message));
 }

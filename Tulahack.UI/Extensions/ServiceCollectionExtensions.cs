@@ -34,26 +34,26 @@ public class ApiAuthHandler : DelegatingHandler
     protected override Task<HttpResponseMessage> SendAsync(
         HttpRequestMessage request, System.Threading.CancellationToken cancellationToken)
     {
-        var tokenProvider = Ioc.Default.GetService<IAuthContextProvider>();
+        IAuthContextProvider? tokenProvider = Ioc.Default.GetService<IAuthContextProvider>();
         request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenProvider?.GetAccessToken());
         return base.SendAsync(request, cancellationToken);
     }
 }
 
-public static partial class ServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static void AddEssentials(this IServiceCollection collection, string origin)
     {
-        collection.AddLogging();
+        _ = collection.AddLogging();
 
-        collection.AddTransient<ApiAuthHandler>();
-        collection.AddHttpClient().ConfigureHttpClientDefaults(builder =>
+        _ = collection.AddTransient<ApiAuthHandler>();
+        _ = collection.AddHttpClient().ConfigureHttpClientDefaults(builder =>
         {
-            builder.ConfigureHttpClient(client => { client.BaseAddress = new Uri($"{origin}/api/"); })
+            _ = builder.ConfigureHttpClient(client => { client.BaseAddress = new Uri($"{origin}/api/"); })
                 .AddHttpMessageHandler(provider => provider.GetService<ApiAuthHandler>() ?? new ApiAuthHandler());
         });
 
-        collection.AddSingleton<JsonSerializerOptions>(_ => new JsonSerializerOptions
+        _ = collection.AddSingleton<JsonSerializerOptions>(_ => new JsonSerializerOptions
         {
             Converters =
             {
@@ -64,68 +64,68 @@ public static partial class ServiceCollectionExtensions
             TypeInfoResolver = TulahackJsonContext.Default
         });
 
-        collection.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
+        _ = collection.AddSingleton<IMessenger>(WeakReferenceMessenger.Default);
     }
 
     public static void AddDesignProviders(this IServiceCollection collection)
     {
-        collection.AddSingleton<IRuntimeStorageProvider<AppState>, DesignStorageProvider<AppState>>();
-        collection.AddSingleton<IAuthContextProvider, DesignAuthProvider>(_ => new DesignAuthProvider());
+        _ = collection.AddSingleton<IRuntimeStorageProvider<AppState>, DesignStorageProvider<AppState>>();
+        _ = collection.AddSingleton<IAuthContextProvider, DesignAuthProvider>(_ => new DesignAuthProvider());
     }
 
     public static void AddServices(this IServiceCollection collection)
     {
         // Generic services
-        collection.AddSingleton<IMainViewProvider, MainViewProvider>();
+        _ = collection.AddSingleton<IMainViewProvider, MainViewProvider>();
 
         // Utility services
-        collection.AddSingleton<INotificationMessageManager, NotificationMessageManager>();
-        collection.AddSingleton<INotificationsService, NotificationsService>();
-        collection.AddSingleton<INavigationService, NavigationService>();
+        _ = collection.AddSingleton<INotificationMessageManager, NotificationMessageManager>();
+        _ = collection.AddSingleton<INotificationsService, NotificationsService>();
+        _ = collection.AddSingleton<INavigationService, NavigationService>();
 
         // Data services
-        collection.AddSingleton<IUserService, UserService>();
-        collection.AddSingleton<IDashboardService, DashboardService>();
-        collection.AddSingleton<ITaskboardService, TaskboardService>();
-        collection.AddSingleton<ITeamService, TeamService>();
-        collection.AddSingleton<IApplicationService, ApplicationService>();
+        _ = collection.AddSingleton<IUserService, UserService>();
+        _ = collection.AddSingleton<IDashboardService, DashboardService>();
+        _ = collection.AddSingleton<ITaskboardService, TaskboardService>();
+        _ = collection.AddSingleton<ITeamService, TeamService>();
+        _ = collection.AddSingleton<IApplicationService, ApplicationService>();
     }
 
     public static void AddViewModels(this IServiceCollection collection)
     {
         // Base
-        collection.AddSingleton<AppViewModel>();
-        collection.AddSingleton<NavigationViewModel>();
-        collection.AddSingleton<ContentViewModel>();
-        collection.AddSingleton<TitleViewModel>();
+        _ = collection.AddSingleton<AppViewModel>();
+        _ = collection.AddSingleton<NavigationViewModel>();
+        _ = collection.AddSingleton<ContentViewModel>();
+        _ = collection.AddSingleton<TitleViewModel>();
 
         // Public
-        collection.AddTransient<DashboardViewModel>();
-        collection.AddTransient<SettingsViewModel>();
-        collection.AddTransient<ProfilePageViewModel>();
-        collection.AddTransient<ApplicationFormViewModel>();
+        _ = collection.AddTransient<DashboardViewModel>();
+        _ = collection.AddTransient<SettingsViewModel>();
+        _ = collection.AddTransient<ProfilePageViewModel>();
+        _ = collection.AddTransient<ApplicationFormViewModel>();
 
         // Contestant
-        collection.AddTransient<TeamPageViewModel>();
-        collection.AddTransient<ContestTaskPageViewModel>();
-        collection.AddTransient<ContestTaskboardPageViewModel>();
-        collection.AddTransient<ContestSchedulePageViewModel>();
-        collection.AddTransient<ContestEventPageViewModel>();
-        collection.AddTransient<ContestEventSchedulePageViewModel>();
+        _ = collection.AddTransient<TeamPageViewModel>();
+        _ = collection.AddTransient<ContestTaskPageViewModel>();
+        _ = collection.AddTransient<ContestTaskboardPageViewModel>();
+        _ = collection.AddTransient<ContestSchedulePageViewModel>();
+        _ = collection.AddTransient<ContestEventPageViewModel>();
+        _ = collection.AddTransient<ContestEventSchedulePageViewModel>();
 
         // Expert
-        collection.AddTransient<AssessmentPageViewModel>();
-        collection.AddTransient<RatingPageViewModel>();
+        _ = collection.AddTransient<AssessmentPageViewModel>();
+        _ = collection.AddTransient<RatingPageViewModel>();
 
         // Moderator
-        collection.AddTransient<ScoreboardPageViewModel>();
-        collection.AddTransient<ParticipatorsPageViewModel>();
-        collection.AddTransient<TeamsPageViewModel>();
-        collection.AddTransient<ExpertsPageViewModel>();
+        _ = collection.AddTransient<ScoreboardPageViewModel>();
+        _ = collection.AddTransient<ParticipatorsPageViewModel>();
+        _ = collection.AddTransient<TeamsPageViewModel>();
+        _ = collection.AddTransient<ExpertsPageViewModel>();
 
         // Superuser
-        collection.AddTransient<ModeratorsPageViewModel>();
-        collection.AddTransient<HackathonOverviewPageViewModel>();
-        collection.AddTransient<HackathonSettingsPageViewModel>();
+        _ = collection.AddTransient<ModeratorsPageViewModel>();
+        _ = collection.AddTransient<HackathonOverviewPageViewModel>();
+        _ = collection.AddTransient<HackathonSettingsPageViewModel>();
     }
 }

@@ -4,6 +4,7 @@
         <ItemsControl ItemsSource="{Binding}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
+                    <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
                     <StackPanel Orientation="Horizontal">
                         <ToggleButton IsChecked="{Binding Path=IsVisible, Mode=TwoWay}"
                                                   HorizontalAlignment="Center"
@@ -15,6 +16,7 @@
                                    VerticalAlignment="Center"
                                    Margin="5,0,0,0"/>
                     </StackPanel>
+                    <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

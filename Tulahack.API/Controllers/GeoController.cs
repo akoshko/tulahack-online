@@ -13,13 +13,6 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(StatusCodes.Status404NotFound)]
 public class GeoController : ControllerBase
 {
-    private readonly ILogger<GeoController> _logger;
-
-    public GeoController(ILogger<GeoController> logger)
-    {
-        _logger = logger;
-    }
-
     [HttpGet("GetProvincesList")]
     [ProducesResponseType(typeof(List<Province>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetProvincesList()

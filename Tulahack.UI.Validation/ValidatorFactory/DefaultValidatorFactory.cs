@@ -76,7 +76,7 @@ internal class DefaultValidatorFactory : IValidatorFactory
     {
         ArgumentNullException.ThrowIfNull(instance);
 
-        if (!TryGetValidatorBuilder(instance.GetType(), out var builder))
+        if (!TryGetValidatorBuilder(instance.GetType(), out IObjectValidatorBuilder? builder))
         {
             throw new ObjectValidatorBuilderNotFoundException(instance.GetType());
         }
@@ -92,7 +92,7 @@ internal class DefaultValidatorFactory : IValidatorFactory
 
         objectValidator = null;
 
-        if (!TryGetValidatorBuilder(instance.GetType(), out var builder))
+        if (!TryGetValidatorBuilder(instance.GetType(), out IObjectValidatorBuilder? builder))
         {
             return false;
         }

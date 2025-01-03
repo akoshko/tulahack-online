@@ -62,7 +62,7 @@ public class TimelinePanel : Panel
 
         var rect = new Rect(0, 0, left + mid + right, 0);
 
-        foreach (var child in Children)
+        foreach (Control child in Children)
         {
             if (child is TimelineItem t)
             {

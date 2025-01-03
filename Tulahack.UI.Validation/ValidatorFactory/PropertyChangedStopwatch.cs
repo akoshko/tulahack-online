@@ -24,7 +24,7 @@ public class PropertyChangedStopwatch
     /// </summary>
     public Task WaitUntilAsync(TimeSpan dueTime, CancellationToken cancellationToken)
     {
-        var elapsed = _stopwatch.Elapsed;
+        TimeSpan elapsed = _stopwatch.Elapsed;
         if (elapsed >= dueTime)
         {
             return Task.CompletedTask;

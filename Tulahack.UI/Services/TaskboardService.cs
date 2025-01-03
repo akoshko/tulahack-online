@@ -10,7 +10,7 @@ public interface ITaskboardService
     Task<List<ContestCaseDto>> GetContestCases();
 }
 
-public class TaskboardService() : ITaskboardService
+public class TaskboardService : ITaskboardService
 {
     public Task<List<ContestCaseDto>> GetContestCases() =>
         Task.FromResult<List<ContestCaseDto>>([

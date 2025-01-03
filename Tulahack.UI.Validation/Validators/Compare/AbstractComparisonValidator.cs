@@ -51,7 +51,7 @@ public abstract class AbstractComparisonValidator<TObject, TProp, TParam> : Base
             return true;
         }
 
-        TParam? paramValue = context.GetParamValue(_valueToCompare);
+        TParam paramValue = context.GetParamValue(_valueToCompare);
         var comparisonResult = _comparer.Compare(propertyValue, paramValue);
 
         if (IsValid(comparisonResult) == false)

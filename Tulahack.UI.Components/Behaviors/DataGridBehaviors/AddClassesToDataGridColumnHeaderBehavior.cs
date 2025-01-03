@@ -30,9 +30,6 @@ public static class AddClassesToDataGridColumnHeaderBehavior
 
     #region TheBehavior Attached Avalonia Property
 
-    private static BehaviorsDisposable<IEnumerable<DataGridColumn>> GetTheBehavior(DataGrid obj) =>
-        obj.GetValue(TheBehaviorProperty);
-
     private static void SetTheBehavior(DataGrid obj, BehaviorsDisposable<IEnumerable<DataGridColumn>> value) =>
         obj.SetValue(TheBehaviorProperty, value);
 

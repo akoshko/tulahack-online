@@ -19,16 +19,13 @@ public class UserService : IUserService
 {
     private readonly HttpClient _httpClient;
     private readonly JsonSerializerOptions _serializerOptions;
-    private readonly INotificationsService _notificationsService;
 
     public UserService(
         HttpClient httpClient,
-        JsonSerializerOptions serializerOptions,
-        INotificationsService notificationsService)
+        JsonSerializerOptions serializerOptions)
     {
         _httpClient = httpClient;
         _serializerOptions = serializerOptions;
-        _notificationsService = notificationsService;
     }
 
     [UnconditionalSuppressMessage("Trimming",

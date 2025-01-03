@@ -14,14 +14,11 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(typeof(Contestant), StatusCodes.Status404NotFound)]
 public class DashboardController : ControllerBase
 {
-    private readonly ILogger<DashboardController> _logger;
     private readonly IDashboardService _dashboardService;
 
     public DashboardController(
-        ILogger<DashboardController> logger,
         IDashboardService dashboardService)
     {
-        _logger = logger;
         _dashboardService = dashboardService;
     }
 
@@ -29,7 +26,7 @@ public class DashboardController : ControllerBase
     [ProducesResponseType(typeof(DashboardDto), StatusCodes.Status202Accepted)]
     public async Task<IActionResult> Get()
     {
-        var dashboard = await _dashboardService.GetOverview();
+        DashboardDto dashboard = await _dashboardService.GetOverview();
         return Ok(dashboard);
     }
 }

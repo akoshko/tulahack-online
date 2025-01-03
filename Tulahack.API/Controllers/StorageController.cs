@@ -14,14 +14,11 @@ namespace Tulahack.API.Controllers;
 [Route("api/[controller]")]
 public class StorageController : ControllerBase
 {
-    private readonly ILogger<StorageController> _logger;
     private readonly IStorageService _storageService;
 
     public StorageController(
-        ILogger<StorageController> logger,
         IStorageService storageService)
     {
-        _logger = logger;
         _storageService = storageService;
     }
 

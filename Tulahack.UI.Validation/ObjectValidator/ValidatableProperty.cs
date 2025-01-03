@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Tulahack.UI.Validation.Enums;
@@ -47,6 +46,7 @@ internal class ValidatableProperty<TObject>
     /// <summary>
     /// Source of display name.
     /// </summary>
+    // ReSharper disable once UnusedAutoPropertyAccessor.Global
     public IStringSource? DisplayNameSource { get; }
 
     /// <summary>

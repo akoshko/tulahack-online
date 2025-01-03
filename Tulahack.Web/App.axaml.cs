@@ -17,13 +17,13 @@ public class App : Application
         var services = new ServiceCollection();
         var extensions = new UI.Utils.JsExportedMethods();
 
-        services.AddBrowserAuthProvider();
+        _ = services.AddBrowserAuthProvider();
         services.AddEssentials(extensions.GetOrigin());
         services.AddBrowserStorageServices();
         services.AddServices();
         services.AddViewModels();
 
-        var provider = services.BuildServiceProvider();
+        ServiceProvider provider = services.BuildServiceProvider();
         Ioc.Default.ConfigureServices(provider);
 
 

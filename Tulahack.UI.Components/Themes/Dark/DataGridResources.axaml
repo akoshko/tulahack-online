@@ -5,16 +5,18 @@
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
+                        <!-- ReSharper disable Xaml.BindingWithContextNotResolved -->
                         <ToggleButton IsChecked="{Binding Path=IsVisible, Mode=TwoWay}"
-                                                  HorizontalAlignment="Center"
-                                                  VerticalAlignment="Center"
-                                                  Margin="3"
-                                                  IsEnabled="{Binding CanRemoveColumn}"/>
+                                      HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"
+                                      Margin="3"
+                                      IsEnabled="{Binding CanRemoveColumn}"/>
                         <TextBlock Text="{Binding Header}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Margin="5,0,0,0"/>
                     </StackPanel>
+                        <!-- ReSharper restore Xaml.BindingWithContextNotResolved -->
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>

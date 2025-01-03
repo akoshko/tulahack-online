@@ -7,6 +7,7 @@ public abstract class PersistedViewModelBase<T>(IRuntimeStorageProvider<T> stora
     : ViewModelBase, IPersistedViewModel<T> where T : class, IState, new()
 {
     private IRuntimeStorageProvider<T> StorageProvider { get; set; } = storageProvider;
+    // ReSharper disable once UnusedAutoPropertyAccessor.Local
     private T? ViewModelState { get; set; }
 
     public virtual Task<T?> GetState() =>

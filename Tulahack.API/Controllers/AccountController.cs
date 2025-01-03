@@ -13,14 +13,11 @@ namespace Tulahack.API.Controllers;
 [Route("api/[controller]")]
 public class AccountController : ControllerBase
 {
-    private readonly ILogger<AccountController> _logger;
     private readonly IAccountService _accountService;
 
     public AccountController(
-        ILogger<AccountController> logger,
         IAccountService accountService)
     {
-        _logger = logger;
         _accountService = accountService;
     }
 

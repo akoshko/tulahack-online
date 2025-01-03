@@ -20,7 +20,7 @@ public static class ReactiveValidationHelper
     internal static PropertyInfo GetPropertyInfo(Type type, string propertyName)
     {
         const BindingFlags bindingAttributes = BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic;
-        var propertyInfo = type.GetProperty(propertyName, bindingAttributes);
+        PropertyInfo? propertyInfo = type.GetProperty(propertyName, bindingAttributes);
 
         if (propertyInfo == null)
         {
@@ -38,8 +38,7 @@ public static class ReactiveValidationHelper
     /// <returns>Property info or exception if expression is not a property.</returns>
     internal static PropertyInfo GetPropertyInfo(Type type, LambdaExpression expression)
     {
-        var member = expression.Body as MemberExpression;
-        if (member == null)
+        if (expression.Body is not MemberExpression member)
         {
             throw new ArgumentException($"Expression '{expression}' refers to a method, not a property.");
         }
@@ -66,8 +65,7 @@ public static class ReactiveValidationHelper
     /// <returns>Property name or null if expression is not a property.</returns>
     internal static string? GetPropertyName(Type type, LambdaExpression expression)
     {
-        var member = expression.Body as MemberExpression;
-        if (member == null)
+        if (expression.Body is not MemberExpression member)
         {
             return null;
         }
@@ -95,7 +93,7 @@ public static class ReactiveValidationHelper
     /// <returns>Property type or exception if property not exist.</returns>
     internal static Type GetPropertyType(Type type, string propertyName)
     {
-        var propertyInfo = GetPropertyInfo(type, propertyName);
+        PropertyInfo propertyInfo = GetPropertyInfo(type, propertyName);
         return propertyInfo.PropertyType;
     }
 
@@ -108,7 +106,7 @@ public static class ReactiveValidationHelper
     /// <returns>Property type or exception if property not exist or cannot cast to type.</returns>
     internal static TProp? GetPropertyValue<TProp>(object instance, string propertyName)
     {
-        var propertyInfo = GetPropertyInfo(instance.GetType(), propertyName);
+        PropertyInfo propertyInfo = GetPropertyInfo(instance.GetType(), propertyName);
         return (TProp?)propertyInfo.GetValue(instance);
     }
 

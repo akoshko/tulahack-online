@@ -40,6 +40,7 @@ public class
 
         return context.PropertyValue.All(element =>
         {
+            // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
             if (element == null)
             {
                 return true;

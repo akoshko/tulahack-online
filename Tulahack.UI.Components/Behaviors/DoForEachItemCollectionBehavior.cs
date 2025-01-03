@@ -114,10 +114,9 @@ public static class DoForEachBehaviorUtils
         BehaviorsDisposable<IEnumerable<TCollItem>>? previousBehavior = null
     )
     {
-        var behavior =
-            new DoForEachItemCollectionBehavior<TCollItem>(onAdd, onRemove);
+        var behavior = new DoForEachItemCollectionBehavior<TCollItem>(onAdd, onRemove);
 
-        return collection?.AddBehaviorImpl(behavior, previousBehavior);
+        return collection.AddBehaviorImpl(behavior, previousBehavior);
     }
 
     public static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehavior<TCollItem>
@@ -133,7 +132,7 @@ public static class DoForEachBehaviorUtils
         Action<TCollItem> onAdd,
         Action<TCollItem>? onRemove = null
     ) =>
-        collection.AddBehaviorImpl<TCollItem>(onAdd, onRemove);
+        collection.AddBehaviorImpl(onAdd, onRemove);
 
     public static BehaviorsDisposable<IEnumerable<TCollItem>> AddBehavior<TCollItem>
     (
@@ -144,6 +143,6 @@ public static class DoForEachBehaviorUtils
     {
         IEnumerable<TCollItem> collection = previousBehaviors.TheObjectTheBehaviorsAreAttachedTo();
 
-        return collection.AddBehaviorImpl<TCollItem>(onAdd, onRemove, previousBehaviors);
+        return collection.AddBehaviorImpl(onAdd, onRemove, previousBehaviors);
     }
 }

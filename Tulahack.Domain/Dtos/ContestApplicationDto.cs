@@ -1,13 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using CommunityToolkit.Mvvm.ComponentModel;
 
+// ReSharper disable once CheckNamespace
 namespace Tulahack.Dtos;
 
 [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.18.2.0 (NJsonSchema v10.8.0.0 (Newtonsoft.Json v13.0.0.0))")]
 public partial class ContestApplicationDto : ObservableValidator
 {
     [ObservableProperty]
-    private System.Guid _id;
+    private Guid _id;
 
     [ObservableProperty]
     [NotifyDataErrorInfo]
@@ -60,7 +61,7 @@ public partial class ContestApplicationDto : ObservableValidator
     private string _teamName;
 
     [ObservableProperty]
-    private System.Guid? _existingTeamId;
+    private Guid? _existingTeamId;
 
     [ObservableProperty]
     [Required]
@@ -69,7 +70,7 @@ public partial class ContestApplicationDto : ObservableValidator
 
     [ObservableProperty]
     [Required]
-    private System.Guid _teamLeaderId;
+    private Guid _teamLeaderId;
 
     [ObservableProperty]
     [Required]

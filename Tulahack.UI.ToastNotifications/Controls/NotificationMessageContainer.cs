@@ -4,6 +4,7 @@ using Avalonia.Reactive;
 
 namespace Tulahack.UI.ToastNotifications.Controls;
 
+// ReSharper disable InvalidXmlDocComment
 /// <summary>
 /// The notification message container.
 /// </summary>
@@ -18,8 +19,8 @@ public class NotificationMessageContainer : ItemsControl
     /// </value>
     public INotificationMessageManager Manager
     {
-        get => (INotificationMessageManager)this.GetValue(ManagerProperty);
-        set => this.SetValue(ManagerProperty, value);
+        get => GetValue(ManagerProperty);
+        set => SetValue(ManagerProperty, value);
     }
 
     /// <summary>
@@ -97,10 +98,9 @@ public class NotificationMessageContainer : ItemsControl
         /*if (this.Items != null)
             throw new InvalidOperationException(
                 "Can't use both ItemsSource and Items collection at the same time.");*/
-        this.RemoveMessage(args.Message);
+        RemoveMessage(args.Message);
 
-    private void RemoveMessage(INotificationMessage message) =>
-        (this.Items).Remove(message);
+    private void RemoveMessage(INotificationMessage message) => Items.Remove(message);
 
     /// <summary>
     /// Manager on message queued.
@@ -114,7 +114,7 @@ public class NotificationMessageContainer : ItemsControl
             throw new InvalidOperationException(
                 "Can't use both ItemsSource and Items collection at the same time.");*/
 
-        (this.Items).Add(args.Message);
+        _ = Items.Add(args.Message);
 
         if (args.Message is INotificationAnimation animatableMessage)
         {
@@ -130,7 +130,7 @@ public class NotificationMessageContainer : ItemsControl
     /// </summary>
     static NotificationMessageContainer()
     {
-        ManagerProperty.Changed.Subscribe(
+        _ = ManagerProperty.Changed.Subscribe(
             new AnonymousObserver<AvaloniaPropertyChangedEventArgs<NotificationMessageManager>>(
                 x => ManagerPropertyChangedCallback(x.Sender, x)));
         //DefaultStyleKeyProperty.OverrideMetadata(typeof(NotificationMessageContainer), new FrameworkPropertyMetadata(typeof(NotificationMessageContainer)));
@@ -154,4 +154,5 @@ public class NotificationMessageContainer : ItemsControl
         get => GetValue(DismissAnimationProperty);
         set => SetValue(DismissAnimationProperty, value);
     }
+    // ReSharper restore InvalidXmlDocComment
 }

@@ -40,7 +40,7 @@ public class PropertiesThrottle : IPropertiesThrottle
                 cancellationToken).ConfigureAwait(false);
         }
 
-        foreach (var relatedProperty in _relatedPropertiesDueTo)
+        foreach (KeyValuePair<string, TimeSpan> relatedProperty in _relatedPropertiesDueTo)
         {
             await DelayPropertyAsync(
                 validationContextFactory.PropertyChangedStopwatches,
@@ -59,7 +59,7 @@ public class PropertiesThrottle : IPropertiesThrottle
         TimeSpan propertyDueTo,
         CancellationToken cancellationToken)
     {
-        if (!propertyChangedStopwatches.TryGetValue(propertyName, out var propertyChangedStopwatch))
+        if (!propertyChangedStopwatches.TryGetValue(propertyName, out PropertyChangedStopwatch? propertyChangedStopwatch))
         {
             return Task.CompletedTask;
         }

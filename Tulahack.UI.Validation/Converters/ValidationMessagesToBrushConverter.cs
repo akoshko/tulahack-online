@@ -27,13 +27,15 @@ internal class ValidationMessagesToBrushConverter : IMultiValueConverter
         }
 
         var validationMessages = values[0] as IEnumerable<object>;
+        // ReSharper disable once PossibleMultipleEnumeration
         if (validationMessages?.Any() != true)
         {
             return null;
         }
 
+        // ReSharper disable once PossibleMultipleEnumeration
         var isAllMessagesAreWarnings = validationMessages
-            .All(vm => (vm as ValidationMessage)?.ValidationMessageType is ValidationMessageType.Warning or ValidationMessageType.SimpleWarning);
+            .All(vm => vm is ValidationMessage { ValidationMessageType: ValidationMessageType.Warning or ValidationMessageType.SimpleWarning });
         var errorBrush = values[1];
         var warningBrush = values[2];
         return isAllMessagesAreWarnings

@@ -80,7 +80,7 @@ public class ValidationContext<TObject, TProp>
     /// <param name="validatorParameter">Validator parameter.</param>
     public TParam GetParamValue<TParam>(ValidatorParameter<TObject, TParam> validatorParameter)
     {
-        var value = validatorParameter.FuncValue.Invoke(ValidatableObject);
+        TParam value = validatorParameter.FuncValue.Invoke(ValidatableObject);
         return value;
     }
 

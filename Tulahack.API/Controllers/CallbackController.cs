@@ -16,14 +16,11 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(typeof(Contestant), StatusCodes.Status403Forbidden)]
 public class CallbackController : ControllerBase
 {
-    private readonly ILogger<CallbackController> _logger;
     private readonly IAccountService _accountService;
 
     public CallbackController(
-        ILogger<CallbackController> logger,
         IAccountService accountService)
     {
-        _logger = logger;
         _accountService = accountService;
     }
 
@@ -35,12 +32,13 @@ public class CallbackController : ControllerBase
         _ = Guid.TryParse(ssoUserClaim.Value, out Guid userId);
 
         var jwt = await HttpContext.GetTokenAsync("access_token");
+
         if (string.IsNullOrEmpty(jwt))
         {
             return Forbid("Incoming JwT token is in invalid format");
         }
 
-        PersonBase? user = await _accountService.GetAccount(userId) ?? await _accountService.CreateAccount(jwt);
+        PersonBase user = await _accountService.GetAccount(userId) ?? await _accountService.CreateAccount(jwt);
 
         if (user.Role != jwt.GetRole())
         {

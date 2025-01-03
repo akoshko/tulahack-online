@@ -8,7 +8,7 @@ internal class ReadonlyDisposableCollection(IList<IDisposable?> list) : ReadOnly
 
     public void Dispose()
     {
-        foreach (var item in _list)
+        foreach (IDisposable? item in _list)
         {
             item?.Dispose();
         }

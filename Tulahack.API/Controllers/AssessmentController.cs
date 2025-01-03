@@ -14,14 +14,11 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(typeof(Contestant), StatusCodes.Status404NotFound)]
 public class AssessmentController : ControllerBase
 {
-    private readonly ILogger<AssessmentController> _logger;
     private readonly IAccountService _accountService;
 
     public AssessmentController(
-        ILogger<AssessmentController> logger,
         IAccountService accountService)
     {
-        _logger = logger;
         _accountService = accountService;
     }
 

@@ -12,7 +12,7 @@ public interface IGenericParamInfo
     Type PluggedInType { get; set; }
 }
 
-public class GenericParamInfoBase : IGenericParamInfo
+public sealed class GenericParamInfoBase : IGenericParamInfo
 {
     public Type GenericParameterType { get; }
 
@@ -21,7 +21,7 @@ public class GenericParamInfoBase : IGenericParamInfo
     // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
     public bool IsResolved => PluggedInType != null /* && PluggedInType.IsConcrete() */;
 
-    public virtual Type PluggedInType { get; set; }
+    public Type PluggedInType { get; set; }
 
     public override bool Equals(object? obj)
     {

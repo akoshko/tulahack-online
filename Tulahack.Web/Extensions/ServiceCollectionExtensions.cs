@@ -16,21 +16,21 @@ public class AuthContextProvider : AbstractAuthContextProvider
     }
 }
 
-public static partial class ServiceCollectionExtensions
+public static class ServiceCollectionExtensions
 {
     public static void AddBrowserStorageServices(this IServiceCollection collection) =>
         collection.AddSingleton<IRuntimeStorageProvider<AppState>, Storage.BrowserSettingsStore<AppState>>();
 
     public static IAuthContextProvider AddBrowserAuthProvider(this IServiceCollection collection)
     {
-        var extensions = new UI.Utils.JsExportedMethods();
+        var extensions = new JsExportedMethods();
 
         extensions.LogMessage("Init AddTokenProvider");
         var token = extensions.GetToken();
         extensions.LogMessage($"Fetched token {token[..6]}...");
 
         var provider = new AuthContextProvider(token);
-        collection.AddSingleton<IAuthContextProvider, AuthContextProvider>(_ => provider);
+        _ = collection.AddSingleton<IAuthContextProvider, AuthContextProvider>(_ => provider);
 
         extensions.LogMessage("Done!");
         return provider;

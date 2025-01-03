@@ -15,7 +15,7 @@ internal class DefaultDisplayNameResolver : IDisplayNameResolver
     /// <inheritdoc />
     public IStringSource? GetPropertyNameSource(PropertyInfo propertyInfo)
     {
-        var displayNameAttribute = propertyInfo.GetCustomAttribute<DisplayNameAttribute>();
+        DisplayNameAttribute? displayNameAttribute = propertyInfo.GetCustomAttribute<DisplayNameAttribute>();
         return displayNameAttribute == null
             ? null
             : new DisplayNamePropertySource(displayNameAttribute);
@@ -30,7 +30,7 @@ internal class DefaultDisplayNameResolver : IDisplayNameResolver
             return null;
         }
 
-        var displayNameAttribute = objectType.GetProperty(propertyName)?.GetCustomAttribute<DisplayNameAttribute>();
+        DisplayNameAttribute? displayNameAttribute = objectType.GetProperty(propertyName)?.GetCustomAttribute<DisplayNameAttribute>();
         return displayNameAttribute == null
             ? null
             : new DisplayNamePropertySource(displayNameAttribute);

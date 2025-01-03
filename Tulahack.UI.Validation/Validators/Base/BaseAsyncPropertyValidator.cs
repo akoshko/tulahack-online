@@ -53,7 +53,7 @@ public abstract class BaseAsyncPropertyValidator<TObject, TProp> : BasePropertyV
             await ThrottleAsync(contextFactory, cancellationToken).ConfigureAwait(false);
         }
 
-        var context = contextFactory.CreateContext<TProp>();
+        ValidationContext<TObject, TProp> context = contextFactory.CreateContext<TProp>();
         if (await IsValidAsync(context, cancellationToken).ConfigureAwait(false))
         {
             return Array.Empty<ValidationMessage>();

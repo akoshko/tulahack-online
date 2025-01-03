@@ -22,7 +22,7 @@ public class NotificationMessageButton : Button, INotificationMessageButton
     /// <param name="content">The content.</param>
     public NotificationMessageButton(object content)
     {
-        this.Content = content;
+        Content = content;
     }
 
     /// <summary>
@@ -31,17 +31,8 @@ public class NotificationMessageButton : Button, INotificationMessageButton
     protected override void OnClick()
     {
         base.OnClick();
-        this.Callback?.Invoke(this);
+        Callback(this);
     }
-
-    /// <summary>
-    /// Initializes the <see ref="NotificationMessageButton"/> class.
-    /// </summary>
-    static NotificationMessageButton()
-    {
-        //DefaultStyleKeyProperty.OverrideMetadata(typeof(NotificationMessageButton), new FrameworkPropertyMetadata(typeof(NotificationMessageButton)));
-    }
-
 
     /// <summary>
     /// Gets or sets the callback.

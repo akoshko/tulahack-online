@@ -47,7 +47,7 @@ public abstract class BaseSyncPropertyValidator<TObject, TProp> : BasePropertyVa
             return Array.Empty<ValidationMessage>();
         }
 
-        var context = contextFactory.CreateContext<TProp>();
+        ValidationContext<TObject, TProp> context = contextFactory.CreateContext<TProp>();
         if (IsValid(context))
         {
             return Array.Empty<ValidationMessage>();
@@ -66,7 +66,7 @@ public abstract class BaseSyncPropertyValidator<TObject, TProp> : BasePropertyVa
 
         await ThrottleAsync(contextFactory, cancellationToken).ConfigureAwait(false);
 
-        var context = contextFactory.CreateContext<TProp>();
+        ValidationContext<TObject, TProp> context = contextFactory.CreateContext<TProp>();
         if (IsValid(context))
         {
             return Array.Empty<ValidationMessage>();

@@ -153,7 +153,7 @@ public abstract class BasePropertyValidator<TObject, TProp> : IPropertyValidator
 
             if (!string.IsNullOrEmpty(propertyName))
             {
-                _ = relatedProperties.Add(propertyName!);
+                _ = relatedProperties.Add(propertyName);
             }
         }
 

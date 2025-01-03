@@ -19,7 +19,6 @@ public interface INavigationService
     IEnumerable<PageContextModel> Pages { get; }
     IEnumerable<PageContextModel> GetTitleMenu();
     IEnumerable<PageContextModel> GetApplicationMenu();
-    bool CanGoBack { get; }
     void GoBack();
     void Navigate<T>() where T : IPageContext;
     void Navigate<T>(NavigationArgs args) where T : IPageContext;
@@ -31,7 +30,7 @@ public class NavigationService : INavigationService
     private readonly IAuthContextProvider _authContextProvider;
     private readonly ILogger<INavigationService> _logger;
 
-    public readonly IEnumerable<PageContextModel> _pages = new List<PageContextModel>()
+    public IEnumerable<PageContextModel> Pages { get; set; } = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
         new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel)),
@@ -107,8 +106,6 @@ public class NavigationService : INavigationService
         _logger = logger;
     }
 
-    public IEnumerable<PageContextModel> Pages => _pages;
-
     public IEnumerable<PageContextModel> GetTitleMenu() => _appTitleButtons;
 
     public IEnumerable<PageContextModel> GetApplicationMenu()
@@ -162,5 +159,8 @@ public class NavigationService : INavigationService
         _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs { ContextType = typeof(T) }));
 
     public void Navigate<T>(NavigationArgs args) where T : IPageContext =>
-        _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs { ContextType = typeof(T), NavigationArgs = args }));
+        _messenger.Send(new SelectedPageContextChanged(new SelectedPageChangedArgs
+        {
+            ContextType = typeof(T), NavigationArgs = args
+        }));
 }

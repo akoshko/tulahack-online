@@ -10,8 +10,8 @@ namespace Tulahack.UI.Components;
 /// </summary>
 public class TulahackTheme : Styles
 {
-    private static readonly Lazy<Dictionary<CultureInfo, string>> _localeToResource =
-        new Lazy<Dictionary<CultureInfo, string>>(
+    private static readonly Lazy<Dictionary<CultureInfo, string>> LocaleToResource =
+        new(
             () => new Dictionary<CultureInfo, string>
             {
                 { new CultureInfo("ru-RU"), "avares://Tulahack.UI.Components/Locale/ru-RU.axaml" },
@@ -20,16 +20,17 @@ public class TulahackTheme : Styles
 
     private const string PC_DefaultResource = "avares://Tulahack.UI.Components/Locale/ru-RU.axaml";
 
-    private readonly IServiceProvider? sp;
+    private readonly IServiceProvider? _sp;
 
     public TulahackTheme(IServiceProvider? provider = null)
     {
-        sp = provider;
+        _sp = provider;
         AvaloniaXamlLoader.Load(provider, this);
     }
 
     private CultureInfo? _locale;
 
+    // ReSharper disable once UnusedMember.Global
     public CultureInfo? Locale
     {
         get => _locale;
@@ -40,7 +41,7 @@ public class TulahackTheme : Styles
                 _locale = value;
                 var resource = TryGetLocaleResource(value);
 
-                if (AvaloniaXamlLoader.Load(sp, new Uri(resource)) is not ResourceDictionary d)
+                if (AvaloniaXamlLoader.Load(_sp, new Uri(resource)) is not ResourceDictionary d)
                 {
                     return;
                 }
@@ -66,14 +67,14 @@ public class TulahackTheme : Styles
 
         if (locale is null)
         {
-            return _localeToResource.Value[new CultureInfo("ru-RU")];
+            return LocaleToResource.Value[new CultureInfo("ru-RU")];
         }
 
-        if (_localeToResource.Value.TryGetValue(locale, out var resource))
+        if (LocaleToResource.Value.TryGetValue(locale, out var resource))
         {
             return resource;
         }
 
-        return _localeToResource.Value[new CultureInfo("ru-RU")];
+        return LocaleToResource.Value[new CultureInfo("ru-RU")];
     }
 }

@@ -17,14 +17,11 @@ namespace Tulahack.API.Controllers;
 [ProducesResponseType(typeof(Contestant), StatusCodes.Status404NotFound)]
 public class TeamsController : ControllerBase
 {
-    private readonly ILogger<TeamsController> _logger;
     private readonly ITeamsService _teamsService;
 
     public TeamsController(
-        ILogger<TeamsController> logger,
         ITeamsService teamsService)
     {
-        _logger = logger;
         _teamsService = teamsService;
     }
 

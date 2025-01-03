@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Globalization;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
@@ -10,9 +9,11 @@ using Tulahack.UI.ViewModels;
 
 namespace Tulahack.Web;
 
+// ReSharper disable once PartialTypeWithSinglePart
 internal sealed partial class Program
 {
 #pragma warning disable IDE0060
+    // ReSharper disable once UnusedParameter.Local
     private static Task Main(string[] args)
 #pragma warning restore IDE0060
     {

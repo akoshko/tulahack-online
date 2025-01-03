@@ -6,7 +6,7 @@ namespace Tulahack.UI.Components.Behaviors;
 
 public static class ClassesBehavior
 {
-    public static readonly char[] WHITESPACE_CHARS = { ' ', '\n', '\t', '\r' };
+    public static readonly char[] WhitespaceChars = { ' ', '\n', '\t', '\r' };
 
     #region TheClasses Attached Avalonia Property
 
@@ -54,7 +54,7 @@ public static class ClassesBehavior
     }
 
     internal static string[] GetClasses(this string classesStr) =>
-        classesStr.Split(WHITESPACE_CHARS, StringSplitOptions.RemoveEmptyEntries);
+        classesStr.Split(WhitespaceChars, StringSplitOptions.RemoveEmptyEntries);
 
     private static void OnInsertClassesChanged(AvaloniaPropertyChangedEventArgs<string> change)
     {
@@ -85,7 +85,7 @@ public static class ClassesBehavior
         var classesStr = change.NewValue.Value;
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-        var classes = classesStr?.GetClasses();
+        var classes = classesStr.GetClasses();
 
         // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
         if (classes == null)

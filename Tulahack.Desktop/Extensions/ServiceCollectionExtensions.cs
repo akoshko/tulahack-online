@@ -30,10 +30,10 @@ public static class ServiceCollectionExtensions
 
     public static IConfiguration AddConfiguration(this IServiceCollection collection)
     {
-        var configuration = new ConfigurationBuilder()
+        IConfigurationRoot configuration = new ConfigurationBuilder()
             .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
             .Build();
-        collection.AddSingleton<IConfiguration>(_ => configuration);
+        _ = collection.AddSingleton<IConfiguration>(_ => configuration);
         return configuration;
     }
 }

@@ -10,9 +10,6 @@ namespace Tulahack.UI.ViewModels;
 
 public partial class AppViewModel : PersistedViewModelBase<AppState>
 {
-    private readonly IRuntimeStorageProvider<AppState> _storage;
-    private readonly INotificationsService _notificationsService;
-
     [ObservableProperty] private NavigationViewModel _navigationViewModel;
     [ObservableProperty] private TitleViewModel _titleViewModel;
     [ObservableProperty] private ContentViewModel _contentViewModel;
@@ -41,9 +38,6 @@ public partial class AppViewModel : PersistedViewModelBase<AppState>
         IRuntimeStorageProvider<AppState> storage,
         INotificationsService notificationsService) : base(storage)
     {
-        _storage = storage;
-        _notificationsService = notificationsService;
-
         _navigationViewModel = navigationViewModel;
         _titleViewModel = titleViewModel;
         _contentViewModel = contentViewModel;

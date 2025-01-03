@@ -29,7 +29,7 @@ public class DesignStorageProvider<T> : IRuntimeStorageProvider<T>
 
 public class DesignNavigationService : INavigationService
 {
-    public readonly IEnumerable<PageContextModel> _allPages = new List<PageContextModel>()
+    public IEnumerable<PageContextModel> Pages { get; init; } = new List<PageContextModel>()
     {
         new(NavigationKeys.Settings, IconKeys.SettingsRegular, typeof(SettingsViewModel)),
         new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel)),
@@ -53,8 +53,6 @@ public class DesignNavigationService : INavigationService
         new(NavigationKeys.HackathonSettings, IconKeys.OptionsRegular, typeof(HackathonSettingsPageViewModel))
     };
 
-    public IEnumerable<PageContextModel> Pages => _allPages;
-
     public IEnumerable<PageContextModel> GetTitleMenu() =>
         new List<PageContextModel>()
         {
@@ -62,9 +60,7 @@ public class DesignNavigationService : INavigationService
             new(NavigationKeys.Profile, IconKeys.PersonRegular, typeof(ProfilePageViewModel))
         };
 
-    public IEnumerable<PageContextModel> GetApplicationMenu() => _allPages.Skip(3);
-
-    public bool CanGoBack { get; }
+    public IEnumerable<PageContextModel> GetApplicationMenu() => Pages.Skip(3);
 
     public void GoBack() { }
 

@@ -20,14 +20,11 @@ internal class DisposableBehaviorContainer<T> : IDisposable, ISuspendable
     }
 
     public void Suspend() =>
-        TheBehavior?.Detach(TheObjectTheBehaviorIsAttachedTo, false);
+        TheBehavior.Detach(TheObjectTheBehaviorIsAttachedTo, false);
 
     public void Dispose() =>
-        TheBehavior?.Detach(TheObjectTheBehaviorIsAttachedTo, true);
-
-    public void ResetBehavior(bool resetItems = true) =>
-        Reset(resetItems);
+        TheBehavior.Detach(TheObjectTheBehaviorIsAttachedTo);
 
     public void Reset(bool resetItems = true) =>
-        TheBehavior?.Reset(TheObjectTheBehaviorIsAttachedTo, resetItems);
+        TheBehavior.Reset(TheObjectTheBehaviorIsAttachedTo, resetItems);
 }

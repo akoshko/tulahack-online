@@ -41,12 +41,12 @@ public class StorageService : IStorageService
         switch (person.Role)
         {
             case ContestRole.Contestant:
-                var contestant = await _tulahackContext.Contestants
+                Contestant contestant = await _tulahackContext.Contestants
                     .Include(contestant => contestant.Team)
                     .FirstAsync(user => user.Id == person.Id);
                 return contestant.Team?.Id ?? Guid.Empty;
             case ContestRole.Expert:
-                var expert = await _tulahackContext.Experts
+                Expert expert = await _tulahackContext.Experts
                     .Include(expert => expert.Company)
                     .FirstAsync(user => user.Id == person.Id);
                 return expert.Company?.Id ?? Guid.Empty;
@@ -65,15 +65,19 @@ public class StorageService : IStorageService
     {
         _logger.LogInformation("got a new file");
 
-        var userAccount = await _accountService.GetAccount(userId);
+        PersonBase? userAccount = await _accountService.GetAccount(userId);
         if (userAccount is null)
+        {
             throw new ValidationException("Unable to find user account in DB, re-login and try again");
+        }
 
         var filePath = userId.GetStoragePath(userAccount.Role, formFile.FileName);
         if (string.IsNullOrEmpty(filePath))
+        {
             throw new ValidationException("Invalid file path");
+        }
 
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath) ?? "/appData/storage/temp");
+        _ = Directory.CreateDirectory(Path.GetDirectoryName(filePath) ?? "/appData/storage/temp");
         await using (var stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
         {
             await formFile.CopyToAsync(stream, cancellationToken);
@@ -89,7 +93,7 @@ public class StorageService : IStorageService
             Revision = default
         };
 
-        _tulahackContext.StorageFiles.Add(storageFile);
+        _ = _tulahackContext.StorageFiles.Add(storageFile);
         await _tulahackContext.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("File {FilesName} uploaded!", formFile.FileName);
@@ -104,11 +108,11 @@ public class StorageService : IStorageService
     {
         _logger.LogInformation("Got a new file");
 
-        var userAccount = await _accountService.GetAccount(userId);
+        PersonBase? userAccount = await _accountService.GetAccount(userId);
         if (userAccount is null)
             throw new ValidationException("Unable to find user account in DB, re-login and try again");
 
-        var ownerId = await GetStorageId(userAccount);
+        Guid ownerId = await GetStorageId(userAccount);
         if (ownerId == Guid.Empty)
             throw new ValidationException("Unable to get storage id for provided account");
 
@@ -116,7 +120,7 @@ public class StorageService : IStorageService
         if (string.IsNullOrEmpty(filePath))
             throw new ValidationException("Invalid file path");
 
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath) ?? "/appData/storage/temp");
+        _ = Directory.CreateDirectory(Path.GetDirectoryName(filePath) ?? "/appData/storage/temp");
         await using (var stream = new FileStream(filePath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
         {
             await formFile.CopyToAsync(stream, cancellationToken);
@@ -138,7 +142,7 @@ public class StorageService : IStorageService
             Revision = revision
         };
 
-        _tulahackContext.StorageFiles.Add(storageFile);
+        _ = _tulahackContext.StorageFiles.Add(storageFile);
         await _tulahackContext.SaveChangesAsync(cancellationToken);
 
         _logger.LogInformation("File {FilesName} uploaded!", formFile.FileName);

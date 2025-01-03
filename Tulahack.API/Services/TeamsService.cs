@@ -28,7 +28,7 @@ public class TeamsService : ITeamsService
 
     public async Task<TeamDto?> GetTeamByUserId(Guid userId)
     {
-        var contestant = await _context.Contestants
+        Contestant? contestant = await _context.Contestants
             .Include(item => item.Team)
                 .ThenInclude(team => team.Contestants)
             .Include(item => item.Team)
@@ -37,28 +37,32 @@ public class TeamsService : ITeamsService
             .FirstOrDefaultAsync(item => item.Id == userId);
 
         if (contestant?.Team is null)
+        {
             return null;
+        }
 
         return _mapper.Map<TeamDto>(contestant.Team);
     }
 
     public async Task<TeamDto?> GetTeam(Guid teamId)
     {
-        var team = await _context.Teams
+        Team? team = await _context.Teams
             .Include(team => team.Contestants)
             .Include(team => team.ContestCases)
             .AsNoTracking()
             .FirstOrDefaultAsync(item => item.Id == teamId);
 
         if (team is null)
+        {
             return null;
+        }
 
         return _mapper.Map<TeamDto>(team);
     }
 
     public async Task<TeamDto> CreateTeam(Guid userId, ContestApplicationDto dto)
     {
-        var leader = await _context.Contestants
+        Contestant leader = await _context.Contestants
             .AsTracking()
             .FirstAsync(item => item.Id == userId);
         var team = new Team
@@ -70,8 +74,8 @@ public class TeamsService : ITeamsService
             FormOfParticipation = Enum.Parse<FormOfParticipation>(dto.FormOfParticipation.ToString())
         };
         leader.Team = team;
-        _context.Contestants.Update(leader);
-        _context.Teams.Add(team);
+        _ = _context.Contestants.Update(leader);
+        _ = _context.Teams.Add(team);
 
         await _context.SaveChangesAsync();
         return _mapper.Map<TeamDto>(team);
@@ -79,13 +83,15 @@ public class TeamsService : ITeamsService
 
     public async Task<TeamDto> JoinTeam(Guid userId, ContestApplicationDto dto)
     {
-        var contestant = _context.Contestants
+        Contestant contestant = _context.Contestants
             .AsTracking()
             .First(item => item.Id == userId);
         if (dto.JoinExistingTeam is false || dto.ExistingTeamId is null)
+        {
             throw new ValidationException("Unable to find team for provided application, aborting");
+        }
 
-        var team = await _context.Teams
+        Team team = await _context.Teams
             .AsTracking()
             .FirstAsync(item => item.Id == dto.ExistingTeamId);
 

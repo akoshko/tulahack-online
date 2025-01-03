@@ -4,18 +4,15 @@ namespace Tulahack.UI.Components.Utils;
 
 public static class CompiledExpressionUtils
 {
-    static DoubleParamMap<Type, string, Func<object, object>> _untypedGettersCache =
-        new DoubleParamMap<Type, string, Func<object, object>>();
+    static readonly DoubleParamMap<Type, string, Func<object, object>> UntypedGettersCache = new();
 
-    public static Func<object, object> GetUntypedCSPropertyGetterByObjType
+    public static Func<object, object> GetUntypedCsPropertyGetterByObjType
     (
         this Type objType,
         string propertyName
     )
     {
-        Func<object, object> result;
-
-        if (_untypedGettersCache.TryGetValue(objType, propertyName, out result))
+        if (UntypedGettersCache.TryGetValue(objType, propertyName, out Func<object, object> result))
         {
             return result;
         }
@@ -30,7 +27,7 @@ public static class CompiledExpressionUtils
 
         result = Expression.Lambda<Func<object, object>>(valueCastExpression, paramExpression).Compile();
 
-        _untypedGettersCache.AddKeyValue(objType, propertyName, result);
+        UntypedGettersCache.AddKeyValue(objType, propertyName, result);
 
         return result;
     }
