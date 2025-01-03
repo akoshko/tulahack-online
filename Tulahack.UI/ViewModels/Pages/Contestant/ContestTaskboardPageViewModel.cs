@@ -2,12 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Tulahack.Dtos;
 using Tulahack.UI.Messaging;
 using Tulahack.UI.Services;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Contestant;
 
@@ -23,8 +23,8 @@ public partial class ContestTaskboardPageViewModel : ViewModelBase
 
     // AvaloniaUI Designer hack
     public ContestTaskboardPageViewModel() : this(
-        new DesignNavigationService(),
-        new DesignTaskboardService())
+        Ioc.Default.GetRequiredService<INavigationService>(),
+        Ioc.Default.GetRequiredService<ITaskboardService>())
     {
     }
 

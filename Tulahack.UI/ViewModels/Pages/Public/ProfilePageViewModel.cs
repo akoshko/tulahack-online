@@ -1,11 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Tulahack.Dtos;
-using Tulahack.UI.Extensions;
 using Tulahack.UI.Services;
 using Tulahack.UI.Utils;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Public;
 
@@ -18,7 +17,9 @@ public partial class ProfilePageViewModel : ViewModelBase
     private readonly IUserService _userService;
 
     // AvaloniaUI Designer hack
-    public ProfilePageViewModel() : this(new DesignUserService(), new DesignAuthProvider())
+    public ProfilePageViewModel() : this(
+        Ioc.Default.GetRequiredService<IUserService>(),
+        Ioc.Default.GetRequiredService<IAuthContextProvider>())
     {
     }
 

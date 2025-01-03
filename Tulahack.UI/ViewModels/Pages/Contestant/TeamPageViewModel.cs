@@ -4,13 +4,13 @@ using System.Diagnostics.CodeAnalysis;
 using Microsoft.Extensions.Logging;
 using Avalonia.Platform.Storage;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Tulahack.Dtos;
 using Tulahack.UI.Components.Controls.CodeBehind;
 using Tulahack.UI.Services;
 using Tulahack.UI.Utils;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Contestant;
 
@@ -30,9 +30,9 @@ public partial class TeamPageViewModel : ViewModelBase
 
     // AvaloniaUI Designer hack
     public TeamPageViewModel() : this(
-        new DesignTeamService(),
-        new MainViewProvider(),
-        DesignerMocks.LoggerMock<TeamPageViewModel>().Object)
+        Ioc.Default.GetRequiredService<ITeamService>(),
+        Ioc.Default.GetRequiredService<IMainViewProvider>(),
+        Ioc.Default.GetRequiredService<ILogger<TeamPageViewModel>>())
     {
     }
 

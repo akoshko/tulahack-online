@@ -1,10 +1,10 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Tulahack.UI.Services;
 using Tulahack.UI.Storage;
 using Tulahack.UI.ToastNotifications;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels;
 
@@ -22,12 +22,13 @@ public partial class AppViewModel : PersistedViewModelBase<AppState>
     private void TriggerPane() =>
         IsPaneOpen = !IsPaneOpen;
 
+    // AvaloniaUI designer hack
     public AppViewModel() : this(
-        DesignerMocks.NavigationViewModelMock,
-        DesignerMocks.TitleViewModelMock,
-        DesignerMocks.ContentViewModelMock,
-        new DesignStorageProvider<AppState>(),
-        new NotificationsService(new NotificationMessageManager()))
+        Ioc.Default.GetRequiredService<NavigationViewModel>(),
+        Ioc.Default.GetRequiredService<TitleViewModel>(),
+        Ioc.Default.GetRequiredService<ContentViewModel>(),
+        Ioc.Default.GetRequiredService<IRuntimeStorageProvider<AppState>>(),
+        Ioc.Default.GetRequiredService<INotificationsService>())
     {
     }
 

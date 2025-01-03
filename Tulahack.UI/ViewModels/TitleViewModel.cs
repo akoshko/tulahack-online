@@ -1,8 +1,8 @@
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Tulahack.UI.Constants;
 using Tulahack.UI.Services;
-using Tulahack.UI.ViewModels.Designer;
 using Tulahack.UI.ViewModels.Pages.Public;
 
 namespace Tulahack.UI.ViewModels;
@@ -13,7 +13,7 @@ public partial class TitleViewModel : Base.ViewModelBase
     [ObservableProperty] private PageContextModel _currentPage;
     private readonly INavigationService _navigationService;
 
-    public TitleViewModel() : this(new DesignNavigationService())
+    public TitleViewModel() : this(Ioc.Default.GetRequiredService<INavigationService>())
     {
         CurrentPage = new(
             "Designer Mode header",

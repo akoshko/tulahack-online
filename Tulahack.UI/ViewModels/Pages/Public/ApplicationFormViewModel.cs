@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using Tulahack.Dtos;
 using Tulahack.UI.Constants;
 using Tulahack.UI.Services;
-using Tulahack.UI.ToastNotifications;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Public;
 
@@ -28,9 +27,9 @@ public partial class ApplicationFormViewModel : ViewModelBase
     private readonly INotificationsService _notificationsService;
 
     public ApplicationFormViewModel() : this(
-        new DesignTeamService(),
-        new DesignApplicationService(),
-        new NotificationsService(new NotificationMessageManager()))
+        Ioc.Default.GetRequiredService<ITeamService>(),
+        Ioc.Default.GetRequiredService<IApplicationService>(),
+        Ioc.Default.GetRequiredService<INotificationsService>())
     {
     }
 

@@ -51,7 +51,7 @@ public class NotificationMessageManager : AvaloniaObject, INotificationMessageMa
     /// </summary>
     /// <param name="message">The message.</param>
     private void TriggerMessageQueued(INotificationMessage message) =>
-        OnMessageQueued?.Invoke(this, new NotificationMessageManagerEventArgs(message));
+        OnMessageQueued.Invoke(this, new NotificationMessageManagerEventArgs(message));
 
     /// <summary>
     /// Dismisses the specified message.

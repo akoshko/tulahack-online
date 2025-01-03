@@ -2,11 +2,11 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using Tulahack.Dtos;
 using Tulahack.UI.Extensions;
 using Tulahack.UI.Services;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 
 namespace Tulahack.UI.ViewModels.Pages.Public;
 
@@ -17,7 +17,7 @@ public partial class DashboardViewModel : ViewModelBase
     [ObservableProperty] private List<TimelineItemViewModel> _timelineSource;
 
     // AvaloniaUI Designer hack
-    public DashboardViewModel() : this(new DesignDashboardService()) { }
+    public DashboardViewModel() : this(Ioc.Default.GetRequiredService<IDashboardService>()) { }
 
     public DashboardViewModel(IDashboardService dashboardService)
     {

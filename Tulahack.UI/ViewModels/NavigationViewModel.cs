@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using Tulahack.UI.Messaging;
 using Tulahack.UI.Services;
 using Tulahack.UI.ViewModels.Base;
-using Tulahack.UI.ViewModels.Designer;
 using Tulahack.UI.ViewModels.Pages.Public;
 
 namespace Tulahack.UI.ViewModels;
@@ -32,11 +31,11 @@ public partial class NavigationViewModel : ViewModelBase
     }
 
     public NavigationViewModel() : this(
-        DesignerMocks.ContentViewModelMock,
-        DesignerMocks.TitleViewModelMock,
-        new DesignNavigationService(),
-        WeakReferenceMessenger.Default,
-        DesignerMocks.LoggerMock<NavigationViewModel>().Object)
+        Ioc.Default.GetRequiredService<ContentViewModel>(),
+        Ioc.Default.GetRequiredService<TitleViewModel>(),
+        Ioc.Default.GetRequiredService<INavigationService>(),
+        Ioc.Default.GetRequiredService<IMessenger>(),
+        Ioc.Default.GetRequiredService<ILogger<NavigationViewModel>>())
     { }
 
     public NavigationViewModel(
