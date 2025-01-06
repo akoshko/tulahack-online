@@ -2,8 +2,10 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using Tulahack.API.Extensions;
 using Tulahack.API.Services;
+using Tulahack.API.Utils;
 using Tulahack.Model;
 
 namespace Tulahack.API.Controllers;
@@ -17,11 +19,14 @@ namespace Tulahack.API.Controllers;
 public class CallbackController : ControllerBase
 {
     private readonly IAccountService _accountService;
+    private readonly IOptions<WebConfiguration> _webConfiguration;
 
     public CallbackController(
-        IAccountService accountService)
+        IAccountService accountService,
+        IOptions<WebConfiguration> webConfiguration)
     {
         _accountService = accountService;
+        _webConfiguration = webConfiguration;
     }
 
     [HttpGet]
@@ -45,6 +50,6 @@ public class CallbackController : ControllerBase
             _ = await _accountService.RefreshAccess(jwt);
         }
 
-        return Redirect("https://tulahack.<you-name-it>/index.html");
+        return Redirect(string.Concat(_webConfiguration.Value.WebAppBaseUrl, "index.html"));
     }
 }

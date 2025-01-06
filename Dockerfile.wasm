@@ -6,15 +6,19 @@ FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 WORKDIR /src
 RUN apt-get update -y
 RUN apt-get install -y python3
-RUN dotnet workload install wasm-tools
+RUN dotnet workload install wasm-tools wasm-tools-net8
 
-FROM build AS publish
+FROM build AS pre-publish
 ARG BUILD_CONFIGURATION=Release
-ARG AvaloniaVersion="11.1.0-beta2"
+ARG AvaloniaVersion="11.1.0"
 WORKDIR /src
+# Copy app files and restore packages
+## Copy config files
+COPY .editorconfig ./
 COPY Tulahack.Domain/ Tulahack.Domain/
 COPY Tulahack.UI/ Tulahack.UI/
 COPY Tulahack.UI.ToastNotifications/ Tulahack.UI.ToastNotifications/
+COPY Tulahack.UI.Validation/ Tulahack.UI.Validation/
 COPY Tulahack.UI.Components/ Tulahack.UI.Components/
 COPY Tulahack.Web/ Tulahack.Web/
 # https://docs.avaloniaui.net/docs/guides/platforms/how-to-use-web-assembly
@@ -23,10 +27,34 @@ COPY Tulahack.Web/ Tulahack.Web/
 # does not produce the AppBundle folder in the output directory.
 # (See this issue. https://github.com/dotnet/runtime/issues/94319)
 # You'll still have to grab it out of the bin directory at the path specified by the publish output.
+
+FROM pre-publish AS publish-avalonia
+ARG BUILD_CONFIGURATION=Release
+###
+### https://docs.avaloniaui.net/docs/guides/platforms/how-to-use-web-assembly
+###
+### Beware: Currently using dotnet publish with the -o or --output flag
+### does not produce the AppBundle folder in the output directory.
+### (See this issue. https://github.com/dotnet/runtime/issues/94319)
+### You'll still have to grab it out of the bin directory at the path specified by the publish output.
+###
+# Build application
 WORKDIR /src/Tulahack.Web
 RUN dotnet build "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN chmod -R 755 /app/build
 
+FROM pre-publish AS publish-blazor
+ARG BUILD_CONFIGURATION=Release
+WORKDIR /src/Tulahack.Web
+RUN dotnet build "Tulahack.Web.Blazor.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN chmod -R 755 /app/build
+
 FROM base AS final
-COPY --from=publish /app/build/AppBundle /usr/share/nginx/html
+COPY --from=publish-avalonia /app/build/AppBundle /usr/share/nginx/html
+COPY --from=publish-avalonia /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
+COPY --from=publish-blazor /app/build/wwwroot/service-worker-assets.js /usr/share/nginx/html/service-worker-assets.js
+# TODO: it's not correct to copy _framework folder contents
+# the necessary .wasm and .js files are already copied from publish-avalonia/app/build/AppBundle
+# we need to find a way to calculate SHA hashes for necessary content and fill service-worker-assets.js manually
+COPY --from=publish-blazor /app/build/wwwroot/_framework /usr/share/nginx/html
 COPY /config/nginx-config.conf /etc/nginx/conf.d/default.conf

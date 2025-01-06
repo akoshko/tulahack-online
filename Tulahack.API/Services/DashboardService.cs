@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Tulahack.API.Context;
+using Tulahack.API.Utils;
 using Tulahack.Dtos;
 
 namespace Tulahack.API.Services;
@@ -12,10 +13,14 @@ public interface IDashboardService
 public class DashboardService : IDashboardService
 {
     private readonly ITulahackContext _context;
+    private readonly CdnConfiguration _cdnConfiguration;
 
-    public DashboardService(ITulahackContext context)
+    public DashboardService(
+        ITulahackContext context,
+        CdnConfiguration cdnConfiguration)
     {
         _context = context;
+        _cdnConfiguration = cdnConfiguration;
     }
 
     public async Task<DashboardDto> GetOverview()
@@ -27,7 +32,7 @@ public class DashboardService : IDashboardService
             ExpertsCount = await _context.Experts.CountAsync(),
             TeamsCount = await _context.Teams.CountAsync(),
             CasesCount = await _context.ContestCases.CountAsync(),
-            TopicThumbnailUrl = "https://cdn.<you-name-it>/events/welcome.png",
+            TopicThumbnailUrl = string.Concat(_cdnConfiguration.CdnUrl, "events/welcome.png"),
             UpcomingEventId = Guid.NewGuid(),
             Timeline = new ContestTimelineDto
             {

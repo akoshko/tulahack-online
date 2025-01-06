@@ -1,8 +1,10 @@
 ﻿using System.Web;
+using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using IdentityModel.Client;
 using IdentityModel.OidcClient;
 using IdentityModel.OidcClient.Browser;
+using Microsoft.Extensions.Configuration;
 using Tulahack.UI.ViewModels.Base;
 
 namespace Tulahack.Desktop.Auth;
@@ -10,16 +12,26 @@ namespace Tulahack.Desktop.Auth;
 // https://github.com/IdentityModel/IdentityModel.OidcClient.Samples/tree/main/WindowsConsoleSystemBrowser
 public class AuthViewModel : ViewModelBase
 {
-    private const string PC_Authority = "https://keycloak.<you-name-it>/realms/tulahack";
-    private const string PC_ClientId = "tulahack-client";
-    private const string PC_Secret = "<TOP_SECRET>";
+    private string? Authority { get; set; }
+    private string? AuthorityClientId { get; set; }
+    private string? AuthoritySecret { get; set; }
 
     private TokenResponse _tokenResponse = new();
     public Action InitApp { get; set; } = () => { };
     public AsyncRelayCommand Auth { get; set; }
 
-    public AuthViewModel()
+    public AuthViewModel() : this(Ioc.Default.GetRequiredService<IConfiguration>()) { }
+    public AuthViewModel(IConfiguration configuration)
     {
+        Authority = configuration["DesktopConfiguration:Authority"];
+        AuthorityClientId = configuration["DesktopConfiguration:AuthorityClientId"];
+        AuthoritySecret = configuration["DesktopConfiguration:AuthoritySecret"];
+
+        if (Authority is null || AuthorityClientId is null || AuthoritySecret is null)
+        {
+            throw new ApplicationException("Authority or ClientId or Secret is null! Configure app settings from appsettings.json");
+        }
+
         Auth = new AsyncRelayCommand(Run);
     }
 
@@ -34,10 +46,10 @@ public class AuthViewModel : ViewModelBase
 
         var options = new OidcClientOptions
         {
-            Authority = PC_Authority,
-            ClientId = PC_ClientId,
+            Authority = Authority,
+            ClientId = AuthorityClientId,
             RedirectUri = redirectUri,
-            ClientSecret = PC_Secret,
+            ClientSecret = AuthoritySecret,
             Scope = "openid email profile",
             FilterClaims = false,
             Browser = browser,
@@ -55,9 +67,9 @@ public class AuthViewModel : ViewModelBase
         var code = HttpUtility.ParseQueryString($"{redirectUri}{browserResult.Response}").Get("code");
 
         using var request = new AuthorizationCodeTokenRequest();
-        request.Address = $"{PC_Authority}/protocol/openid-connect/token";
-        request.ClientId = PC_ClientId;
-        request.ClientSecret = PC_Secret;
+        request.Address = $"{Authority}/protocol/openid-connect/token";
+        request.ClientId = AuthorityClientId!;
+        request.ClientSecret = AuthoritySecret;
         request.Code = code ?? string.Empty;
         request.RedirectUri = "http://127.0.0.1:30080";
         request.CodeVerifier = authorizeState.CodeVerifier;

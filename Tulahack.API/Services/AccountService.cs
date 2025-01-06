@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 using Tulahack.API.Context;
 using Tulahack.API.Extensions;
+using Tulahack.API.Utils;
 using Tulahack.Dtos;
 using Tulahack.Model;
 
@@ -33,12 +34,15 @@ public class AccountService : IAccountService
 {
     private readonly IMapper _mapper;
     private readonly ITulahackContext _tulahackContext;
+    private readonly CdnConfiguration _cdnConfiguration;
 
     public AccountService(
         ITulahackContext tulahackContext,
+        CdnConfiguration cdnConfiguration,
         IMapper mapper)
     {
         _tulahackContext = tulahackContext;
+        _cdnConfiguration = cdnConfiguration;
         _mapper = mapper;
     }
 
@@ -84,7 +88,7 @@ public class AccountService : IAccountService
             Firstname = token.Claims.First(item => item.Type == "given_name").Value,
             Lastname = token.Claims.First(item => item.Type == "family_name").Value,
             Email = token.Claims.First(item => item.Type == "email").Value,
-            PhotoUrl = "https://cdn.<you-name-it>/avatar/hacker.png",
+            PhotoUrl = string.Concat(_cdnConfiguration.CdnUrl, "avatar/hacker.png"),
             Role = ContestRole.Visitor,
         };
         _ = _tulahackContext.Accounts.Add(user);

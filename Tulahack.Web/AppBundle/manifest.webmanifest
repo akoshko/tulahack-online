@@ -1,0 +1,81 @@
+{
+  "name": "Tulahack.online",
+  "short_name": "Tulahack.online",
+  "description": "WEB версия клиентского приложения Tulahack.online",
+  "id": "./",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#03173d",
+  "prefer_related_applications": false,
+  "icons": [
+    {
+      "src": "icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    },
+    {
+      "src": "icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "screenshots": [
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "wide",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "wide",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "wide",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "wide",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "narrow",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "narrow",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "narrow",
+        "label": "Application homepage"
+     },
+     {
+       "src": "logo.jpg",
+        "sizes": "640x640",
+        "type": "image/jpg",
+        "form_factor": "narrow",
+        "label": "Application homepage"
+     }
+   ]
+}

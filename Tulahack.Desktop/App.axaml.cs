@@ -3,6 +3,7 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tulahack.Desktop.Auth;
 using Tulahack.Desktop.Extensions;
@@ -28,7 +29,11 @@ public class App : Application
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime application)
         {
-            var authViewModel = new AuthViewModel();
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .AddJsonFile(path: "appsettings.json", optional: false, reloadOnChange: true)
+                .Build();
+            var authViewModel = new AuthViewModel(configuration);
+
             var splashScreen = new AuthView { DataContext = authViewModel };
             authViewModel.InitApp = () => InitApp(authViewModel, splashScreen, application);
             application.MainWindow = splashScreen;
@@ -46,13 +51,14 @@ public class App : Application
         try
         {
             IdentityModel.Client.TokenResponse token = splashScreenViewModel.GetAccessToken();
+
             if (string.IsNullOrEmpty(token.AccessToken))
             {
                 return;
             }
 
             var services = new ServiceCollection();
-            Microsoft.Extensions.Configuration.IConfiguration configuration = services.AddConfiguration();
+            IConfiguration configuration = services.AddConfiguration();
             var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost";
             // TODO: check for default origin
             services.AddDesktopTokenProvider(token);
@@ -81,7 +87,7 @@ public class App : Application
     private void InitDesignApp()
     {
         var services = new ServiceCollection();
-        Microsoft.Extensions.Configuration.IConfiguration configuration = services.AddConfiguration();
+        IConfiguration configuration = services.AddConfiguration();
         var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost:8080";
         services.AddDesignProviders();
         services.AddEssentials(origin);
