@@ -33,7 +33,7 @@ internal class ObjectValidator<TObject> : BaseNotifyPropertyChanged, IObjectVali
     /// </summary>
     private readonly TObject _instance;
 
-    private readonly IReadOnlyDictionary<string, IStringSource?> _displayNamesSources;
+    private readonly Dictionary<string, IStringSource?> _displayNamesSources;
 
     private readonly ObjectObserver<TObject> _observer;
     private readonly Dictionary<string, ValidatableProperty<TObject>> _validatableProperties;

@@ -34,9 +34,9 @@ public class DoubleParamMap<TOuterKeyType, TInnerKeyType, TInfoType>
         infoData = default;
 
         if (
-            (!_dictionary.TryGetValue(outerKey, out Dictionary<TInnerKeyType, TInfoType> innerDictionary)) ||
+            !_dictionary.TryGetValue(outerKey, out Dictionary<TInnerKeyType, TInfoType> innerDictionary) ||
             // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
-            (innerDictionary == null)
+            innerDictionary == null
         )
         {
             return false;

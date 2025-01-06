@@ -62,7 +62,7 @@ public class LanguageStringSource : IStringSource
     {
         unchecked
         {
-            return (_key.GetHashCode() * 397) ^ (_resource != null ? _resource.GetHashCode() : 0);
+            return _key.GetHashCode() * 397 ^ (_resource != null ? _resource.GetHashCode() : 0);
         }
     }
 

@@ -16,8 +16,8 @@ internal sealed class CancellationTokenTaskSource<T> : IDisposable
 {
     /// <summary>
     /// The cancellation token registration, if any. This is <c>null</c> if the registration was not necessary.
+    private readonly CancellationTokenRegistration _registration;
     /// </summary>
-    private readonly IDisposable _registration;
 
     /// <summary>
     /// Creates a task for the specified cancellation token, registering with the token if necessary.
@@ -43,6 +43,5 @@ internal sealed class CancellationTokenTaskSource<T> : IDisposable
     /// <summary>
     /// Disposes the cancellation token registration, if any. Note that this may cause <see cref="Task"/> to never complete.
     /// </summary>
-    public void Dispose() =>
-        _registration?.Dispose();
+    public void Dispose() => _registration.Dispose();
 }

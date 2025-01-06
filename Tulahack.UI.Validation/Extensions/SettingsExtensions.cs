@@ -96,7 +96,7 @@ public static class SettingsExtensions
 
         rb.ObservingPropertiesSettings.PropertyValueFactoryMethod = validatorFactoryMethod == null
             ? ValidationOptions.ValidatorFactory.GetValidator
-            : (o => validatorFactoryMethod((TProp)o));
+            : o => validatorFactoryMethod((TProp)o);
 
         return ruleBuilder;
     }
@@ -193,7 +193,7 @@ public static class SettingsExtensions
 
         rb.ObservingPropertiesSettings.CollectionItemFactoryMethod = validatorFactoryMethod == null
             ? ValidationOptions.ValidatorFactory.GetValidator
-            : (o => validatorFactoryMethod((TItem)o));
+            : o => validatorFactoryMethod((TItem)o);
 
         return ruleBuilder;
     }

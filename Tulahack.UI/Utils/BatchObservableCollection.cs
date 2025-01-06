@@ -134,7 +134,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
             {
                 CollectionChanged -= value;
 
-                if ((null == CollectionChanged) || (0 == CollectionChanged.GetInvocationList().Length))
+                if (null == CollectionChanged || 0 == CollectionChanged.GetInvocationList().Length)
                 {
                     CollectionChanged += EmptyDelegate;
                 }
@@ -160,10 +160,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
         MoveItem(oldIndex, newIndex);
 
     public BatchObservableCollection<T> DelayNotifications() =>
-        new((null == _notifyInfo) ? this : _notifyInfo.RootCollection, true);
+        new(null == _notifyInfo ? this : _notifyInfo.RootCollection, true);
 
     public BatchObservableCollection<T> DisableNotifications() =>
-        new((null == _notifyInfo) ? this : _notifyInfo.RootCollection, false);
+        new(null == _notifyInfo ? this : _notifyInfo.RootCollection, false);
 
     protected override void ClearItems()
     {
@@ -239,7 +239,7 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
 
     private void CheckReentrancy()
     {
-        if ((_disableReentry) && (_monitor.IsNotifying))
+        if (_disableReentry && _monitor.IsNotifying)
         {
             throw new InvalidOperationException("BatchObservableCollection Reentrancy Not Allowed");
         }

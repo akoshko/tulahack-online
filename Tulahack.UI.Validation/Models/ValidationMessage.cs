@@ -79,7 +79,7 @@ public class ValidationMessage : BaseNotifyPropertyChanged
     {
         unchecked
         {
-            return (_stringSource.GetHashCode() * 397) ^ (int)ValidationMessageType;
+            return _stringSource.GetHashCode() * 397 ^ (int)ValidationMessageType;
         }
     }
 

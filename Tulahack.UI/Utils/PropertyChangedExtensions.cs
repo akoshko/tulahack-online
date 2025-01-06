@@ -30,14 +30,14 @@ public static class PropertyChangedExtensions
                 _info = info;
                 _observer = observer;
                 _target.PropertyChanged += OnPropertyChanged!;
-                _observer.OnNext(((T)_info.GetValue(_target)!));
+                _observer.OnNext((T)_info.GetValue(_target)!);
             }
 
             private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
             {
                 if (e.PropertyName == _info.Name)
                 {
-                    _observer.OnNext(((T)_info.GetValue(_target)!));
+                    _observer.OnNext((T)_info.GetValue(_target)!);
                 }
             }
 

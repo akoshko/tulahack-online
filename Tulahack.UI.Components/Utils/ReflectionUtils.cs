@@ -197,8 +197,8 @@ public static class ReflectionUtils
             return true;
         }
 
-        if ((resolveTypesFromSourceToTarget && targetArgType.IsGenericParameter) ||
-            (!resolveTypesFromSourceToTarget && sourceArgType.IsGenericParameter))
+        if (resolveTypesFromSourceToTarget && targetArgType.IsGenericParameter ||
+            !resolveTypesFromSourceToTarget && sourceArgType.IsGenericParameter)
         {
             if (!resolveTypesFromSourceToTarget)
             {
@@ -292,7 +292,7 @@ public static class ReflectionUtils
     }
 
     public static bool IsConcrete(this Type? type) =>
-        (type != null) && !type.GetAllGenericTypeParams().Any();
+        type != null && !type.GetAllGenericTypeParams().Any();
 
     public static IEnumerable<Type> GetAllGenericTypeParams(this Type? type)
     {

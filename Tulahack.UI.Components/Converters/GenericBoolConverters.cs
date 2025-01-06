@@ -13,7 +13,7 @@ public static class ObjUtils
             return true;
         }
 
-        if ((obj1 != null) && (obj1.Equals(obj2)))
+        if (obj1 != null && obj1.Equals(obj2))
         {
             return true;
         }

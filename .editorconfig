@@ -410,6 +410,10 @@ dotnet_diagnostic.S6605.severity = none
 # S6781: JWT secret keys should not be disclosed
 dotnet_diagnostic.S6781.severity = none
 
+# Error CA1515 : Because an application's API isn't typically referenced from outside the assembly, 
+# types can be made internal
+dotnet_diagnostic.CA1515.severity = none
+
 # Formatting rule (IDE0055)
 dotnet_diagnostic.IDE0055.severity = error
 

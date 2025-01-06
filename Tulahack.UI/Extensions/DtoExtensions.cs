@@ -5,20 +5,13 @@ namespace Tulahack.UI.Extensions;
 
 public static class DtoExtensions
 {
-    public static TimelineItemType ConvertToControlType(this TimelineItemTypeDto dto)
-    {
-        switch (dto)
+    public static TimelineItemType ConvertToControlType(this TimelineItemTypeDto dto) =>
+        dto switch
         {
-            case TimelineItemTypeDto.Checkpoint:
-                return TimelineItemType.Error;
-            case TimelineItemTypeDto.Deadline:
-                return TimelineItemType.Warning;
-            case TimelineItemTypeDto.Event:
-                return TimelineItemType.Success;
-            case TimelineItemTypeDto.Meetup:
-                return TimelineItemType.Ongoing;
-            default:
-                return TimelineItemType.Default;
-        }
-    }
+            TimelineItemTypeDto.Checkpoint => TimelineItemType.Error,
+            TimelineItemTypeDto.Deadline => TimelineItemType.Warning,
+            TimelineItemTypeDto.Event => TimelineItemType.Success,
+            TimelineItemTypeDto.Meetup => TimelineItemType.Ongoing,
+            _ => TimelineItemType.Default
+        };
 }
