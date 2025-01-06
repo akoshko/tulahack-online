@@ -1,5 +1,4 @@
 ﻿using System.Web;
-using CommunityToolkit.Mvvm.DependencyInjection;
 using CommunityToolkit.Mvvm.Input;
 using IdentityModel.Client;
 using IdentityModel.OidcClient;
@@ -20,9 +19,15 @@ public class AuthViewModel : ViewModelBase
     public Action InitApp { get; set; } = () => { };
     public AsyncRelayCommand Auth { get; set; }
 
-    public AuthViewModel() : this(Ioc.Default.GetRequiredService<IConfiguration>()) { }
-    public AuthViewModel(IConfiguration configuration)
+    public AuthViewModel() : this(null) { }
+    public AuthViewModel(IConfiguration? configuration)
     {
+        if (configuration is null)
+        {
+            Auth = new AsyncRelayCommand(Run);
+            return;
+        }
+
         Authority = configuration["DesktopConfiguration:Authority"];
         AuthorityClientId = configuration["DesktopConfiguration:AuthorityClientId"];
         AuthoritySecret = configuration["DesktopConfiguration:AuthoritySecret"];

@@ -5,7 +5,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels"
              xmlns:asyncImageLoader="clr-namespace:AsyncImageLoader;assembly=AsyncImageLoader.Avalonia"
-             xmlns:system="clr-namespace:System;assembly=System.Runtime"
              x:DataType="viewModels:TitleViewModel"
              TextElement.Foreground="White"
              x:CompileBindings="True"
@@ -17,9 +16,6 @@
              XYFocus.DownNavigationStrategy="Projection"
              XYFocus.UpNavigationStrategy="Projection">
 
-    <UserControl.Resources>
-        <system:String x:Key="DefaultProfileImage">https://cdn.you.name.it.com/avatar/hacker.png</system:String>
-    </UserControl.Resources>
     <UserControl.Background>
         <SolidColorBrush>Goldenrod</SolidColorBrush>
     </UserControl.Background>
@@ -43,7 +39,7 @@
             <Grid>
                 <Button x:Name="ProfileButton" Command="{Binding NavigateToProfilePage}" Padding="0">
                     <Border ClipToBounds="True" Width="36" Height="36" CornerRadius="20">
-                        <Image asyncImageLoader:ImageLoader.Source="{StaticResource  DefaultProfileImage}" Width="40" Height="40"/>
+                        <Image asyncImageLoader:ImageLoader.Source="{Binding Account.PhotoUrl}" Width="40" Height="40"/>
                     </Border>
                     <Button.Styles>
                         <Style Selector="Button">

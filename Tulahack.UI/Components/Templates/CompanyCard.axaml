@@ -6,7 +6,7 @@
     <Design.PreviewWith>
         <Border Padding="40" Height="600" Width="600">
             <components:CompanyCard
-                ThumbnailUrl="https://cdn.you.name.it.com/events/welcome.png"
+                ThumbnailUrl="https://cdn.example.com/avatar/hacker.png"
                 CardTitle="Card title"
                 CardContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
         </Border>

@@ -6,7 +6,7 @@
     <Design.PreviewWith>
         <Border Padding="40" Height="400" Width="600">
             <components:CompanyCard
-                ThumbnailUrl="https://cdn.you.name.it.com/events/welcome.png"
+                ThumbnailUrl="{Binding }"
                 CardTitle="Task #1"
                 CardContent="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" />
         </Border>
@@ -46,10 +46,10 @@
 
                             Text="{TemplateBinding CardContent}" />
 
-                        <WrapPanel 
-                            Grid.Row="2" 
-                            Orientation="Horizontal" 
-                            VerticalAlignment="Top" 
+                        <WrapPanel
+                            Grid.Row="2"
+                            Orientation="Horizontal"
+                            VerticalAlignment="Top"
                             Margin="0 0 0 8">
                             <th:Badge HorizontalAlignment="Center"
                                       Header="React"

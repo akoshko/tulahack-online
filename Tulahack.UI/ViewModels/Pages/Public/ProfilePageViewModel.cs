@@ -10,8 +10,6 @@ namespace Tulahack.UI.ViewModels.Pages.Public;
 
 public partial class ProfilePageViewModel : ViewModelBase
 {
-
-
     [ObservableProperty] private PersonBaseDto _account;
     private readonly IAuthContextProvider _provider;
     private readonly IUserService _userService;
