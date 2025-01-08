@@ -2,33 +2,27 @@
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS restore
 WORKDIR /src
 RUN apt-get update -y
 RUN apt-get install -y python3
 RUN dotnet workload install wasm-tools
-
-FROM build AS pre-publish
 ARG BUILD_CONFIGURATION=Release
 ARG AvaloniaVersion="11.1.0"
 WORKDIR /src
-# Copy app files and restore packages
+# Copy .csproj files and restore packages
 ## Copy config files
 COPY .editorconfig ./
-COPY Tulahack.Domain/ Tulahack.Domain/
-COPY Tulahack.UI/ Tulahack.UI/
-COPY Tulahack.UI.ToastNotifications/ Tulahack.UI.ToastNotifications/
-COPY Tulahack.UI.Validation/ Tulahack.UI.Validation/
-COPY Tulahack.UI.Components/ Tulahack.UI.Components/
-COPY Tulahack.Web/ Tulahack.Web/
-# https://docs.avaloniaui.net/docs/guides/platforms/how-to-use-web-assembly
-#
-# Beware: Currently using dotnet publish with the -o or --output flag
-# does not produce the AppBundle folder in the output directory.
-# (See this issue. https://github.com/dotnet/runtime/issues/94319)
-# You'll still have to grab it out of the bin directory at the path specified by the publish output.
+COPY Tulahack.Domain/*.csproj Tulahack.Domain/
+COPY Tulahack.UI/*.csproj Tulahack.UI/
+COPY Tulahack.UI.ToastNotifications/*.csproj Tulahack.UI.ToastNotifications/
+COPY Tulahack.UI.Validation/*.csproj Tulahack.UI.Validation/
+COPY Tulahack.UI.Components/*.csproj Tulahack.UI.Components/
+COPY Tulahack.Web/*.csproj Tulahack.Web/
+WORKDIR /src/Tulahack.Web
+RUN dotnet restore ./Tulahack.Web.csproj
 
-FROM pre-publish AS publish-avalonia
+FROM restore AS build
 ARG BUILD_CONFIGURATION=Release
 ###
 ### https://docs.avaloniaui.net/docs/guides/platforms/how-to-use-web-assembly
@@ -38,12 +32,21 @@ ARG BUILD_CONFIGURATION=Release
 ### (See this issue. https://github.com/dotnet/runtime/issues/94319)
 ### You'll still have to grab it out of the bin directory at the path specified by the publish output.
 ###
+# Copy app files and build app
+WORKDIR /src
+COPY .editorconfig ./
+COPY Tulahack.Domain/ Tulahack.Domain/
+COPY Tulahack.UI/ Tulahack.UI/
+COPY Tulahack.UI.ToastNotifications/ Tulahack.UI.ToastNotifications/
+COPY Tulahack.UI.Validation/ Tulahack.UI.Validation/
+COPY Tulahack.UI.Components/ Tulahack.UI.Components/
+COPY Tulahack.Web/ Tulahack.Web/
 # Build application
 WORKDIR /src/Tulahack.Web
-RUN dotnet build "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
+RUN dotnet build --no-restore "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN chmod -R 755 /app/build
 
 FROM base AS final
-COPY --from=publish-avalonia /app/build/AppBundle /usr/share/nginx/html
-# COPY --from=publish-avalonia /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
+COPY --from=build /app/build/AppBundle /usr/share/nginx/html
+# COPY --from=build /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
 COPY /config/nginx-config.conf /etc/nginx/conf.d/default.conf
