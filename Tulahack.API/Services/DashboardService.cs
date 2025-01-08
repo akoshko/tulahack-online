@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Tulahack.API.Context;
 using Tulahack.API.Utils;
 using Tulahack.Dtos;
@@ -17,10 +18,10 @@ public class DashboardService : IDashboardService
 
     public DashboardService(
         ITulahackContext context,
-        CdnConfiguration cdnConfiguration)
+        IOptions<CdnConfiguration> cdnConfiguration)
     {
         _context = context;
-        _cdnConfiguration = cdnConfiguration;
+        _cdnConfiguration = cdnConfiguration.Value;
     }
 
     public async Task<DashboardDto> GetOverview()
