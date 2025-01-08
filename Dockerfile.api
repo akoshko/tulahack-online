@@ -1,4 +1,4 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS base
+﻿FROM mcr.microsoft.com/dotnet/aspnet:8.0-alpine AS base
 ENV ASPNETCORE_URLS=http://+:80
 WORKDIR /app
 RUN apk update
@@ -6,7 +6,7 @@ RUN apk add sqlite
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["Tulahack.API/Tulahack.API.csproj", "Tulahack.API/"]

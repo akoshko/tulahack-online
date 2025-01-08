@@ -8,14 +8,16 @@
     <Application.DataTemplates>
         <utils:ViewLocator/>
     </Application.DataTemplates>
-  
+
     <Application.Styles>
         <FluentTheme />
+
         <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
 
         <StyleInclude Source="avares://Tulahack.UI.Components/Index.axaml" />
         <StyleInclude Source="avares://Tulahack.UI.ToastNotifications/Themes/Generic.xaml" />
-        
+        <StyleInclude Source="avares://Tulahack.UI.Validation/Themes/FluentTheme.axaml" />
+
         <StyleInclude Source="avares://Tulahack.UI/Assets/Icons.axaml" />
         <StyleInclude Source="avares://Tulahack.UI/Components/_index.axaml" />
     </Application.Styles>

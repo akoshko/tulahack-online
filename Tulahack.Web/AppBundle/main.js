@@ -3,26 +3,22 @@
 const is_browser = typeof window != "undefined";
 if (!is_browser) throw new Error(`Expected to be running in a browser`);
 
-const {setModuleImports, getConfig, runMain, getAssemblyExports} = await dotnet
-    .withDiagnosticTracing(false)
-    .withApplicationArgumentsFromQuery()
-    .create();
-
 const url = globalThis.window.location.origin.includes("localhost") ?
-    "http://localhost:8080" : globalThis.window.location.origin;
+	"http://localhost:8080" : globalThis.window.location.origin;
 const response = await fetch(`${url}/oauth2/auth`);
 
 const token = response.headers.get('X-Auth-Request-Access-Token');
 if (!token)
-    globalThis.window.location.reload();
+	globalThis.window.location.reload();
 
 const boot_request = await fetch(`./blazor.boot.json`);
 const boot_json = await boot_request.json();
 const totalModulesCount =
-	Object.keys(boot_json.resources?.assembly ?? []).length + // Application and library assemblies
-	Object.keys(boot_json.resources?.pdb ?? []).length +      // Debug symbols
-	Object.keys(boot_json.resources?.vfs ?? []).length +      // Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
-	Object.keys(boot_json.resources?.icu ?? []).length;       // International Components for Unicode
+	Object.keys(boot_json.resources?.assembly ?? []).length + 				// Application and library assemblies
+	Object.keys(boot_json.resources?.pdb ?? []).length +      				// Debug symbols
+	Object.keys(boot_json.resources?.vfs ?? []).length +      				// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
+	Object.keys(boot_json.resources?.icu ?? []).length +      				// International Components for Unicode
+	Object.keys(boot_json.resources?.satelliteResources ?? []).length;       // Localization resources
 
 const progressbar = document.getElementById("progressbar");
 // Here are advanced examples of dotnet API usage:
@@ -81,15 +77,15 @@ const {setModuleImports, runMain, getConfig} = await dotnet
 	.create();
 
 setModuleImports("main.js", {
-    window: {
-        location: {
-            origin: () => url
-        }
-    },
-    auth: {
-        token: () => token
-    },
-    openInNewTab: (newTabUrl) => window.open(newTabUrl, '_blank'),
+	window: {
+		location: {
+			origin: () => url
+		}
+	},
+	auth: {
+		token: () => token
+	},
+	openInNewTab: (newTabUrl) => window.open(newTabUrl, '_blank'),
 	fetchData: async (url) => {
 		try {
 			const response = await fetch(`${url}`);
