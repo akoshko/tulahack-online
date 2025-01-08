@@ -3,15 +3,18 @@
 const is_browser = typeof window != "undefined";
 if (!is_browser) throw new Error(`Expected to be running in a browser`);
 
-const url = globalThis.window.location.origin.includes("localhost") ?
-	"http://localhost:8080" : globalThis.window.location.origin;
-const response = await fetch(`${url}/oauth2/auth`);
+const debugMode = globalThis.window.location.origin.includes("localhost")
+const url = debugMode ?
+	`${globalThis.window.location.origin}/debug-token.json` : `${globalThis.window.location.origin}/oauth2/auth`;
+const response = await fetch(url);
 
-const token = response.headers.get('X-Auth-Request-Access-Token');
+const token = debugMode ?
+	(await response.json()).token : response.headers.get('X-Auth-Request-Access-Token');
+
 if (!token)
 	globalThis.window.location.reload();
 
-const boot_request = await fetch(`./blazor.boot.json`);
+const boot_request = await fetch(`${globalThis.window.location.origin}/blazor.boot.json`);
 const boot_json = await boot_request.json();
 const totalModulesCount =
 	Object.keys(boot_json.resources?.assembly ?? []).length + 				// Application and library assemblies
@@ -43,7 +46,7 @@ const {setModuleImports, runMain, getConfig} = await dotnet
 		}
 	})
 	.withModuleConfig({
-		configSrc: "./blazor.boot.json",
+		configSrc: `${globalThis.window.location.origin}/blazor.boot.json`,
 		onConfigLoaded: (config) => {
 			// This is called during emscripten `dotnet.wasm` instantiation, after we fetched config.
 			console.log('WASM Module.onConfigLoaded');
@@ -103,4 +106,5 @@ setModuleImports("main.js", {
 
 const config = getConfig();
 
+console.log('running', config.mainAssemblyName);
 await runMain(config.mainAssemblyName, [window.location.search]);

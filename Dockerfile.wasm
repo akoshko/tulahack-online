@@ -43,18 +43,7 @@ WORKDIR /src/Tulahack.Web
 RUN dotnet build "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN chmod -R 755 /app/build
 
-FROM pre-publish AS publish-blazor
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src/Tulahack.Web
-RUN dotnet build "Tulahack.Web.Blazor.csproj" -c $BUILD_CONFIGURATION -o /app/build
-RUN chmod -R 755 /app/build
-
 FROM base AS final
 COPY --from=publish-avalonia /app/build/AppBundle /usr/share/nginx/html
-COPY --from=publish-avalonia /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
-COPY --from=publish-blazor /app/build/wwwroot/service-worker-assets.js /usr/share/nginx/html/service-worker-assets.js
-# TODO: it's not correct to copy _framework folder contents
-# the necessary .wasm and .js files are already copied from publish-avalonia/app/build/AppBundle
-# we need to find a way to calculate SHA hashes for necessary content and fill service-worker-assets.js manually
-COPY --from=publish-blazor /app/build/wwwroot/_framework /usr/share/nginx/html
+# COPY --from=publish-avalonia /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
 COPY /config/nginx-config.conf /etc/nginx/conf.d/default.conf

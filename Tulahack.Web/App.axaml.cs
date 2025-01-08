@@ -26,8 +26,6 @@ public class App : Application
         ServiceProvider provider = services.BuildServiceProvider();
         Ioc.Default.ConfigureServices(provider);
 
-
-
         base.OnFrameworkInitializationCompleted();
     }
 }
