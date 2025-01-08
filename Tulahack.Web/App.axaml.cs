@@ -1,8 +1,11 @@
 using Avalonia;
+using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Tulahack.UI.Extensions;
+using Tulahack.UI.ViewModels;
+using Tulahack.UI.Views;
 using Tulahack.Web.Extensions;
 
 namespace Tulahack.Web;
@@ -25,6 +28,16 @@ public class App : Application
 
         ServiceProvider provider = services.BuildServiceProvider();
         Ioc.Default.ConfigureServices(provider);
+
+        if (ApplicationLifetime is not ISingleViewApplicationLifetime application)
+        {
+            return;
+        }
+
+        var appWindow = new AppView();
+        application.MainView = appWindow;
+        AppViewModel mainWindowViewModel = Ioc.Default.GetRequiredService<AppViewModel>();
+        application.MainView.DataContext = mainWindowViewModel;
 
         base.OnFrameworkInitializationCompleted();
     }

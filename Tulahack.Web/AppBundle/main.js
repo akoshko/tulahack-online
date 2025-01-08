@@ -4,9 +4,9 @@ const is_browser = typeof window != "undefined";
 if (!is_browser) throw new Error(`Expected to be running in a browser`);
 
 const debugMode = globalThis.window.location.origin.includes("localhost")
-const url = debugMode ?
+const authUrl = debugMode ?
 	`${globalThis.window.location.origin}/debug-token.json` : `${globalThis.window.location.origin}/oauth2/auth`;
-const response = await fetch(url);
+const response = await fetch(authUrl);
 
 const token = debugMode ?
 	(await response.json()).token : response.headers.get('X-Auth-Request-Access-Token');
@@ -20,8 +20,7 @@ const totalModulesCount =
 	Object.keys(boot_json.resources?.assembly ?? []).length + 				// Application and library assemblies
 	Object.keys(boot_json.resources?.pdb ?? []).length +      				// Debug symbols
 	Object.keys(boot_json.resources?.vfs ?? []).length +      				// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
-	Object.keys(boot_json.resources?.icu ?? []).length +      				// International Components for Unicode
-	Object.keys(boot_json.resources?.satelliteResources ?? []).length;       // Localization resources
+	Object.keys(boot_json.resources?.icu ?? []).length;       				// International Components for Unicode
 
 const progressbar = document.getElementById("progressbar");
 // Here are advanced examples of dotnet API usage:
@@ -82,7 +81,10 @@ const {setModuleImports, runMain, getConfig} = await dotnet
 setModuleImports("main.js", {
 	window: {
 		location: {
-			origin: () => url
+			origin: () => {
+				return globalThis.window.location.origin.includes("localhost") ?
+					"http://localhost:8080" : globalThis.window.location.origin;
+			}
 		}
 	},
 	auth: {
