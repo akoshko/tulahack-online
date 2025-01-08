@@ -12,9 +12,9 @@ using Tulahack.Model;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<KeycloakConfiguration>(builder.Configuration.GetSection("Keycloak"));
-builder.Services.Configure<CdnConfiguration>(builder.Configuration.GetSection("Cdn"));
-builder.Services.Configure<WebConfiguration>(builder.Configuration.GetSection("Web"));
+builder.Services.Configure<KeycloakConfiguration>(builder.Configuration.GetSection(KeycloakConfiguration.Keycloak));
+builder.Services.Configure<CdnConfiguration>(builder.Configuration.GetSection(CdnConfiguration.Cdn));
+builder.Services.Configure<WebConfiguration>(builder.Configuration.GetSection(WebConfiguration.Web));
 
 builder.Services.AddDbContext<ITulahackContext, TulahackContext>(options =>
 {

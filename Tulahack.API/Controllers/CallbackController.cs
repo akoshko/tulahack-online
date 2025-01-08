@@ -19,14 +19,14 @@ namespace Tulahack.API.Controllers;
 public class CallbackController : ControllerBase
 {
     private readonly IAccountService _accountService;
-    private readonly IOptions<WebConfiguration> _webConfiguration;
+    private readonly WebConfiguration _webConfiguration;
 
     public CallbackController(
         IAccountService accountService,
         IOptions<WebConfiguration> webConfiguration)
     {
         _accountService = accountService;
-        _webConfiguration = webConfiguration;
+        _webConfiguration = webConfiguration.Value;
     }
 
     [HttpGet]
@@ -50,6 +50,6 @@ public class CallbackController : ControllerBase
             _ = await _accountService.RefreshAccess(jwt);
         }
 
-        return Redirect(string.Concat(_webConfiguration.Value.WebAppBaseUrl, "index.html"));
+        return Redirect(string.Concat(_webConfiguration.WebAppBaseUrl, "index.html"));
     }
 }

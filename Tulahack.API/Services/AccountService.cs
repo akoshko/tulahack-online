@@ -1,6 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
+using Microsoft.Extensions.Options;
 using Tulahack.API.Context;
 using Tulahack.API.Extensions;
 using Tulahack.API.Utils;
@@ -38,11 +39,11 @@ public class AccountService : IAccountService
 
     public AccountService(
         ITulahackContext tulahackContext,
-        CdnConfiguration cdnConfiguration,
+        IOptions<CdnConfiguration> cdnConfiguration,
         IMapper mapper)
     {
         _tulahackContext = tulahackContext;
-        _cdnConfiguration = cdnConfiguration;
+        _cdnConfiguration = cdnConfiguration.Value;
         _mapper = mapper;
     }
 
