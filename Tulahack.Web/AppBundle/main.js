@@ -18,10 +18,14 @@ const boot_request = await fetch(`${globalThis.window.location.origin}/blazor.bo
 const boot_json = await boot_request.json();
 
 const totalModulesCount =
-	Object.keys(boot_json.resources?.assembly ?? []).length + 	// Application and library assemblies
-	Object.keys(boot_json.resources?.pdb ?? []).length +      	// Debug symbols
-	Object.keys(boot_json.resources?.vfs ?? []).length +      	// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
-	Object.keys(boot_json.resources?.icu ?? []).length +    		// International Components for Unicode
+	Object.keys(boot_json.resources?.jsModuleNative ?? []).length + 		// Dotnet native modules
+	Object.keys(boot_json.resources?.jsModuleRuntime ?? []).length + 	// Dotnet runtime
+	Object.keys(boot_json.resources?.wasmNative ?? []).length + 			// Dotnet WASM native modules
+	Object.keys(boot_json.resources?.wasmSymbols ?? []).length + 		// Dotnet.js symbols
+	Object.keys(boot_json.resources?.icu ?? []).length +    				// International Components for Unicode
+	Object.keys(boot_json.resources?.assembly ?? []).length + 			// Application and library assemblies
+	Object.keys(boot_json.resources?.pdb ?? []).length +      			// Debug symbols
+	Object.keys(boot_json.resources?.vfs ?? []).length +      			// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
 	Object.keys(boot_json.resources?.satelliteResources ?? []).length;	// Localization
 
 const progressbar = document.getElementById("progressbar");
@@ -101,15 +105,18 @@ setModuleImports("main.js", {
 			const response = await fetch(
 				`${basePath}/api/${url}`,
 				{
-					method: 'GET'
+					method: 'GET',
+					headers: {"Authorization": `Bearer ${token}`}
 				});
-			debugger;
+			if (response.status === 401) {
+				console.error('GetAsync: Authorization expired! Reloading the page to get fresh token');
+				globalThis.window.location.reload();
+			}
 			if (!response.ok) {
 				console.error('GetAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
-			const json = await response.json();
-			return json;
+			return await response.text();
 		} catch (error) {
 			console.error('Fetch error:', error);
 			throw error;
@@ -123,13 +130,18 @@ setModuleImports("main.js", {
 				`${basePath}/api/${url}`,
 				{
 					method: 'POST',
-					body: JSON.stringify(data)
+					body: JSON.stringify(data),
+					headers: {"Authorization": `Bearer ${token}`}
 				});
+			if (response.status === 401) {
+				console.error('PostAsync: Authorization expired! Reloading the page to get fresh token');
+				globalThis.window.location.reload();
+			}
 			if (!response.ok) {
 				console.error('PostAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
-			return await response.json();
+			return await response.text();
 		} catch (error) {
 			console.error('Fetch error:', error);
 			throw error;
@@ -143,13 +155,18 @@ setModuleImports("main.js", {
 				`${basePath}/api/${url}`,
 				{
 					method: 'PATCH',
-					body: JSON.stringify(data)
+					body: JSON.stringify(data),
+					headers: {"Authorization": `Bearer ${token}`}
 				});
+			if (response.status === 401) {
+				console.error('PatchAsync: Authorization expired! Reloading the page to get fresh token');
+				globalThis.window.location.reload();
+			}
 			if (!response.ok) {
 				console.error('PatchAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
-			return await response.json();
+			return await response.text();
 		} catch (error) {
 			console.error('Fetch error:', error);
 			throw error;
@@ -163,13 +180,18 @@ setModuleImports("main.js", {
 				`${basePath}/api/${url}`,
 				{
 					method: 'PUT',
-					body: JSON.stringify(data)
+					body: JSON.stringify(data),
+					headers: {"Authorization": `Bearer ${token}`}
 				});
+			if (response.status === 401) {
+				console.error('PutAsync: Authorization expired! Reloading the page to get fresh token');
+				globalThis.window.location.reload();
+			}
 			if (!response.ok) {
 				console.error('PutAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
-			return await response.json();
+			return await response.text();
 		} catch (error) {
 			console.error('Fetch error:', error);
 			throw error;
@@ -182,13 +204,18 @@ setModuleImports("main.js", {
 			const response = await fetch(
 				`${basePath}/api/${url}`,
 				{
-					method: 'DELETE'
+					method: 'DELETE',
+					headers: {"Authorization": `Bearer ${token}`}
 				});
+			if (response.status === 401) {
+				console.error('DeleteAsync: Authorization expired! Reloading the page to get fresh token');
+				globalThis.window.location.reload();
+			}
 			if (!response.ok) {
 				console.error('DeleteAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
-			return await response.json();
+			return await response.text();
 		} catch (error) {
 			console.error('Fetch error:', error);
 			throw error;

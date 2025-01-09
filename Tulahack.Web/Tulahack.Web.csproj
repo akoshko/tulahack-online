@@ -9,6 +9,7 @@
         <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
         <PublishTrimmed>true</PublishTrimmed>
         <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
+        <SatelliteResourceLanguages>en</SatelliteResourceLanguages>
     </PropertyGroup>
 
     <ItemGroup>

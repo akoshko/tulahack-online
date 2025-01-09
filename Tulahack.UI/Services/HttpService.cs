@@ -29,37 +29,37 @@ public class HttpService(
                 case HttpStatusCode.NotFound:
                 case HttpStatusCode.Unauthorized:
                 case HttpStatusCode.BadRequest:
-                    _ = notificationsService.ShowWarning($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowWarning($"{exception.Message}, URL: {requestUri.ToString()}");
                     return Activator.CreateInstance<T>();
                 case HttpStatusCode.InternalServerError:
                 case HttpStatusCode.NotImplemented:
                 case HttpStatusCode.BadGateway:
                 case HttpStatusCode.ServiceUnavailable:
                 case HttpStatusCode.GatewayTimeout:
-                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
                     return Activator.CreateInstance<T>();
                 default:
-                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
                     return Activator.CreateInstance<T>();
             }
         }
 
         if (exception is ArgumentNullException argumentNullException)
         {
-            _ = notificationsService.ShowError($"{argumentNullException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{argumentNullException.Message}, URL: {requestUri.ToString()}");
         }
 
         if (exception is JsonException jsonException)
         {
-            _ = notificationsService.ShowError($"{jsonException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{jsonException.Message}, URL: {requestUri.ToString()}");
         }
 
         if (exception is NotSupportedException notSupportedException)
         {
-            _ = notificationsService.ShowError($"{notSupportedException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{notSupportedException.Message}, URL: {requestUri.ToString()}");
         }
 
-        _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+        _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
         return Activator.CreateInstance<T>();
     }
 
@@ -73,37 +73,37 @@ public class HttpService(
                 case HttpStatusCode.NotFound:
                 case HttpStatusCode.Unauthorized:
                 case HttpStatusCode.BadRequest:
-                    _ = notificationsService.ShowWarning($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowWarning($"{exception.Message}, URL: {requestUri.ToString()}");
                     return;
                 case HttpStatusCode.InternalServerError:
                 case HttpStatusCode.NotImplemented:
                 case HttpStatusCode.BadGateway:
                 case HttpStatusCode.ServiceUnavailable:
                 case HttpStatusCode.GatewayTimeout:
-                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
                     return;
                 default:
-                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+                    _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
                     return;
             }
         }
 
         if (exception is ArgumentNullException argumentNullException)
         {
-            _ = notificationsService.ShowError($"{argumentNullException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{argumentNullException.Message}, URL: {requestUri.ToString()}");
         }
 
         if (exception is JsonException jsonException)
         {
-            _ = notificationsService.ShowError($"{jsonException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{jsonException.Message}, URL: {requestUri.ToString()}");
         }
 
         if (exception is NotSupportedException notSupportedException)
         {
-            _ = notificationsService.ShowError($"{notSupportedException.Message}, URL: {requestUri.Query}");
+            _ = notificationsService.ShowError($"{notSupportedException.Message}, URL: {requestUri.ToString()}");
         }
 
-        _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.Query}");
+        _ = notificationsService.ShowError($"{exception.Message}, URL: {requestUri.ToString()}");
     }
 
     private async static Task<object> SendJsRequest(Uri requestUri, string content, HttpMethod httpMethod) =>
@@ -177,6 +177,10 @@ public class HttpService(
                 ? await SendRequestViaJsInterop(requestUri, HttpMethod.Get)
                 : await SendRequestViaHttpClient(requestUri, HttpMethod.Get, cancellationToken);
             T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+            if (result is null)
+            {
+                throw new NullReferenceException($"Unable to parse JSON into type {typeof(T)}: result is null");
+            }
             return result;
         }
         catch (Exception e)
@@ -197,6 +201,10 @@ public class HttpService(
                 ? await SendRequestViaJsInterop(requestUri, HttpMethod.Get)
                 : await SendRequestViaHttpClient(requestUri, HttpMethod.Get, completionOption, cancellationToken);
             T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+            if (result is null)
+            {
+                throw new NullReferenceException($"Unable to parse JSON into type {typeof(T)}: result is null");
+            }
             return result;
         }
         catch (Exception e)
@@ -220,6 +228,10 @@ public class HttpService(
                 ? await SendRequestViaJsInterop(requestUri, HttpMethod.Post)
                 : await SendRequestViaHttpClient(requestUri, HttpMethod.Post, cancellationToken, body: content);
             T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+            if (result is null)
+            {
+                throw new NullReferenceException($"Unable to parse JSON into type {typeof(T)}: result is null");
+            }
             return result;
         }
         catch (Exception e)
@@ -300,6 +312,10 @@ public class HttpService(
                 ? await SendRequestViaJsInterop(requestUri, HttpMethod.Put)
                 : await SendRequestViaHttpClient(requestUri, HttpMethod.Put, cancellationToken, body: content);
             T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+            if (result is null)
+            {
+                throw new NullReferenceException($"Unable to parse JSON into type {typeof(T)}: result is null");
+            }
             return result;
         }
         catch (Exception e)
@@ -340,6 +356,10 @@ public class HttpService(
                 ? await SendRequestViaJsInterop(requestUri, HttpMethod.Delete)
                 : await SendRequestViaHttpClient(requestUri, HttpMethod.Delete, cancellationToken, body: content);
             T? result = JsonSerializer.Deserialize<T>(json, serializerOptions);
+            if (result is null)
+            {
+                throw new NullReferenceException($"Unable to parse JSON into type {typeof(T)}: result is null");
+            }
             return result;
         }
         catch (Exception e)
