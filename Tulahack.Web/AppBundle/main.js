@@ -16,11 +16,13 @@ if (!token)
 
 const boot_request = await fetch(`${globalThis.window.location.origin}/blazor.boot.json`);
 const boot_json = await boot_request.json();
+
 const totalModulesCount =
-	Object.keys(boot_json.resources?.assembly ?? []).length + 				// Application and library assemblies
-	Object.keys(boot_json.resources?.pdb ?? []).length +      				// Debug symbols
-	Object.keys(boot_json.resources?.vfs ?? []).length +      				// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
-	Object.keys(boot_json.resources?.icu ?? []).length;       				// International Components for Unicode
+	Object.keys(boot_json.resources?.assembly ?? []).length + 	// Application and library assemblies
+	Object.keys(boot_json.resources?.pdb ?? []).length +      	// Debug symbols
+	Object.keys(boot_json.resources?.vfs ?? []).length +      	// Virtual file system files: https://github.com/platformdotnet/Platform.VirtualFileSystem
+	Object.keys(boot_json.resources?.icu ?? []).length +    		// International Components for Unicode
+	Object.keys(boot_json.resources?.satelliteResources ?? []).length;	// Localization
 
 const progressbar = document.getElementById("progressbar");
 // Here are advanced examples of dotnet API usage:

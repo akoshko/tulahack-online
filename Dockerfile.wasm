@@ -46,7 +46,14 @@ WORKDIR /src/Tulahack.Web
 RUN dotnet build --no-restore "Tulahack.Web.csproj" -c $BUILD_CONFIGURATION -o /app/build
 RUN chmod -R 755 /app/build
 
+FROM node:lts-alpine3.21 AS asset-builder
+WORKDIR /build
+COPY --from=build /app/build/AppBundle/blazor.boot.json blazor.boot.json
+COPY --from=build /app/build/AppBundle/service-worker-assets-builder.js service-worker-assets-builder.js
+RUN node /build/service-worker-assets-builder.js
+
 FROM base AS final
 COPY --from=build /app/build/AppBundle /usr/share/nginx/html
-# COPY --from=build /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
+COPY --from=build /app/build/AppBundle/service-worker.published.js /usr/share/nginx/html/service-worker.js
+COPY --from=asset-builder /build/service-worker-assets.js /usr/share/nginx/html/service-worker-assets.js
 COPY /config/nginx-config.conf /etc/nginx/conf.d/default.conf

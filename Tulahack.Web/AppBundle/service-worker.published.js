@@ -14,12 +14,7 @@ const offlineAssetsExclude = [/^service-worker\.js$/];
 // Replace with your base path if you are hosting on a subfolder. Ensure there is a trailing '/'.
 const base = "/";
 const baseUrl = new URL(base, self.origin);
-const manifestUrlList = self.assetsManifest.assets.map(asset => {
-	if (asset.url.split('/').length === 4) {
-		return new URL(asset.url.split('/').slice(-2).join('/'), baseUrl).href;
-	}
-	return new URL(asset.url.split('/').at(-1), baseUrl).href;
-});
+const manifestUrlList = self.assetsManifest.assets.map(asset => new URL(asset.url, baseUrl).href);
 
 async function onInstall(event) {
 	console.info('Service worker: Install');
@@ -28,12 +23,8 @@ async function onInstall(event) {
 	const assetsRequests = self.assetsManifest.assets
 		.filter(asset => offlineAssetsInclude.some(pattern => pattern.test(asset.url)))
 		.filter(asset => !offlineAssetsExclude.some(pattern => pattern.test(asset.url)))
-		.map(asset => {
-			if (asset.url.split('/').length === 4) {
-				return new Request(asset.url.split('/').slice(-2).join('/'), { integrity: asset.hash, cache: 'no-cache' });
-			}
-			return new Request(asset.url.split('/').at(-1), { integrity: asset.hash, cache: 'no-cache' });
-		});
+		.map(asset => new Request(asset.url, {integrity: asset.hash, cache: 'no-cache'})
+		);
 	await caches.open(cacheName).then(cache => cache.addAll(assetsRequests));
 }
 
