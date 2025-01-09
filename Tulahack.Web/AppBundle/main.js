@@ -99,7 +99,6 @@ setModuleImports("main.js", {
 	openInNewTab: (newTabUrl) => window.open(newTabUrl, '_blank'),
 	getAsync: async (url) => {
 		try {
-			console.log("Trying get data from", url, "...")
 			const basePath = globalThis.window.location.origin.includes("localhost") ?
 				"http://localhost:8080" : globalThis.window.location.origin;
 			const response = await fetch(
@@ -108,10 +107,6 @@ setModuleImports("main.js", {
 					method: 'GET',
 					headers: {"Authorization": `Bearer ${token}`}
 				});
-			if (response.status === 401) {
-				console.error('GetAsync: Authorization expired! Reloading the page to get fresh token');
-				globalThis.window.location.reload();
-			}
 			if (!response.ok) {
 				console.error('GetAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -133,10 +128,6 @@ setModuleImports("main.js", {
 					body: JSON.stringify(data),
 					headers: {"Authorization": `Bearer ${token}`}
 				});
-			if (response.status === 401) {
-				console.error('PostAsync: Authorization expired! Reloading the page to get fresh token');
-				globalThis.window.location.reload();
-			}
 			if (!response.ok) {
 				console.error('PostAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -158,10 +149,6 @@ setModuleImports("main.js", {
 					body: JSON.stringify(data),
 					headers: {"Authorization": `Bearer ${token}`}
 				});
-			if (response.status === 401) {
-				console.error('PatchAsync: Authorization expired! Reloading the page to get fresh token');
-				globalThis.window.location.reload();
-			}
 			if (!response.ok) {
 				console.error('PatchAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -183,10 +170,6 @@ setModuleImports("main.js", {
 					body: JSON.stringify(data),
 					headers: {"Authorization": `Bearer ${token}`}
 				});
-			if (response.status === 401) {
-				console.error('PutAsync: Authorization expired! Reloading the page to get fresh token');
-				globalThis.window.location.reload();
-			}
 			if (!response.ok) {
 				console.error('PutAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
@@ -207,10 +190,6 @@ setModuleImports("main.js", {
 					method: 'DELETE',
 					headers: {"Authorization": `Bearer ${token}`}
 				});
-			if (response.status === 401) {
-				console.error('DeleteAsync: Authorization expired! Reloading the page to get fresh token');
-				globalThis.window.location.reload();
-			}
 			if (!response.ok) {
 				console.error('DeleteAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
