@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Avalonia.Platform.Storage;
@@ -27,54 +26,47 @@ public interface ITeamService
     Justification = "TeamDto is specified in TulahackJsonContext")]
 public class TeamService : ITeamService
 {
+    private readonly IHttpService _httpService;
     private readonly HttpClient _httpClient;
-    private readonly JsonSerializerOptions _serializerOptions;
     private readonly INotificationsService _notificationsService;
     private readonly ILogger<TeamService> _logger;
 
     public TeamService(
+        IHttpService httpService,
+        ILogger<TeamService> logger,
         HttpClient httpClient,
-        JsonSerializerOptions serializerOptions,
-        INotificationsService notificationsService,
-        ILogger<TeamService> logger)
+        INotificationsService notificationsService)
     {
-        _httpClient = httpClient;
-        _serializerOptions = serializerOptions;
-        _notificationsService = notificationsService;
-
+        _httpService = httpService;
         _logger = logger;
+        _httpClient = httpClient;
+        _notificationsService = notificationsService;
     }
 
     public async Task<TeamDto?> GetTeam()
     {
-        TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            new Uri("teams", UriKind.Relative),
-            _serializerOptions);
+        TeamDto result = await _httpService.GetAndHandleAsync<TeamDto>(new Uri("teams", UriKind.Relative), default);
         return result;
     }
 
-
     public async Task<TeamDto?> GetTeamById(Guid teamId)
     {
-        TeamDto? result = await _httpClient.GetAndHandleAsync<TeamDto>(
-            new Uri($"teams/{teamId}", UriKind.Relative),
-            _serializerOptions);
+        TeamDto result = await _httpService.GetAndHandleAsync<TeamDto>(
+            new Uri($"teams/{teamId}", UriKind.Relative), default);
         return result;
     }
 
     public async Task<List<StorageFileDto>> GetStorageFiles()
     {
-        List<StorageFileDto>? result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            new Uri("storage/files", UriKind.Relative),
-            _serializerOptions);
+        List<StorageFileDto> result = await _httpService.GetAndHandleAsync<List<StorageFileDto>>(
+            new Uri("storage/files", UriKind.Relative), default);
         return result;
     }
 
     public async Task<List<StorageFileDto>> GetStorageFiles(Guid teamId)
     {
-        List<StorageFileDto>? result = await _httpClient.GetAndHandleAsync<List<StorageFileDto>>(
-            new Uri($"storage/{teamId}/files", UriKind.Relative),
-            _serializerOptions);
+        List<StorageFileDto> result = await _httpService.GetAndHandleAsync<List<StorageFileDto>>(
+            new Uri($"storage/{teamId}/files", UriKind.Relative), default);
         return result;
     }
 
@@ -105,25 +97,15 @@ public class TeamService : ITeamService
         _logger.LogInformation("File upload failed");
     }
 
-    public async Task JoinTeam(ContestApplicationDto application)
-    {
-        _ = await _httpClient
-            .PostJsonAsync(
-                new Uri("teams/join", UriKind.Relative),
-                application,
-                cancellationToken: default,
-                serializerOptions: _serializerOptions);
-        _ = _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
-    }
+    public async Task JoinTeam(ContestApplicationDto application) => await _httpService
+        .PostAndHandleAsync(
+            new Uri("teams/join", UriKind.Relative),
+            application,
+            cancellationToken: default);
 
-    public async Task CreateTeam(ContestApplicationDto application)
-    {
-        _ = await _httpClient
-            .PostJsonAsync(
-                new Uri("teams/create", UriKind.Relative),
-                application,
-                cancellationToken: default,
-                serializerOptions: _serializerOptions);
-        _ = _notificationsService.ShowSuccess($"Заявка успешно отправлена! Дождитесь ответа организаторов.");
-    }
+    public async Task CreateTeam(ContestApplicationDto application) => await _httpService
+        .PostAndHandleAsync(
+            new Uri("teams/create", UriKind.Relative),
+            application,
+            cancellationToken: default);
 }

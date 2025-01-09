@@ -93,11 +93,99 @@ setModuleImports("main.js", {
 		token: () => token
 	},
 	openInNewTab: (newTabUrl) => window.open(newTabUrl, '_blank'),
-	fetchData: async (url) => {
+	getAsync: async (url) => {
 		try {
-			const response = await fetch(`${url}`);
+			console.log("Trying get data from", url, "...")
+			const basePath = globalThis.window.location.origin.includes("localhost") ?
+				"http://localhost:8080" : globalThis.window.location.origin;
+			const response = await fetch(
+				`${basePath}/api/${url}`,
+				{
+					method: 'GET'
+				});
+			debugger;
 			if (!response.ok) {
-				console.error('response is not ok!:', error);
+				console.error('GetAsync: response is not ok!:', error);
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			const json = await response.json();
+			return json;
+		} catch (error) {
+			console.error('Fetch error:', error);
+			throw error;
+		}
+	},
+	postAsync: async (url, data) => {
+		try {
+			const basePath = globalThis.window.location.origin.includes("localhost") ?
+				"http://localhost:8080" : globalThis.window.location.origin;
+			const response = await fetch(
+				`${basePath}/api/${url}`,
+				{
+					method: 'POST',
+					body: JSON.stringify(data)
+				});
+			if (!response.ok) {
+				console.error('PostAsync: response is not ok!:', error);
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return await response.json();
+		} catch (error) {
+			console.error('Fetch error:', error);
+			throw error;
+		}
+	},
+	patchAsync: async (url, data) => {
+		try {
+			const basePath = globalThis.window.location.origin.includes("localhost") ?
+				"http://localhost:8080" : globalThis.window.location.origin;
+			const response = await fetch(
+				`${basePath}/api/${url}`,
+				{
+					method: 'PATCH',
+					body: JSON.stringify(data)
+				});
+			if (!response.ok) {
+				console.error('PatchAsync: response is not ok!:', error);
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return await response.json();
+		} catch (error) {
+			console.error('Fetch error:', error);
+			throw error;
+		}
+	},
+	putAsync: async (url, data) => {
+		try {
+			const basePath = globalThis.window.location.origin.includes("localhost") ?
+				"http://localhost:8080" : globalThis.window.location.origin;
+			const response = await fetch(
+				`${basePath}/api/${url}`,
+				{
+					method: 'PUT',
+					body: JSON.stringify(data)
+				});
+			if (!response.ok) {
+				console.error('PutAsync: response is not ok!:', error);
+				throw new Error(`HTTP error! Status: ${response.status}`);
+			}
+			return await response.json();
+		} catch (error) {
+			console.error('Fetch error:', error);
+			throw error;
+		}
+	},
+	deleteAsync: async (url) => {
+		try {
+			const basePath = globalThis.window.location.origin.includes("localhost") ?
+				"http://localhost:8080" : globalThis.window.location.origin;
+			const response = await fetch(
+				`${basePath}/api/${url}`,
+				{
+					method: 'DELETE'
+				});
+			if (!response.ok) {
+				console.error('DeleteAsync: response is not ok!:', error);
 				throw new Error(`HTTP error! Status: ${response.status}`);
 			}
 			return await response.json();

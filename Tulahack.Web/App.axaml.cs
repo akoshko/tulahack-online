@@ -1,3 +1,4 @@
+using System.Diagnostics.CodeAnalysis;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -10,6 +11,9 @@ using Tulahack.Web.Extensions;
 
 namespace Tulahack.Web;
 
+[RequiresUnreferencedCode("DTO types should be specified in TulahackJsonContext as [JsonSerializable(typeof(T))]")]
+[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2072:UnrecognizedReflectionPattern",
+    Justification = "Implementation detail of Activator that linker intrinsically recognizes")]
 public class App : Application
 {
     public override void Initialize() =>

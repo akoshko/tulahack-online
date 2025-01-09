@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Browser;
@@ -9,6 +10,9 @@ using Tulahack.UI.ViewModels;
 
 namespace Tulahack.Web;
 
+[RequiresUnreferencedCode("DTO types should be specified in TulahackJsonContext as [JsonSerializable(typeof(T))]")]
+[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2072:UnrecognizedReflectionPattern",
+    Justification = "Implementation detail of Activator that linker intrinsically recognizes")]
 // ReSharper disable once PartialTypeWithSinglePart
 internal sealed partial class Program
 {

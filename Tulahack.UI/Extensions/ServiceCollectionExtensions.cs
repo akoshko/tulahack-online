@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text.Json;
@@ -46,6 +47,9 @@ public class ApiAuthHandler : DelegatingHandler
     }
 }
 
+[RequiresUnreferencedCode("DTO types should be specified in TulahackJsonContext as [JsonSerializable(typeof(T))]")]
+[UnconditionalSuppressMessage("ReflectionAnalysis", "IL2072:UnrecognizedReflectionPattern",
+    Justification = "Implementation detail of Activator that linker intrinsically recognizes")]
 public static class ServiceCollectionExtensions
 {
     public static void AddEssentials(this IServiceCollection collection, string origin)
@@ -58,6 +62,7 @@ public static class ServiceCollectionExtensions
             _ = builder.ConfigureHttpClient(client => { client.BaseAddress = new Uri($"{origin}/api/"); })
                 .AddHttpMessageHandler(provider => provider.GetService<ApiAuthHandler>() ?? new ApiAuthHandler());
         });
+        _ = collection.AddTransient<IHttpService, HttpService>();
 
         _ = collection.AddSingleton<JsonSerializerOptions>(_ => new JsonSerializerOptions
         {
