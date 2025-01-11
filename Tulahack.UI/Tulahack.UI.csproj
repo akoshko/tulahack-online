@@ -18,6 +18,7 @@
         <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Xaml.Interactivity" Version="$(AvaloniaXamlInteractivityVersion)" />
+        <PackageReference Include="Avalonia.Controls.TreeDataGrid" Version="$(AvaloniaTreeDataGridVersion)" />
         <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaItemsRepeaterVersion)" />
 
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->

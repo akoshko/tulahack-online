@@ -11,9 +11,9 @@ namespace Tulahack.UI.Utils;
 public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollectionChanged, INotifyPropertyChanged,
     IDisposable
 {
-    private const string PC_CountString = "Count";
+    private const string PcCountString = "Count";
 
-    private const string PC_IndexerName = "Item[]";
+    private const string PcIndexerName = "Item[]";
 
     // ReSharper disable once StaticMemberInGenericType
     private static readonly NotifyCollectionChangedEventHandler EmptyDelegate = delegate { };
@@ -66,12 +66,12 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
                 {
                     _fireCountAndIndexerChanged = delegate
                     {
-                        OnPropertyChanged(new PropertyChangedEventArgs(PC_CountString));
-                        OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
+                        OnPropertyChanged(new PropertyChangedEventArgs(PcCountString));
+                        OnPropertyChanged(new PropertyChangedEventArgs(PcIndexerName));
                     };
                     _fireIndexerChanged = delegate
                     {
-                        OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
+                        OnPropertyChanged(new PropertyChangedEventArgs(PcIndexerName));
                     };
                 }
 
@@ -262,10 +262,10 @@ public sealed class BatchObservableCollection<T> : Collection<T>, INotifyCollect
         {
             if (_notifyInfo.IsCountChanged)
             {
-                _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PC_CountString));
+                _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PcCountString));
             }
 
-            _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PC_IndexerName));
+            _notifyInfo.RootCollection.OnPropertyChanged(new PropertyChangedEventArgs(PcIndexerName));
         }
 
         using (_notifyInfo.RootCollection?.BlockReentrancy())

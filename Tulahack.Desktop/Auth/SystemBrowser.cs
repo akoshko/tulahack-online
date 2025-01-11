@@ -81,7 +81,7 @@ public class SystemBrowser : IBrowser
 
 public class LoopbackHttpListener : IDisposable
 {
-    const int PC_DefaultTimeout = 60 * 5; // 5 mins (in seconds)
+    const int PcDefaultTimeout = 60 * 5; // 5 mins (in seconds)
 
     readonly IWebHost _host;
     readonly TaskCompletionSource<string> _source = new();
@@ -159,7 +159,7 @@ public class LoopbackHttpListener : IDisposable
         }
     }
 
-    public Task<string> WaitForCallbackAsync(int timeoutInSeconds = PC_DefaultTimeout)
+    public Task<string> WaitForCallbackAsync(int timeoutInSeconds = PcDefaultTimeout)
     {
         _ = Task.Run(async () =>
         {

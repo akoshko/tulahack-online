@@ -3,9 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Contestant"
              xmlns:th="https://tulahack.online/tulahack"
+             xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Contestant"
              xmlns:converters="clr-namespace:Tulahack.UI.Converters"
+             xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
+             xmlns:dto="clr-namespace:Tulahack.Dtos;assembly=Tulahack.Domain"
              x:DataType="viewModels:ContestTaskboardPageViewModel"
              x:CompileBindings="True"
              mc:Ignorable="d"
@@ -21,111 +23,90 @@
     </Design.DataContext>
 
     <UserControl.Resources>
+        <converters:TaskComplexityTextConverter x:Key="TaskComplexityTextConverter" />
         <converters:StringToBrushConverter x:Key="StringToBrushConverter" />
         <converters:TaskComplexityBrushConverter x:Key="TaskComplexityBrushConverter" />
     </UserControl.Resources>
 
     <Grid RowDefinitions="*">
-        <DataGrid x:Name="TasksDataGrid"
-                  Grid.Row="0"
-                  ItemsSource="{Binding Records}"
-                  SelectedItem="{Binding SelectedItem}"
-                  GridLinesVisibility="Vertical">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="#" Binding="{Binding Number }" />
-                <DataGridTextColumn Header="Название" Binding="{Binding Title }" />
-                <DataGridTextColumn Header="Компания" Binding="{Binding Company.Name }" />
-                <DataGridTemplateColumn
-                    Header="Критерии"
-                    MaxWidth="260"
-                    MinWidth="220">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ScrollViewer
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Disabled">
-                                <ItemsRepeater
-                                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-                                    ItemsSource="{Binding AcceptanceCriteria}">
-                                    <ItemsRepeater.Layout>
-                                        <StackLayout Orientation="Horizontal" Spacing="4" />
-                                    </ItemsRepeater.Layout>
-                                    <ItemsRepeater.ItemTemplate>
-                                        <DataTemplate>
-                                            <th:Badge Header="{Binding Criteria}"
-                                                      BorderBrush="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
-                                                      Background="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
-                                                      BadgeFontSize="12" />
-                                        </DataTemplate>
-                                    </ItemsRepeater.ItemTemplate>
-                                </ItemsRepeater>
-                            </ScrollViewer>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn
-                    Header="Стек технологий"
-                    MaxWidth="180"
-                    MinWidth="140">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <ScrollViewer
-                                HorizontalScrollBarVisibility="Hidden"
-                                VerticalScrollBarVisibility="Disabled">
-                                <ItemsRepeater
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Stretch"
-                                    ItemsSource="{Binding TechStack}">
-                                    <ItemsRepeater.Layout>
-                                        <StackLayout Orientation="Horizontal" Spacing="4" />
-                                    </ItemsRepeater.Layout>
-                                    <ItemsRepeater.ItemTemplate>
-                                        <DataTemplate>
-                                            <th:Badge Header="{Binding SkillName}"
-                                                      BorderBrush="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
-                                                      Background="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
-                                                      BadgeFontSize="12" />
-                                        </DataTemplate>
-                                    </ItemsRepeater.ItemTemplate>
-                                </ItemsRepeater>
-                            </ScrollViewer>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn
-                    Header="Сложность">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                                <th:Badge Header="{Binding Complexity}"
-                                          BorderBrush="{Binding Complexity, Converter={StaticResource TaskComplexityBrushConverter}}"
-                                          Background="{Binding Complexity, Converter={StaticResource TaskComplexityBrushConverter}}"
-                                          BadgeFontSize="14" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-                <DataGridTemplateColumn
-                    Width="120">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <StackPanel
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center">
-                                <Button
-                                    Command="{Binding
+        <TreeDataGrid Name="TasksDataGrid"
+                      Source="{Binding Source}">
+
+            <TreeDataGrid.Resources>
+                <!-- x:Key names are used in FlatTreeDataGridSource.TemplateColumn -->
+                <!-- See details in ContestTaskboardPageViewModel -->
+                <!-- ReSharper disable Xaml.RedundantResource -->
+                <DataTemplate x:Key="AcceptanceCriteriaCell">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Disabled"
+                        x:DataType="dto:ContestCaseDto">
+                        <ItemsRepeater
+                            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                            ItemsSource="{Binding AcceptanceCriteria}">
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Horizontal" Spacing="4" />
+                            </ItemsRepeater.Layout>
+                            <ItemsRepeater.ItemTemplate >
+                                <DataTemplate x:DataType="dto:AcceptanceCriteriaDto">
+                                    <th:Badge Header="{Binding Criteria}"
+                                              BorderBrush="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                              Background="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                              BadgeFontSize="12" />
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </ScrollViewer>
+                </DataTemplate>
+                <DataTemplate x:Key="TechStackCell">
+                    <ScrollViewer
+                        HorizontalScrollBarVisibility="Hidden"
+                        VerticalScrollBarVisibility="Disabled"
+                        x:DataType="dto:ContestCaseDto">
+                        <ItemsRepeater
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Stretch"
+                            ItemsSource="{Binding TechStack}">
+                            <ItemsRepeater.Layout>
+                                <StackLayout Orientation="Horizontal" Spacing="4" />
+                            </ItemsRepeater.Layout>
+                            <ItemsRepeater.ItemTemplate>
+                                <DataTemplate x:DataType="dto:SkillDto">
+                                    <th:Badge Header="{Binding SkillName}"
+                                              BorderBrush="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                              Background="{Binding Color, Converter={StaticResource StringToBrushConverter}}"
+                                              BadgeFontSize="12" />
+                                </DataTemplate>
+                            </ItemsRepeater.ItemTemplate>
+                        </ItemsRepeater>
+                    </ScrollViewer>
+                </DataTemplate>
+                <DataTemplate x:Key="ComplexityCell">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <th:Badge x:DataType="dto:ContestCaseDto"
+                                  Header="{Binding Complexity, Converter={StaticResource TaskComplexityTextConverter}}"
+                                  BorderBrush="{Binding Complexity, Converter={StaticResource TaskComplexityBrushConverter}}"
+                                  Background="{Binding Complexity, Converter={StaticResource TaskComplexityBrushConverter}}"
+                                  BadgeFontSize="14" />
+                    </StackPanel>
+                </DataTemplate>
+                <DataTemplate x:Key="ButtonsCell">
+                    <StackPanel
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Button x:DataType="dto:ContestCaseDto"
+                            Command="{Binding
                                         Path=((viewModels:ContestTaskboardPageViewModel)DataContext).NavigateToTaskPage,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                    CommandParameter="{Binding }"
-                                    Content="К задаче" />
-                            </StackPanel>
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
-            </DataGrid.Columns>
-        </DataGrid>
+                            CommandParameter="{Binding }"
+                            Content="К задаче" />
+                    </StackPanel>
+                </DataTemplate>
+                <!-- ReSharper restore Xaml.RedundantResource -->
+            </TreeDataGrid.Resources>
+        </TreeDataGrid>
     </Grid>
 
 </UserControl>
