@@ -6,16 +6,16 @@
         mc:Ignorable="d" d:DesignWidth="600" d:DesignHeight="300"
         Width="600" Height="300"
         TextElement.Foreground="White"
-
         WindowStartupLocation="CenterScreen"
         SystemDecorations="None"
-        x:Class="Tulahack.Desktop.Auth.AuthView">
+        x:Class="Tulahack.Desktop.Auth.AuthView"
+        x:DataType="auth:AuthViewModel">
 
     <Window.DataContext>
         <auth:AuthViewModel />
     </Window.DataContext>
 
-    <Border 
+    <Border
         BorderBrush="White"
         BorderThickness="2">
         <Grid RowDefinitions="*, *, *" Background="#D73930">

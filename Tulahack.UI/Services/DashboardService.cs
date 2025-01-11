@@ -18,7 +18,9 @@ public class DashboardService(IHttpService httpService) : IDashboardService
 {
     public async Task<DashboardDto> GetDashboardOverview()
     {
-        DashboardDto result = await httpService.GetAndHandleAsync<DashboardDto>(new Uri("dashboard", UriKind.Relative), default);
+        DashboardDto result = await httpService.GetAndHandleAsync<DashboardDto>(
+            new Uri("dashboard", UriKind.Relative),
+            default);
         return result;
     }
 }

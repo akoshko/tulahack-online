@@ -115,8 +115,8 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center">
                                 <Button
-                                    Command="{Binding 
-                                        Path=((viewModels:ContestTaskboardPageViewModel)DataContext).NavigateToTaskPage, 
+                                    Command="{Binding
+                                        Path=((viewModels:ContestTaskboardPageViewModel)DataContext).NavigateToTaskPage,
                                         RelativeSource={RelativeSource AncestorType=UserControl}}"
                                     CommandParameter="{Binding }"
                                     Content="К задаче" />

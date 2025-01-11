@@ -1,6 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reactive.Linq;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Tulahack.Dtos;
@@ -25,9 +28,21 @@ public partial class DashboardViewModel : ViewModelBase
     }
 
     [RequiresUnreferencedCode("See comment above base class for more details.")]
-    protected async override void OnActivated()
+    protected override void OnActivated() =>
+        Observable
+            .Start(Init)
+            .Subscribe()
+            .Dispose();
+
+    private async Task Init()
     {
         DashboardDto = await _dashboardService.GetDashboardOverview();
+
+        foreach (var __ in Enumerable.Range(0, 100))
+        {
+            _ = await _dashboardService.GetDashboardOverview();
+        }
+
         TimelineSource = DashboardDto.Timeline.Items
             .Select(item => new TimelineItemViewModel
             {

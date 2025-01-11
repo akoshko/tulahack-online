@@ -1,7 +1,7 @@
 <Project>
     <PropertyGroup>
         <AvaloniaVersion>11.1.0</AvaloniaVersion>
-        <AvaloniaUseCompiledBindingsByDefault>false</AvaloniaUseCompiledBindingsByDefault>
+        <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 
     <PropertyGroup Label="Code inspection and codestyle" Condition="$(Configuration) == 'Release'">
