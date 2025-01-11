@@ -7,45 +7,45 @@
         <JsonSerializerIsReflectionEnabledByDefault>false</JsonSerializerIsReflectionEnabledByDefault>
         <RootNamespace>Tulahack.UI</RootNamespace>
     </PropertyGroup>
-    
+
     <ItemGroup>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
-    
+
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Browser" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
         <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Xaml.Interactivity" Version="$(AvaloniaVersion)" />
-        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaVersion)" />
-        
+        <PackageReference Include="Avalonia.Xaml.Interactivity" Version="$(AvaloniaXamlInteractivityVersion)" />
+        <PackageReference Include="Avalonia.Controls.ItemsRepeater" Version="$(AvaloniaItemsRepeaterVersion)" />
+
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-        
-        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.1" />
+
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="$(CommunityToolkitMvvmVersion)" />
         <PackageReference Include="AsyncImageLoader.Avalonia" Version="3.2.1" />
-        <PackageReference Include="ReactiveUI.Validation" Version="4.0.9" />
-        
+        <PackageReference Include="ReactiveUI.Validation" Version="4.1.1" />
+
         <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
         <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
-        
+
         <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.6.0" />
         <PackageReference Include="Moq" Version="4.20.70" />
     </ItemGroup>
-    
+
     <ItemGroup>
       <Content Include="..\.dockerignore">
         <Link>.dockerignore</Link>
       </Content>
     </ItemGroup>
-    
+
     <ItemGroup>
       <ProjectReference Include="..\Tulahack.Domain\Tulahack.Domain.csproj" />
       <ProjectReference Include="..\Tulahack.UI.Components\Tulahack.UI.Components.csproj" />
       <ProjectReference Include="..\Tulahack.UI.ToastNotifications\Tulahack.UI.ToastNotifications.csproj" />
     </ItemGroup>
-    
+
 </Project>

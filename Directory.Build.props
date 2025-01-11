@@ -1,6 +1,9 @@
 <Project>
     <PropertyGroup>
-        <AvaloniaVersion>11.1.0</AvaloniaVersion>
+        <AvaloniaVersion>11.2.3</AvaloniaVersion>
+        <AvaloniaXamlInteractivityVersion>11.2.0.6</AvaloniaXamlInteractivityVersion>
+        <AvaloniaItemsRepeaterVersion>11.1.5</AvaloniaItemsRepeaterVersion>
+        <CommunityToolkitMvvmVersion>8.2.2</CommunityToolkitMvvmVersion>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     </PropertyGroup>
 

@@ -18,7 +18,7 @@ public class TulahackTheme : Styles
                 { new CultureInfo("en-US"), "avares://Tulahack.UI.Components/Locale/en-US.axaml" },
             });
 
-    private const string PC_DefaultResource = "avares://Tulahack.UI.Components/Locale/ru-RU.axaml";
+    private const string PcDefaultResource = "avares://Tulahack.UI.Components/Locale/ru-RU.axaml";
 
     private readonly IServiceProvider? _sp;
 
@@ -62,7 +62,7 @@ public class TulahackTheme : Styles
     {
         if (Equals(locale, CultureInfo.InvariantCulture))
         {
-            return PC_DefaultResource;
+            return PcDefaultResource;
         }
 
         if (locale is null)

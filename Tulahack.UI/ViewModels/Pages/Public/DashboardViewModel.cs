@@ -37,12 +37,6 @@ public partial class DashboardViewModel : ViewModelBase
     private async Task Init()
     {
         DashboardDto = await _dashboardService.GetDashboardOverview();
-
-        foreach (var __ in Enumerable.Range(0, 100))
-        {
-            _ = await _dashboardService.GetDashboardOverview();
-        }
-
         TimelineSource = DashboardDto.Timeline.Items
             .Select(item => new TimelineItemViewModel
             {

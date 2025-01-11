@@ -18,12 +18,12 @@ public sealed class LanguageManager
     /// <summary>
     /// Culture code which using when message in current culture not found.
     /// </summary>
-    private const string PC_DefaultCultureCode = "en";
+    private const string PcDefaultCultureCode = "en";
 
     /// <summary>
     /// Default culture.
     /// </summary>
-    private readonly CultureInfo _defaultCulture = new CultureInfo(PC_DefaultCultureCode);
+    private readonly CultureInfo _defaultCulture = new CultureInfo(PcDefaultCultureCode);
     /// <summary>
     /// List of supported languages by default.
     /// </summary>
@@ -131,7 +131,7 @@ public sealed class LanguageManager
         // If empty, than try return string for default culture.
         if (string.IsNullOrEmpty(message))
         {
-            message = GetLocalizedString(resource, key, PC_DefaultCultureCode, _defaultCulture);
+            message = GetLocalizedString(resource, key, PcDefaultCultureCode, _defaultCulture);
         }
 
         // Otherwise - just return key.
