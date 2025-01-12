@@ -8,17 +8,19 @@ RUN apt-get update -y
 RUN apt-get install -y python3
 RUN dotnet workload install wasm-tools
 ARG BUILD_CONFIGURATION=Release
-ARG AvaloniaVersion="11.1.0"
 WORKDIR /src
 # Copy .csproj files and restore packages
 ## Copy config files
 COPY .editorconfig ./
+COPY Directory.Build.props ./
+## Copy .csproj files
 COPY Tulahack.Domain/*.csproj Tulahack.Domain/
 COPY Tulahack.UI/*.csproj Tulahack.UI/
 COPY Tulahack.UI.ToastNotifications/*.csproj Tulahack.UI.ToastNotifications/
 COPY Tulahack.UI.Validation/*.csproj Tulahack.UI.Validation/
 COPY Tulahack.UI.Components/*.csproj Tulahack.UI.Components/
 COPY Tulahack.Web/*.csproj Tulahack.Web/
+## Restore
 WORKDIR /src/Tulahack.Web
 RUN dotnet restore ./Tulahack.Web.csproj
 
@@ -35,6 +37,7 @@ ARG BUILD_CONFIGURATION=Release
 # Copy app files and build app
 WORKDIR /src
 COPY .editorconfig ./
+COPY Directory.Build.props ./
 COPY Tulahack.Domain/ Tulahack.Domain/
 COPY Tulahack.UI/ Tulahack.UI/
 COPY Tulahack.UI.ToastNotifications/ Tulahack.UI.ToastNotifications/

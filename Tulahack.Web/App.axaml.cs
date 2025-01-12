@@ -21,6 +21,11 @@ public class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
+        if (ApplicationLifetime is not ISingleViewApplicationLifetime application)
+        {
+            return;
+        }
+
         var services = new ServiceCollection();
         var extensions = new UI.Utils.JsExportedMethods();
 
@@ -32,11 +37,6 @@ public class App : Application
 
         ServiceProvider provider = services.BuildServiceProvider();
         Ioc.Default.ConfigureServices(provider);
-
-        if (ApplicationLifetime is not ISingleViewApplicationLifetime application)
-        {
-            return;
-        }
 
         var appWindow = new AppView();
         application.MainView = appWindow;

@@ -6,7 +6,6 @@
              xmlns:th="https://tulahack.online/tulahack"
              xmlns:viewModels="clr-namespace:Tulahack.UI.ViewModels.Pages.Contestant"
              xmlns:converters="clr-namespace:Tulahack.UI.Converters"
-             xmlns:collections="clr-namespace:System.Collections;assembly=System.Runtime"
              xmlns:dto="clr-namespace:Tulahack.Dtos;assembly=Tulahack.Domain"
              x:DataType="viewModels:ContestTaskboardPageViewModel"
              x:CompileBindings="True"

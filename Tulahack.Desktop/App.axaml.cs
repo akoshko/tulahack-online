@@ -5,6 +5,8 @@ using Avalonia.Markup.Xaml;
 using CommunityToolkit.Mvvm.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging.EventLog;
 using Tulahack.Desktop.Auth;
 using Tulahack.Desktop.Extensions;
 using Tulahack.UI.Extensions;
@@ -50,25 +52,44 @@ public class App : Application
     {
         try
         {
-            IdentityModel.Client.TokenResponse token = splashScreenViewModel.GetAccessToken();
+            IHost host = Host
+                .CreateDefaultBuilder()
+                .ConfigureServices(services =>
+                {
+                    IdentityModel.Client.TokenResponse token = splashScreenViewModel.GetAccessToken();
 
-            if (string.IsNullOrEmpty(token.AccessToken))
-            {
-                return;
-            }
+                    if (string.IsNullOrEmpty(token.AccessToken))
+                    {
+                        return;
+                    }
 
-            var services = new ServiceCollection();
-            IConfiguration configuration = services.AddConfiguration();
-            var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost";
-            // TODO: check for default origin
-            services.AddDesktopTokenProvider(token);
-            services.AddEssentials(origin);
-            services.AddDesktopStorageServices();
-            services.AddServices();
-            services.AddViewModels();
+                    IConfiguration configuration = services.AddConfiguration();
+                    var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost";
+                    // TODO: check for default origin
+                    services.AddDesktopTokenProvider(token);
+                    services.AddEssentials(origin);
+                    services.AddDesktopStorageServices();
+                    services.AddServices();
+                    services.AddViewModels();
+                })
+                .ConfigureLogging(loggingBuilder =>
+                {
+                    // remove loggers incompatible with UWP
+                    {
+                        var eventLoggers = loggingBuilder.Services
+                            .Where(l => l.ImplementationType == typeof(EventLogLoggerProvider))
+                            .ToList();
 
-            ServiceProvider provider = services.BuildServiceProvider();
-            Ioc.Default.ConfigureServices(provider);
+                        foreach (ServiceDescriptor el in eventLoggers)
+                        {
+                            _ = loggingBuilder.Services.Remove(el);
+                        }
+                    }
+                })
+                .UseEnvironment(Environments.Production)
+                .Build();
+
+            Ioc.Default.ConfigureServices(host.Services);
 
             var appWindow = new AppViewWindow();
             application.MainWindow = appWindow;
@@ -86,15 +107,33 @@ public class App : Application
 
     private void InitDesignApp()
     {
-        var services = new ServiceCollection();
-        IConfiguration configuration = services.AddConfiguration();
-        var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost:8080";
-        services.AddDesignProviders();
-        services.AddEssentials(origin);
-        services.AddServices();
-        services.AddViewModels();
+        IHost host = Host
+            .CreateDefaultBuilder()
+            .ConfigureServices(services =>
+            {
+                IConfiguration configuration = services.AddConfiguration();
+                var origin = configuration.GetSection("DesktopConfiguration:ApiUrl").Value ?? "http://localhost:8080";
+                services.AddDesignProviders();
+                services.AddEssentials(origin);
+                services.AddServices();
+                services.AddViewModels();
+            })
+            .ConfigureLogging(loggingBuilder =>
+            {
+                {
+                    var eventLoggers = loggingBuilder.Services
+                        .Where(l => l.ImplementationType == typeof(EventLogLoggerProvider))
+                        .ToList();
 
-        ServiceProvider provider = services.BuildServiceProvider();
-        Ioc.Default.ConfigureServices(provider);
+                    foreach (ServiceDescriptor el in eventLoggers)
+                    {
+                        _ = loggingBuilder.Services.Remove(el);
+                    }
+                }
+            })
+            .UseEnvironment(Environments.Development)
+            .Build();
+
+        Ioc.Default.ConfigureServices(host.Services);
     }
 }
